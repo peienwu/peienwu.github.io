@@ -30,7 +30,7 @@
 
   <meta name="description" content="問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」 班：  「一號門。」">
 <meta property="og:type" content="article">
-<meta property="og:title" content="三門問題（Monty Hall problem）">
+<meta property="og:title" content="三門問題（Monty Hall Problem）">
 <meta property="og:url" content="https://peienwu.com/monty_hall_problem/index.html">
 <meta property="og:site_name" content="Peienwu 演算法筆記">
 <meta property="og:description" content="問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」 班：  「一號門。」">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://i.imgur.com/SWsVaD1.png">
 <meta property="og:image" content="https://i.imgur.com/zWhUjZq.png">
 <meta property="article:published_time" content="2021-07-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-22T08:32:35.132Z">
+<meta property="article:modified_time" content="2022-04-27T05:51:43.614Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="2021暑期筆記">
@@ -59,7 +59,7 @@
   };
 </script>
 
-  <title>三門問題（Monty Hall problem） | Peienwu 演算法筆記</title>
+  <title>三門問題（Monty Hall Problem） | Peienwu 演算法筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
     <script>
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          三門問題（Monty Hall problem）
+          三門問題（Monty Hall Problem）
         </h1>
 
         <div class="post-meta">
@@ -281,7 +281,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>5.6k</span>
+              <span>5.7k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
@@ -311,10 +311,10 @@
 </blockquote>
 <p>換句話說，假設你正在參加一個游戲節目，你被要求在三扇門中選擇一扇：其中一扇後面有一輛車；其餘兩扇後面則是山羊。你選擇了一道門，假設是一號門，<strong>然後知道門後面有什麼的主持人</strong>，開啟了另一扇後面有山羊的門，假設是三號門。他然後問你：「你想選擇二號門嗎？」轉換你的選擇對你來說是一種優勢嗎？</p>
 <hr>
-<p>答案：<strong>換門</strong>贏得獎品的機率為$\frac{2}{3}$，<strong>不換門</strong>為$\frac{1}{3}$，因此應該選擇換門</p>
-<p>這個問題可以擴展成N門問題，也就是主持人在開了$N-2$道門以後，分析換門與不換門贏得汽車的機率</p>
-<h2 id="條件機率—貝式定理"><a href="#條件機率—貝式定理" class="headerlink" title="條件機率—貝式定理"></a>條件機率—貝式定理</h2><p>在條件機率中，以$P(A|B)$表示在B發生的條件下A發生的機率，其值：</p>
-<script type="math/tex; mode=display">P(A|B)=\frac{P(A\cap B)}{P(B)}</script><p>我們還可以畫出以下樹狀圖做分析：<br><img src="https://i.imgur.com/nfOcm7U.png" alt=""><br>假設A為得獎的情況，A’為不得獎的情況，B為換門的情況，B’為不換門的情況<br>如果要得獎會發生以下兩種狀況：</p>
+<p>答案：<strong>換門</strong>贏得獎品的機率為$\frac{2}{3}$，<strong>不換門</strong>為$\frac{1}{3}$，因此<font color="#f00">應該選擇換門！</font></p>
+<p>這個問題可以擴展成N門問題，也就是主持人在開了$N-2$道門以後，分析換門與不換門贏得汽車的機率。</p>
+<h2 id="條件機率：貝式定理"><a href="#條件機率：貝式定理" class="headerlink" title="條件機率：貝式定理"></a>條件機率：貝式定理</h2><p>在條件機率中，以$P(A|B)$表示在B發生的條件下A發生的機率，其值：</p>
+<script type="math/tex; mode=display">P(A|B)=\frac{P(A\cap B)}{P(B)}</script><p>我們還可以畫出以下樹狀圖做分析：<br><img src="https://i.imgur.com/nfOcm7U.png" alt=""><br>假設 $A$ 為得獎的情況，$A’$ 為不得獎的情況，$B$ 為換門的情況，$B’$ 為不換門的情況<br>如果要得獎會發生以下兩種狀況：</p>
 <ol>
 <li>不換門得獎：$P(A|B’)=\frac{\frac{1}{6}}{\frac{1}{6}+\frac{1}{3}}=\frac{1}{3}\cong 0.33$</li>
 <li>換門得獎：$P(A|B)=\frac{\frac{1}{3}}{\frac{1}{6}+\frac{1}{3}}=\frac{1}{3}\cong 0.66$</li>
@@ -355,7 +355,7 @@
 </tbody>
 </table>
 </div>
-<p>從上表可以清楚看出，換門之後贏的機會是$\frac{2}{3}$，不換門則是$\frac{1}{3}$</p>
+<p>從上表可以清楚看出，換門之後贏的機會是$\frac{2}{3}$，不換門則是$\frac{1}{3}$。</p>
 <h2 id="直覺想法"><a href="#直覺想法" class="headerlink" title="直覺想法"></a>直覺想法</h2><h3 id="錯誤想法-遲到法"><a href="#錯誤想法-遲到法" class="headerlink" title="錯誤想法-遲到法"></a>錯誤想法-遲到法</h3><p>有些人會問：當我從三道門選完之後，主持人打開了一扇門。這時候我請另外一個場外人來看現在的局面：兩扇門關閉，一扇門打開是山羊，那這時候這個局外人選中的機會不就是$\frac{1}{2}$？</p>
 <p>這個推論其實是正確的，以一個局外人看到的情況與機率確實是$\frac{1}{2}$，但這樣的思考前提是錯誤的，因為這位局外人<font color="#f00">並沒有參與一開始三門的選擇！</font><br>條件機率有一個重要的概念，也就是一個事件的機率會<font color="#f00">隨著情境的不同（提供訊息的改變）而可能會有所改變</font>，這就是一個很明顯的例子</p>
 <h3 id="幫助理解的思考方法"><a href="#幫助理解的思考方法" class="headerlink" title="幫助理解的思考方法"></a>幫助理解的思考方法</h3><blockquote>
@@ -364,7 +364,7 @@
 </blockquote>
 <p>從N道門中選擇其中一道門中獎機率$\frac{1}{N}$，不中獎的機率為$\frac{N-1}{N}$，也就是說有$\frac{N-1}{N}$的機率汽車在另外$N-1$道門中。這時候主持人幫你一個大忙，他打開了其中沒有汽車的$N-2$道門，不就是幫助你<font color="#f00">剔除了不可能選中的情況</font>，也就代表把$\frac{N-1}{N}$的中獎機率集中在剩下的那一扇門中！</p>
 <p>因此可以得到結論：在$N$門問題中，假設主持人總共會打開$N-2$道門，那換門中獎的機率會是$\frac{N-1}{N}$，不換門中獎則是$\frac{1}{N}$</p>
-<h2 id="C-模擬"><a href="#C-模擬" class="headerlink" title="C++模擬"></a>C++模擬</h2><p>如果上面的東西都無法說服你，那就來寫一個程式模擬吧！寫程式最重要的就是要證明模擬是正確的，因此會印出若干組結果看看是否合理！<br>這個程式會亂數幫觀眾選一扇門（隨機選），與中獎的門（也是隨機選），接著主持人打開門後會剩下觀眾選的與一個還沒有被開的門</p>
+<h2 id="程式實作：以C-模擬"><a href="#程式實作：以C-模擬" class="headerlink" title="程式實作：以C++模擬"></a>程式實作：以C++模擬</h2><p>如果上面的東西都無法說服你，那就來寫一個程式模擬吧！寫程式最重要的就是要證明模擬是正確的，因此會印出若干組結果看看是否合理！<br>這個程式會亂數幫觀眾選一扇門（隨機選），與中獎的門（也是隨機選），接著主持人打開門後會剩下觀眾選的與一個還沒有被開的門</p>
 <h3 id="主持人打開N-2道門（剩2道門做選擇）"><a href="#主持人打開N-2道門（剩2道門做選擇）" class="headerlink" title="主持人打開N-2道門（剩2道門做選擇）"></a>主持人打開N-2道門（剩2道門做選擇）</h3><p>我們取$N=3$ 做例子（當然也可以隨意輸入），第一個3表示門的數量，接下來的100000表示模擬次數<br><img src="https://i.imgur.com/SWsVaD1.png" alt=""></p>
 <p>印出前五次的模擬情況作觀察，這個程式在印出未中獎時，換門中獎的事件加一；反之，印出中獎時，不換門中獎的事件加一，模擬結果符合預期！</p>
 <p>如果共有10道門，一樣符合預期，換門中獎機率落在$\frac{9}{10}$左右<br><img src="https://i.imgur.com/zWhUjZq.png" alt=""></p>
@@ -383,7 +383,7 @@
 <p>我們要找的是酒鬼沒有在前兩個酒吧被抓的條件下喝酒的機率，可以套用貝氏定理：</p>
 <script type="math/tex; mode=display">\begin{split}P(A_1|B_2)&=\frac{P(A_1\cap B_2)}{P(B_2)}\\&=\frac{P(A_1)\cdot P(B_2|A_1)}{P(A_1)\cdot P(B_2|A_1)+{P(A_2)\cdot P(B_2|A_2)}}\\&=\frac{\frac{9}{10}\times\frac{1}{3}}{\frac{9}{10}\cdot\frac{1}{3}+\frac{1}{10}\times 1} \\&=\frac{3}{4}=0.75\end{split}</script><p>正解是75%，也可以顯而易見的用$\frac{30\%}{30\%+10\%}=75\%$得到答案</p>
 <p>這題想要討論的是，在三門問題中，<font color="#f00">主持人是知道</font>哪一些門是沒有汽車的，所以故意打開；但是在這個問題中，<font color="#f00">警察是不知道哪一個酒吧有酒鬼</font>，兩題本身的前提就不同，不能拿來互相解釋</p>
-<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>在分析完三門問題、程式實際模擬和比較其他題目之後，得到一個結論：三門問題中主持人並不是亂選，而是把沒有車的那些門打開，這根平常直覺的機率想法是不同的！</p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>在分析完三門問題、程式實際模擬和比較其他題目之後，得到一個結論：三門問題中主持人並不是亂選，而是把沒有車的那些門打開，這跟平常直覺的機率想法是不同的！</p>
 <p>雖然對大多數人的直覺反應而言，選擇換門與不換門似乎中獎的機率是相同的，但經過上述一連串利用貝氏定理的討論與歸納後，證實了反而換門才是最明智的選擇。「人的認知有兩種，一是先驗的古典機率，一是經驗的機率，前者會干擾後者；鴿子只有後者，在蒙提霍爾問題上，高人一籌。人其實是聰明反被聰明誤。」(曾志朗，2012)</p>
 
     </div>
@@ -470,7 +470,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E6%95%98%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">問題敘述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%9D%E4%BB%B6%E6%A9%9F%E7%8E%87%E2%80%94%E8%B2%9D%E5%BC%8F%E5%AE%9A%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">條件機率—貝式定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%AE%E8%88%89%E6%B3%95%EF%BC%88%E5%88%97%E8%A1%A8%E8%A7%80%E5%AF%9F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">窮舉法（列表觀察）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E8%A6%BA%E6%83%B3%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">直覺想法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E6%83%B3%E6%B3%95-%E9%81%B2%E5%88%B0%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">錯誤想法-遲到法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%AB%E5%8A%A9%E7%90%86%E8%A7%A3%E7%9A%84%E6%80%9D%E8%80%83%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">幫助理解的思考方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E6%A8%A1%E6%93%AC"><span class="nav-number">5.</span> <span class="nav-text">C++模擬</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%8C%81%E4%BA%BA%E6%89%93%E9%96%8BN-2%E9%81%93%E9%96%80%EF%BC%88%E5%89%A92%E9%81%93%E9%96%80%E5%81%9A%E9%81%B8%E6%93%87%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">主持人打開N-2道門（剩2道門做選擇）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%8C%81%E4%BA%BA%E6%89%93%E9%96%8BK%E9%81%93%E9%96%80%EF%BC%88%E5%89%A9N-K%E9%81%93%E9%96%80%E5%81%9A%E9%81%B8%E6%93%87%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">主持人打開K道門（剩N-K道門做選擇）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89a%E8%BC%9B%E8%BB%8A%EF%BC%8C%E4%B8%BB%E6%8C%81%E4%BA%BA%E9%96%8BK%E9%81%93%E9%96%80"><span class="nav-number">5.3.</span> <span class="nav-text">有a輛車，主持人開K道門</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.4.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E5%AF%9F%E6%8A%93%E9%85%92%E9%AC%BC%E5%95%8F%E9%A1%8C"><span class="nav-number">6.</span> <span class="nav-text">警察抓酒鬼問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">7.</span> <span class="nav-text">結論</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E6%95%98%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">問題敘述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%9D%E4%BB%B6%E6%A9%9F%E7%8E%87%EF%BC%9A%E8%B2%9D%E5%BC%8F%E5%AE%9A%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">條件機率：貝式定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%AE%E8%88%89%E6%B3%95%EF%BC%88%E5%88%97%E8%A1%A8%E8%A7%80%E5%AF%9F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">窮舉法（列表觀察）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E8%A6%BA%E6%83%B3%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">直覺想法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E6%83%B3%E6%B3%95-%E9%81%B2%E5%88%B0%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">錯誤想法-遲到法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%AB%E5%8A%A9%E7%90%86%E8%A7%A3%E7%9A%84%E6%80%9D%E8%80%83%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">幫助理解的思考方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C%EF%BC%9A%E4%BB%A5C-%E6%A8%A1%E6%93%AC"><span class="nav-number">5.</span> <span class="nav-text">程式實作：以C++模擬</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%8C%81%E4%BA%BA%E6%89%93%E9%96%8BN-2%E9%81%93%E9%96%80%EF%BC%88%E5%89%A92%E9%81%93%E9%96%80%E5%81%9A%E9%81%B8%E6%93%87%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">主持人打開N-2道門（剩2道門做選擇）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%8C%81%E4%BA%BA%E6%89%93%E9%96%8BK%E9%81%93%E9%96%80%EF%BC%88%E5%89%A9N-K%E9%81%93%E9%96%80%E5%81%9A%E9%81%B8%E6%93%87%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">主持人打開K道門（剩N-K道門做選擇）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89a%E8%BC%9B%E8%BB%8A%EF%BC%8C%E4%B8%BB%E6%8C%81%E4%BA%BA%E9%96%8BK%E9%81%93%E9%96%80"><span class="nav-number">5.3.</span> <span class="nav-text">有a輛車，主持人開K道門</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">5.4.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E5%AF%9F%E6%8A%93%E9%85%92%E9%AC%BC%E5%95%8F%E9%A1%8C"><span class="nav-number">6.</span> <span class="nav-text">警察抓酒鬼問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">7.</span> <span class="nav-text">結論</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -486,7 +486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -550,13 +550,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">292k</span>
+    <span title="總字數">317k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">4:26</span>
+    <span title="所需總閱讀時間">4:48</span>
 </div>
 
         
