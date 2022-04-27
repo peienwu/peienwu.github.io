@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Manim安裝 Manim is an animation engine for explanatory math videos.  利用Manim可以生成許多數學類的動畫影片、以及製作一些動畫模擬！ 我是利用Mac安裝Manim，只要按照這一篇的說明一步步完成即可，不要上網找教學影片，因為很多都是過時的，在安裝上會出現一些問題。 至於使用教學的部分，可以參考這一篇官方使用手冊。Manim總共有三">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Manim學習筆記">
+<meta property="og:url" content="https://peienwu.com/manim/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="Manim安裝 Manim is an animation engine for explanatory math videos.  利用Manim可以生成許多數學類的動畫影片、以及製作一些動畫模擬！ 我是利用Mac安裝Manim，只要按照這一篇的說明一步步完成即可，不要上網找教學影片，因為很多都是過時的，在安裝上會出現一些問題。 至於使用教學的部分，可以參考這一篇官方使用手冊。Manim總共有三">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-02-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:27:20.392Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="Manim">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://peienwu.com/manim/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Manim學習筆記 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/manim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Manim學習筆記
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-02-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-21T00:00:00+08:00">2022-02-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E6%A8%A1%E6%93%AC/" itemprop="url" rel="index"><span itemprop="name">程式模擬</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/manim/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/manim/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>3 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Manim安裝"><a href="#Manim安裝" class="headerlink" title="Manim安裝"></a>Manim安裝</h2><blockquote>
+<p>Manim is an animation engine for explanatory math videos.</p>
+</blockquote>
+<p>利用Manim可以生成許多數學類的動畫影片、以及製作一些動畫模擬！</p>
+<p>我是利用Mac安裝Manim，只要按照<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/installation/macos.html">這一篇</a>的說明一步步完成即可，不要上網找教學影片，因為很多都是過時的，在安裝上會出現一些問題。</p>
+<p>至於使用教學的部分，可以參考這一篇<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/index.html">官方使用手冊</a>。Manim總共有三種版本，建議使用Manim Community比較方便，資源比較多！</p>
+<span id="more"></span>
+<h2 id="語法筆記"><a href="#語法筆記" class="headerlink" title="語法筆記"></a>語法筆記</h2><h3 id="架構程式碼"><a href="#架構程式碼" class="headerlink" title="架構程式碼"></a>架構程式碼</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment">#程式碼區塊</span></span><br></pre></td></tr></table></figure>
+<h3 id="終端指令"><a href="#終端指令" class="headerlink" title="終端指令"></a>終端指令</h3><ul>
+<li><strong>mp4</strong>:    <code>manim test.py Test -pqm</code></li>
+<li><strong>gif</strong>: <code>manim test.py Test -pqm -i</code></li>
+</ul>
+<p>影片品質設定：<code>-pql,-pqm,-pqh</code></p>
+<h3 id="Updates"><a href="#Updates" class="headerlink" title="Updates"></a>Updates</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        rec = Rectangle(color = WHITE,width = <span class="number">2</span>,height = <span class="number">2.5</span>).to_edge(UL)</span><br><span class="line">        circ = Circle().to_edge(DOWN)</span><br><span class="line">        arr = always_redraw(</span><br><span class="line">            <span class="keyword">lambda</span>: Line(</span><br><span class="line">                start = rec.get_bottom(),end = circ.get_top(),buff = <span class="number">0.5</span></span><br><span class="line">            ).add_tip()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.play(Create(VGroup(rec,circ,arr)))</span><br><span class="line">        self.wait()</span><br><span class="line">        self.play(rec.animate.to_edge(UR),circ.animate.scale(<span class="number">0.5</span>),run_time = <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Value-Tracker"><a href="#Value-Tracker" class="headerlink" title="Value Tracker"></a>Value Tracker</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Updaters</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line">        </span><br><span class="line">        k = ValueTracker(<span class="number">0</span>)</span><br><span class="line">        num = always_redraw(</span><br><span class="line">            <span class="keyword">lambda</span>: DecimalNumber().set_value(k.get_value())</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.play(FadeIn(num))</span><br><span class="line">        self.play(k.animate.set_value(<span class="number">10</span>),run_time = <span class="number">5</span>,rate_func = smooth)</span><br><span class="line">        self.wait()</span><br></pre></td></tr></table></figure>
+<h3 id="NumberPlane"><a href="#NumberPlane" class="headerlink" title="NumberPlane"></a>NumberPlane</h3><p>注意：<code>get_graph() —&gt; plot()</code><br>自動排版：<code>alt + shift + f</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        plane = (</span><br><span class="line">            NumberPlane(x_range=[-<span class="number">20</span>, <span class="number">20</span>, <span class="number">5</span>], x_length=<span class="number">8</span>,</span><br><span class="line">                        y_range=[-<span class="number">4</span>, <span class="number">20</span>, <span class="number">5</span>], y_length=<span class="number">8</span>)</span><br><span class="line">            .to_edge(DOWN)</span><br><span class="line">            .add_coordinates()</span><br><span class="line">        )</span><br><span class="line">        l = plane.get_axis_labels(x_label=<span class="string">&#x27;x&#x27;</span>, y_label=<span class="string">&#x27;f(x)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        par = plane.plot(<span class="keyword">lambda</span> x: (<span class="number">0.5</span>*x) ** <span class="number">2</span>,</span><br><span class="line">                         x_range=[-<span class="number">10</span>, <span class="number">10</span>], color=GREEN)</span><br><span class="line"></span><br><span class="line">        func_l = MathTex(<span class="string">&quot;f(x) = &#123;x&#125;^2&quot;</span>).next_to(par, RIGHT).set_color(GREEN)</span><br><span class="line"></span><br><span class="line">        area = plane.get_riemann_rectangles(</span><br><span class="line">            graph=par, x_range=[-<span class="number">5</span>, <span class="number">5</span>], dx=<span class="number">1</span>, stroke_width=<span class="number">0.1</span>, stroke_color=WHITE)</span><br><span class="line"></span><br><span class="line">        self.play(DrawBorderThenFill(plane), run_time=<span class="number">2</span>)</span><br><span class="line">        self.play(Create(VGroup(par, l, func_l)), run_time=<span class="number">2</span>)</span><br><span class="line">        self.wait()</span><br><span class="line">        self.play(Create(area))</span><br><span class="line">        self.wait()</span><br></pre></td></tr></table></figure>
+<h3 id="ValueTrackers-to-Graphing-Scenes"><a href="#ValueTrackers-to-Graphing-Scenes" class="headerlink" title="ValueTrackers to Graphing Scenes"></a>ValueTrackers to Graphing Scenes</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        k = ValueTracker(-<span class="number">4</span>)</span><br><span class="line">        ax = Axes(x_range=[-<span class="number">4</span>, <span class="number">4</span>, <span class="number">1</span>], y_range=[-<span class="number">2</span>, <span class="number">16</span>, <span class="number">2</span>],</span><br><span class="line">                  x_length=<span class="number">5</span>, y_length=<span class="number">5</span>).to_edge(DOWN).add_coordinates()</span><br><span class="line">        func = ax.plot(<span class="keyword">lambda</span> x: x ** <span class="number">2</span>, x_range=[-<span class="number">4</span>, <span class="number">4</span>], color=BLUE)</span><br><span class="line">        slope = always_redraw(</span><br><span class="line">            <span class="keyword">lambda</span>: ax.get_secant_slope_group(</span><br><span class="line">                graph=func, dx=<span class="number">0.01</span>, x=k.get_value(), secant_line_color=GREEN, secant_line_length=<span class="number">5</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        pt = always_redraw(</span><br><span class="line">            <span class="keyword">lambda</span>:</span><br><span class="line">            Dot().move_to(ax.c2p(k.get_value(), func.underlying_function(k.get_value())))</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        self.add(ax, func, slope, pt)</span><br><span class="line">        self.wait()</span><br><span class="line">        self.play(k.animate.set_value(<span class="number">4</span>), run_time=<span class="number">10</span>)</span><br><span class="line">        self.wait()</span><br></pre></td></tr></table></figure>
+<h3 id="Open-a-file"><a href="#Open-a-file" class="headerlink" title="Open a file"></a>Open a file</h3><p><strong>1. svg file:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">H = <span class="string">&quot;/Users/peienwu/Downloads/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line">        Icon = SVGMobject(<span class="string">f&quot;<span class="subst">&#123;H&#125;</span>//test.svg&quot;</span>)</span><br><span class="line"></span><br><span class="line">        self.play(FadeIn(Icon))</span><br><span class="line">        self.wait()</span><br></pre></td></tr></table></figure>
+<p><strong>2. png file:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line">        Icon = ImageMobject(<span class="string">f&quot;/Users/peienwu/Downloads/minion.jpeg&quot;</span>)</span><br><span class="line"></span><br><span class="line">        self.play(FadeIn(Icon))</span><br><span class="line">        self.wait()</span><br><span class="line">        self.play(Icon.animate.to_edge(LEFT))</span><br></pre></td></tr></table></figure>
+<h3 id="Bar-chart"><a href="#Bar-chart" class="headerlink" title="Bar chart"></a>Bar chart</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyclbr <span class="keyword">import</span> Function</span><br><span class="line"><span class="keyword">from</span> manim <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DifferentRotations</span>(<span class="params">Scene</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">construct</span>(<span class="params">self</span>):</span></span><br><span class="line">        num = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>]</span><br><span class="line">        ver = [<span class="string">&quot;v1.0&quot;</span>, <span class="string">&quot;v2.0&quot;</span>, <span class="string">&quot;v3.0&quot;</span>, <span class="string">&quot;v4.0&quot;</span>, <span class="string">&quot;v5.0&quot;</span>]</span><br><span class="line"></span><br><span class="line">        r = BarChart(</span><br><span class="line">            num,</span><br><span class="line">            max_value=<span class="built_in">max</span>(num),</span><br><span class="line">            bar_names=ver,</span><br><span class="line"></span><br><span class="line">        )</span><br><span class="line">        self.play(Create(r), run_time=<span class="number">2</span>)</span><br><span class="line">        self.wait()</span><br></pre></td></tr></table></figure>
+<h2 id="影片成果"><a href="#影片成果" class="headerlink" title="影片成果"></a>影片成果</h2><ul>
+<li>文章：<a href="https://peienwu.com/2022/02/07/Bertrand_Paradox/#more">Bertrand Paradox</a></li>
+<li>文章：<a href="https://peienwu.com/2022/04/21/%E6%A9%A2%E5%9C%93%E8%BB%8C%E9%81%93%E4%B8%8A%E8%A1%8C%E6%98%9F%E5%88%B0%E5%A4%AA%E9%99%BD%E5%B9%B3%E5%9D%87%E8%B7%9D%E9%9B%A2/">橢圓軌道上行星到太陽平均距離</a></li>
+<li>影片：<a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UC9ioraLAwW20eSupf2-e6Dw">Youtube頻道</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/Manim/" rel="tag"># Manim</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/bertrand_paradox/" rel="prev" title="伯特蘭悖論（Bertrand Paradox）">
+      <i class="fa fa-chevron-left"></i> 伯特蘭悖論（Bertrand Paradox）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/reflection_simulation/" rel="next" title="三維空間中的反射定律模擬">
+      三維空間中的反射定律模擬 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Manim%E5%AE%89%E8%A3%9D"><span class="nav-number">1.</span> <span class="nav-text">Manim安裝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AA%9E%E6%B3%95%E7%AD%86%E8%A8%98"><span class="nav-number">2.</span> <span class="nav-text">語法筆記</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%A7%8B%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">2.1.</span> <span class="nav-text">架構程式碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%82%E7%AB%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">終端指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Updates"><span class="nav-number">2.3.</span> <span class="nav-text">Updates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Value-Tracker"><span class="nav-number">2.4.</span> <span class="nav-text">Value Tracker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NumberPlane"><span class="nav-number">2.5.</span> <span class="nav-text">NumberPlane</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ValueTrackers-to-Graphing-Scenes"><span class="nav-number">2.6.</span> <span class="nav-text">ValueTrackers to Graphing Scenes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-a-file"><span class="nav-number">2.7.</span> <span class="nav-text">Open a file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bar-chart"><span class="nav-number">2.8.</span> <span class="nav-text">Bar chart</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E7%89%87%E6%88%90%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">影片成果</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">292k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:26</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

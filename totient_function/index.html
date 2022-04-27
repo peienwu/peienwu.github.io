@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="多元選修課提到歐拉函數 $\phi$，想說蠻有趣的可以跟程式結合一下，看會發生什麼有趣的事情！ 定義與公式對於一個正整數 $n$，歐拉函數 $\phi(n)$ 表示閉區間 $[1,n]$ 中的正整數與 $n$ 互質的個數。定義序列 $p$ 為所有正整數 $n$ 質因數分解之後的數字。在不失一般性的假設序列 $p$ 的長度為 $r$，以質因數分解表示 $n$ 即為 $n &#x3D; p_1^{k_1}\cd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="歐拉函數 (Euler&#39;s φ Function)">
+<meta property="og:url" content="https://peienwu.com/totient_function/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="多元選修課提到歐拉函數 $\phi$，想說蠻有趣的可以跟程式結合一下，看會發生什麼有趣的事情！ 定義與公式對於一個正整數 $n$，歐拉函數 $\phi(n)$ 表示閉區間 $[1,n]$ 中的正整數與 $n$ 互質的個數。定義序列 $p$ 為所有正整數 $n$ 質因數分解之後的數字。在不失一般性的假設序列 $p$ 的長度為 $r$，以質因數分解表示 $n$ 即為 $n &#x3D; p_1^{k_1}\cd">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/iEWH5Na.png">
+<meta property="og:image" content="https://i.imgur.com/ltC2iws.png">
+<meta property="og:image" content="https://i.imgur.com/RuDTbyB.png">
+<meta property="og:image" content="https://i.imgur.com/jqCNkkL.png">
+<meta property="og:image" content="https://i.imgur.com/YbTOlb3.png">
+<meta property="og:image" content="https://i.imgur.com/qNe9XyV.png">
+<meta property="og:image" content="https://i.imgur.com/h1SdBSa.png">
+<meta property="og:image" content="https://i.imgur.com/DBn0tXP.png">
+<meta property="og:image" content="https://i.imgur.com/TDIjZKr.png">
+<meta property="og:image" content="https://i.imgur.com/1ykO0vo.png">
+<meta property="og:image" content="https://i.imgur.com/OfSOsrW.png">
+<meta property="og:image" content="https://i.imgur.com/GmB7mdI.png">
+<meta property="og:image" content="https://i.imgur.com/xHLnmVr.png">
+<meta property="og:image" content="https://i.imgur.com/sX2I4ry.png">
+<meta property="og:image" content="https://i.imgur.com/XHbmuYD.png">
+<meta property="og:image" content="https://i.imgur.com/t2hmRro.png">
+<meta property="og:image" content="https://i.imgur.com/DCeZ39L.png">
+<meta property="og:image" content="https://i.imgur.com/JZRTUeC.png">
+<meta property="og:image" content="https://i.imgur.com/Bv80qbM.png">
+<meta property="og:image" content="https://i.imgur.com/i45SvDB.png">
+<meta property="og:image" content="https://i.imgur.com/7fm1u48.png">
+<meta property="og:image" content="https://i.imgur.com/hA52Dxs.png">
+<meta property="article:published_time" content="2021-10-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T04:21:06.866Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="高二上筆記">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/iEWH5Na.png">
+
+<link rel="canonical" href="https://peienwu.com/totient_function/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>歐拉函數 (Euler's φ Function) | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/totient_function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          歐拉函數 (Euler's φ Function)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-10T00:00:00+08:00">2021-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/totient_function/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/totient_function/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>8 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>多元選修課提到歐拉函數 $\phi$，想說蠻有趣的可以跟程式結合一下，看會發生什麼有趣的事情！</p>
+<h2 id="定義與公式"><a href="#定義與公式" class="headerlink" title="定義與公式"></a>定義與公式</h2><p>對於一個正整數 $n$，歐拉函數 $\phi(n)$ 表示閉區間 $[1,n]$ 中的正整數與 $n$ 互質的個數。定義序列 $p$ 為所有正整數 $n$ 質因數分解之後的數字。在不失一般性的假設序列 $p$ 的長度為 $r$，以質因數分解表示 $n$ 即為 $n = p_1^{k_1}\cdot p_2^{k_2}\cdots p_r^{k_r}$，則歐拉函數滿足以下關係式：</p>
+<script type="math/tex; mode=display">\begin{split}\phi(n) &= n(1-\frac{1}{p_1})(1-\frac{1}{p_2})\cdots(1-\frac{1}{p_r})
+\\&=n\prod_{p|n}(1-\frac{1}{p})
+\end{split}</script><span id="more"></span>
+<p>特別定義 $\phi(1) = 1$</p>
+<p>來看看實際的例子，以20為例。以質因數分解來看，$20 = 2^2\times 5$，因此序列 $p = {2,5}$，則歐拉函數 $\phi(20) = 20\times (1-\frac{1}{2})(1-\frac{1}{5}) = 8$，稍微驗證一下，從1到20的正整數中，與20互質的有 $1,3,7,9,11,13,17,19$ 一共8個數字。</p>
+<h2 id="推導與證明"><a href="#推導與證明" class="headerlink" title="推導與證明"></a>推導與證明</h2><h3 id="證明1"><a href="#證明1" class="headerlink" title="證明1"></a>證明1</h3><p>證明一個公式，可以先多加上一些限制，從簡單推導到較複雜的情況。</p>
+<ol>
+<li><p>$n$ 是質數<br>這種情況比較好處理，因為所有小於等於 $n$ 的正整數都會和 $n$ 互質，因此對於 $n$ 是質數的情況下：</p>
+<script type="math/tex; mode=display">\phi(n) = n-1</script></li>
+<li><p>$n$ 是合數<br>首先看簡化的情況。假設 $n = p^a$，其中 $p$ 為質數，$a$ 為一大於等於2的正整數。因為 $p$ 是質數，所有不和 $p$ 互質的數字大概會是以下這些：$p,2p,3p,…,(p^{a-1})p$，一共有 $p^{a-1}$ 個數字。我們只要把所有的數字扣掉這些即為歐拉函數 $\phi$ 的函數值：</p>
+<script type="math/tex; mode=display">\phi(p^a) = p^a - p^{a-1} = p^a(1-\frac{1}{p})</script></li>
+</ol>
+<p>由這個式子推廣到歐拉函數原本的公式。我們讓 $n = p_1^{k_1}\cdot p_2^{k_2}\cdots p_r^{k_r}$，因為歐拉函數為一<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%A9%8D%E6%80%A7%E5%87%BD%E6%95%B8">積性函數</a>，滿足 $\phi(nm) = \phi(n)\phi(m)$，其證明如下：</p>
+<p>觀察一個有 $m$ 列 $n$ 行的矩陣，一共有 $mn$ 個數字，從 $1$ 到 $mn$ 。如以下矩陣：</p>
+<script type="math/tex; mode=display">\begin{matrix}
+1 & 2 & \cdots & n
+\\n+1 & n+2 & \cdots & 2n
+\\\vdots&\vdots&\ddots&\vdots
+\\(m-1)n+1 &  & \cdots & mn
+\end{matrix}\quad</script><p>因為每一列都是加上不定數量的 $n$，我們從第一列挑出 $\phi(n)$ 個與 $n$ 互質的數，其他每一列也都是如此，把他們設為 $t<em>1,t_2,…,t</em>{\phi(n)}$：</p>
+<script type="math/tex; mode=display">\begin{matrix}
+t_1 & t_2 & \cdots & t_{\phi(n)}
+\\n+t_1 & n+t_2 & \cdots & n+t_{\phi(n)}
+\\\vdots&\vdots&\ddots&\vdots
+\\(m-1)n+t_1 &  & \cdots & (m-1)n+t_{\phi(n)}
+\end{matrix}\quad</script><p>觀察一下每一直行，由於 $n$ 和 $m$ 互質，同一直行中的每一個數字和 $m$ 都會不同餘。在不同餘的情況下，每一直行都會有 $\phi(m)$ 個與 $m$ 互質的數字。因此，從上面的矩陣可以發現總共有 $\phi(n)\phi(m)$ 個與 $nm$ 互質的數字，因此有$\phi(nm)=\phi(n)\phi(m)$。</p>
+<p>有了上述性質之後，我們就可以直接推導公式：</p>
+<script type="math/tex; mode=display">\begin{split}\phi(n) &=\phi(p_1^{k_1})\cdot\phi(p_2^{k_2})\cdots\phi(p_r^{k_r})
+\\&=p_1^{k_1}(1-\frac{1}{p_1})\cdot p_2^{k_2}(1-\frac{1}{p_2})\cdots p_r^{k_r}(1-\frac{1}{p_r})
+\\&=p_1^{k_1}\cdot p_2^{k_2}\cdots p_r^{k_r}\cdot(1-\frac{1}{p_1})\cdot(1-\frac{1}{p_2})\cdots(1-\frac{1}{p_r})
+\\&= n(1-\frac{1}{p_1})(1-\frac{1}{p_2})\cdots(1-\frac{1}{p_r})\end{split}</script><p>以上就是歐拉函數公式的推導過程！</p>
+<h3 id="證明2"><a href="#證明2" class="headerlink" title="證明2"></a>證明2</h3><p>使用到的是排容原理。這個證明就沒有像上面那麽繁雜，不過有點難理解就是了。首先我們討論 $n$ 的質因數分解由三個質數組成，寫成：$n = p_1^{k_1}\cdot p_2^{k_2}\cdot p_3^{k_3}$，假設在小於等於 $n$ 中能被 $p_1$,$p_2$,$p_3$ 給整除的數字集合為 $A_1,A_2,A_3$，則我們要求的就是：</p>
+<script type="math/tex; mode=display">(A_1' \cap A_2' \cap A_3') = (A_1 \cup A_2 \cup A_3)'</script><p>我們要求的就是聯集的補集的部分：<br><img src="https://i.imgur.com/iEWH5Na.png" alt=""></p>
+<p>這是公式展開的情況：</p>
+<script type="math/tex; mode=display">\begin{split}\phi(n) &= n(1-\frac{1}{p_1})(1-\frac{1}{p_2})(1-\frac{1}{p_3})
+\\&=n(1-\frac{1}{p_1}-\frac{1}{p_2}-\frac{1}{p_3}+\frac{1}{p_1p_2}+\frac{1}{p_1p_3}+\frac{1}{p_2p_3}-\frac{1}{p_1p_2p_3})
+\\&=(n-\frac{n}{p_1}-\frac{n}{p_2}-\frac{n}{p_3}+\frac{n}{p_1p_2}+\frac{n}{p_1p_3}+\frac{n}{p_2p_3}-\frac{n}{p_1p_2p_3})\end{split}</script><p>這展開之後跟集合寫成的樣子是一樣的，根據排容原理也間接證明公式的正確性！</p>
+<h2 id="程式實現"><a href="#程式實現" class="headerlink" title="程式實現"></a>程式實現</h2><p>基本概念就是從2開始往後找所有的質因數，因為個數不重要，只要每一次找到之後更新答案即可。值得注意的是，最後必須對剩下的 $n$ 在做一次，其原因不難理解，當我有兩個質因數剩下還沒有被 i 走過的時候，因為兩個互質，因此必定有一個數會在迴圈內被走到，剩下那一個留下來的就會在外面被更新答案。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">phi</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ans = n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i*i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans = ans - ans/i;</span><br><span class="line">            <span class="keyword">while</span>(n % i==<span class="number">0</span>)n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">1</span>)ans = ans - ans/n;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">phi</span>()&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這是用程式跑出來的<a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/39cf7c563bae22597ac1d185b12c535f">1到10000的歐拉函數</a>，可以參考看看！</p>
+<h2 id="好難的圖形"><a href="#好難的圖形" class="headerlink" title="好難的圖形"></a>好難的圖形</h2><p>這張圖是歐拉函數的函數圖形，x軸是 $n$，y軸則是 $\phi(n)$。利用python的matplotlib模組繪製出來的！</p>
+<p>以下為待解決問題：</p>
+<ul>
+<li>[x] $(n,\phi(n))$ 的圖形中，斜率為 1,1/2,2/3,4/5,1/3，其原因？</li>
+<li>[x] 這些斜率是否可以求出數字落在每一條線上的機率？</li>
+<li>[ ] 函數總和的圖形，其方程式是如何推導的？</li>
+<li>[ ] 函數總和公式的誤差圖形呈現類似常態分佈，求其原因。</li>
+<li>[ ] 倒數總和的公式如何推導？</li>
+<li>[ ] 最後一個極限下界公式的推導，跟歐拉-馬斯刻若尼常數關係為何？</li>
+</ul>
+<h3 id="一般的-n-與-phi-n-關係圖"><a href="#一般的-n-與-phi-n-關係圖" class="headerlink" title="一般的 $n$ 與 $\phi(n)$ 關係圖"></a>一般的 $n$ 與 $\phi(n)$ 關係圖</h3><p>我覺得這東西超酷，有一條斜率為1的很明顯的直線，他代表的是 $\phi(n) = n-1$，這種情況就是當 $n$ 屬於質數的時候會發生。</p>
+<p>$n$ 的範圍是1到150<br><img src="https://i.imgur.com/ltC2iws.png" alt=""></p>
+<p>$n$ 的範圍是1到1500<br><img src="https://i.imgur.com/RuDTbyB.png" alt=""></p>
+<p>$n$ 的範圍是1到10000<br><img src="https://i.imgur.com/jqCNkkL.png" alt=""></p>
+<h4 id="斜率-frac-1-2-的情況"><a href="#斜率-frac-1-2-的情況" class="headerlink" title="斜率 $\frac{1}{2}$ 的情況"></a>斜率 $\frac{1}{2}$ 的情況</h4><p>這是嘗試解決問題的區域。</p>
+<p>首先，我把斜率為 $0.5\pm0.01$ 的點全部描出來，大概就是這樣：<br><img src="https://i.imgur.com/YbTOlb3.png" alt=""></p>
+<p>小範圍跑出來，在100內一共有6個符合條件的數字，分別是</p>
+<blockquote>
+<p>2<br>4<br>8<br>16<br>32<br>64</p>
+</blockquote>
+<p>哇！一切豁然開朗。當 $n$ 為 2 的冪次時，就只有一個 $2$ 是質因數，因此 $\phi(n) = n(1-\frac{1}{2}) = \frac{n}{2}$ ！但這樣的數字只會越來越少，但點卻沒有變得越來越稀疏，於是我們必須加大數字範圍觀察，<a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/aeedeeb925a346f3f6e2cbef04a097ae">數字的列表在這</a>，丟到線上<a target="_blank" rel="noopener" href="https://nap.st/prime_factorization_calculator/?lang=zh-TW#result">質因數分解器</a>，會發現有很多數字都是有2個因數，其中一個為2，另外一個為一個較大的質數，數字越大對影響力就越小，因此他們會在斜率為 $\frac{1}{2}$ 的線上。</p>
+<p><img src="https://i.imgur.com/qNe9XyV.png" alt=""></p>
+<p>像1964就會是$\frac{1}{2}\times \frac{490}{491}$，後面的影響很小，所有大致上接近 $\frac{1}{2}$！</p>
+<h4 id="斜率-frac-1-3-的情況"><a href="#斜率-frac-1-3-的情況" class="headerlink" title="斜率 $\frac{1}{3}$ 的情況"></a>斜率 $\frac{1}{3}$ 的情況</h4><p>紅線標出來的是斜率為 $\frac{1}{3}$ 的線條。<br><img src="https://i.imgur.com/h1SdBSa.png" alt=""></p>
+<p>情況大概就是這幾種，這些質因數算出來大概就是 $\frac{1}{3}$ 左右。<br><img src="https://i.imgur.com/DBn0tXP.png" alt=""><br><img src="https://i.imgur.com/TDIjZKr.png" alt=""></p>
+<h4 id="斜率-frac-2-3-的情況"><a href="#斜率-frac-2-3-的情況" class="headerlink" title="斜率 $\frac{2}{3}$ 的情況"></a>斜率 $\frac{2}{3}$ 的情況</h4><p><img src="https://i.imgur.com/1ykO0vo.png" alt=""></p>
+<p>這些數字很多事3乘上某個大質數。<br><img src="https://i.imgur.com/OfSOsrW.png" alt=""></p>
+<h4 id="斜率-frac-4-5-的情況"><a href="#斜率-frac-4-5-的情況" class="headerlink" title="斜率 $\frac{4}{5}$ 的情況"></a>斜率 $\frac{4}{5}$ 的情況</h4><p><img src="https://i.imgur.com/GmB7mdI.png" alt=""></p>
+<p>一樣的情況，大多是5盛放某個大質數<br><img src="https://i.imgur.com/xHLnmVr.png" alt=""></p>
+<h4 id="來比較一下"><a href="#來比較一下" class="headerlink" title="來比較一下"></a>來比較一下</h4><p><img src="https://i.imgur.com/sX2I4ry.png" alt=""></p>
+<p>我們設定不同的 $n$ ，看在不同值域中個別斜率上面的點的數量，不過因為我設了小數點後兩位當作可接受的誤差範圍，因此會稍微多一點：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">斜率/次數</th>
+<th>1000</th>
+<th style="text-align:left">10000</th>
+<th style="text-align:left">100000</th>
+<th style="text-align:left">1000000</th>
+<th>10000000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td>144</td>
+<td style="text-align:left">1205</td>
+<td style="text-align:left">10860</td>
+<td style="text-align:left">118298</td>
+<td>1186321</td>
+</tr>
+<tr>
+<td style="text-align:left">1/2</td>
+<td>152</td>
+<td style="text-align:left">1425</td>
+<td style="text-align:left">13531</td>
+<td style="text-align:left">141771</td>
+<td>1401372</td>
+</tr>
+<tr>
+<td style="text-align:left">1/3</td>
+<td>78</td>
+<td style="text-align:left">858</td>
+<td style="text-align:left">8031</td>
+<td style="text-align:left">82782</td>
+<td>826322</td>
+</tr>
+<tr>
+<td style="text-align:left">2/3</td>
+<td>67</td>
+<td style="text-align:left">721</td>
+<td style="text-align:left">6131</td>
+<td style="text-align:left">65638</td>
+<td>664881</td>
+</tr>
+<tr>
+<td style="text-align:left">4/5</td>
+<td>32</td>
+<td style="text-align:left">387</td>
+<td style="text-align:left">3281</td>
+<td style="text-align:left">33560</td>
+<td>348334</td>
+</tr>
+<tr>
+<td style="text-align:left">其他</td>
+<td>572</td>
+<td style="text-align:left">5404</td>
+<td style="text-align:left">58166</td>
+<td style="text-align:left">557951</td>
+<td>5572770</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">斜率</th>
+<th style="text-align:left">點的占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">11.86%</td>
+</tr>
+<tr>
+<td style="text-align:left">1/2</td>
+<td style="text-align:left">14.01%</td>
+</tr>
+<tr>
+<td style="text-align:left">1/3</td>
+<td style="text-align:left">8.26%</td>
+</tr>
+<tr>
+<td style="text-align:left">2/3</td>
+<td style="text-align:left">6.65%</td>
+</tr>
+<tr>
+<td style="text-align:left">4/5</td>
+<td style="text-align:left">3.48%</td>
+</tr>
+<tr>
+<td style="text-align:left">其他</td>
+<td style="text-align:left">55.73%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我想要計算一下他們變化的狀況：</p>
+<p><img src="https://i.imgur.com/XHbmuYD.png" alt=""><br><img src="https://i.imgur.com/t2hmRro.png" alt=""></p>
+<p>觀察圖形，好像有那麼一點會趨近於一個常數之類的，不過當數字超過 $10^7$ 之後，不管是用 C++或是 PYTHON 都跑不太出來。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phi</span>(<span class="params">n</span>):</span></span><br><span class="line">    ans = <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i*i &gt; n:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span>:</span><br><span class="line">            ans = ans - ans/i</span><br><span class="line">            <span class="keyword">while</span> n % i == <span class="number">0</span>:</span><br><span class="line">                n = n / i</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">1</span>:</span><br><span class="line">        ans = ans - ans/n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line">x2 = []</span><br><span class="line">y2 = []</span><br><span class="line">times = [<span class="number">1000000</span>]</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>):</span><br><span class="line">    cnt = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">1000000</span>+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i%<span class="number">100000</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Now = &quot;</span>,i/<span class="number">100000</span>)</span><br><span class="line">        ans = <span class="built_in">int</span>(phi(i))</span><br><span class="line">        x.append(i)</span><br><span class="line">        y.append(ans)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">abs</span>(ans/i-(<span class="number">4</span>/<span class="number">5</span>)) &lt;= <span class="number">0.01</span>:</span><br><span class="line">            x2.append(i)</span><br><span class="line">            y2.append(ans)</span><br><span class="line">            <span class="comment">#print(i)</span></span><br><span class="line">            cnt += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Cnt = &quot;</span>,cnt)</span><br><span class="line">        </span><br><span class="line"><span class="comment">#plt.vlines(x, 0, y, linestyle=&quot;-&quot;,linewidth=0.1)</span></span><br><span class="line"><span class="comment">#plt.plot(x,y,&#x27;o&#x27;,markersize = 1)</span></span><br><span class="line"><span class="comment">#plt.plot(x2,y2,&#x27;o&#x27;,markersize = 1,c = &quot;red&quot;)</span></span><br><span class="line"><span class="comment">#plt.show()</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phi</span>(<span class="params">n</span>):</span></span><br><span class="line">    ans = <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i*i &gt; n:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span>:</span><br><span class="line">            ans = ans - ans/i</span><br><span class="line">            <span class="keyword">while</span> n % i == <span class="number">0</span>:</span><br><span class="line">                n = n / i</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">1</span>:</span><br><span class="line">        ans = ans - ans/n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">1500</span>+<span class="number">1</span>):</span><br><span class="line">    ans = <span class="built_in">int</span>(phi(i))</span><br><span class="line">    x.append(i)</span><br><span class="line">    y.append(ans)</span><br><span class="line">    </span><br><span class="line">plt.vlines(x, <span class="number">0</span>, y, linestyle=<span class="string">&quot;-&quot;</span>,linewidth=<span class="number">0.1</span>)</span><br><span class="line">plt.plot(x,y,<span class="string">&#x27;o&#x27;</span>,markersize = <span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="總和的關係圖"><a href="#總和的關係圖" class="headerlink" title="總和的關係圖"></a>總和的關係圖</h3><p>除此之外，這個東西也很酷，以下是 $f(n)$ 與 $n$ 的關係圖。滿足以下式子：</p>
+<script type="math/tex; mode=display">f(n) = \sum^n_{i=1}\phi(i)</script><p><img src="https://i.imgur.com/DCeZ39L.png" alt=""></p>
+<p>上網查後發現這一條線可以用一個關係式表達：</p>
+<script type="math/tex; mode=display">f(n) = \sum^n_{i=1}\phi(i) = \frac{3n^2}{\pi^2}</script><p>下圖藍線就是公式的圖，紅色的點則是 $\phi(n)$：<br><img src="https://i.imgur.com/JZRTUeC.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math </span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phi</span>(<span class="params">n</span>):</span></span><br><span class="line">    ans = <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i*i &gt; n:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span>:</span><br><span class="line">            ans = ans - ans/i</span><br><span class="line">            <span class="keyword">while</span> n % i == <span class="number">0</span>:</span><br><span class="line">                n = n / i</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">1</span>:</span><br><span class="line">        ans = ans - ans/n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">x</span>):</span></span><br><span class="line">    s = (math.pi)*(math.pi)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span>*x*x/s</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line">y2 = []</span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">101</span>):</span><br><span class="line">    ans = <span class="built_in">int</span>(phi(i))</span><br><span class="line">    <span class="built_in">sum</span> += ans</span><br><span class="line">    x.append(i)</span><br><span class="line">    y2.append(func(i))</span><br><span class="line">    y.append(<span class="built_in">sum</span>)</span><br><span class="line"></span><br><span class="line">plt.plot(x,y,<span class="string">&#x27;o&#x27;</span>,color = <span class="string">&#x27;red&#x27;</span>,markersize = <span class="number">2</span>)</span><br><span class="line">plt.plot(x,y2,color = <span class="string">&#x27;blue&#x27;</span>,markersize = <span class="number">0.1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>如果計算一下這一條理論線跟實際的誤差繪製出來的圖形：</p>
+<script type="math/tex; mode=display">\frac{1}{n}(\sum^n_{i=1}\phi(i)-\frac{3n^2}{\pi^2})</script><p><img src="https://i.imgur.com/Bv80qbM.png" alt=""></p>
+<p>很酷喔，當我把每一個誤差的數字當做x軸，y軸則是發生的次數，跑了1000000次之後，他的圖會出來會是像這樣，有點像常態分佈的東西（網路上是說埃爾米特多項式乘上高斯函數之類的東西）：</p>
+<blockquote>
+<p>The histogram has a distinctive shape, maybe hard to prove. I suspect it’s the Gaussian Unitary Ensemble (a Hermite polynomial times a Gaussian).</p>
+</blockquote>
+<p><img src="https://i.imgur.com/i45SvDB.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phi</span>(<span class="params">n</span>):</span></span><br><span class="line">    ans = <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i*i &gt; n:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span>:</span><br><span class="line">            ans = ans - ans/i</span><br><span class="line">            <span class="keyword">while</span> n % i == <span class="number">0</span>:</span><br><span class="line">                n = n / i</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">1</span>:</span><br><span class="line">        ans = ans - ans/n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">x</span>):</span></span><br><span class="line">    s = (math.pi)*(math.pi)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span>*x*x/s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line">box = [<span class="number">0</span>]*<span class="number">2000</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    box[i] = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10000000</span>+<span class="number">1</span>):</span><br><span class="line">    ans = <span class="built_in">int</span>(phi(i))</span><br><span class="line">    <span class="built_in">sum</span> += ans</span><br><span class="line">    temp = <span class="built_in">int</span>(((<span class="built_in">sum</span>-func(i))/i)*<span class="number">2000</span>)</span><br><span class="line">    box[temp] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">100000</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Cur = &quot;</span>,i/<span class="number">100000</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1400</span>):</span><br><span class="line">    x.append(i/<span class="number">2000</span>)</span><br><span class="line">    y.append(box[i])</span><br><span class="line"></span><br><span class="line">plt.vlines(x, <span class="number">0</span>, y, linestyle=<span class="string">&quot;-&quot;</span>,linewidth=<span class="number">0.4</span>)</span><br><span class="line">plt.plot(x,y,<span class="string">&#x27;o&#x27;</span>,markersize = <span class="number">2</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="倒數加總的圖形"><a href="#倒數加總的圖形" class="headerlink" title="倒數加總的圖形"></a>倒數加總的圖形</h3><p>下圖則是每一個 $\phi$ 的倒數繪製出來的圖形：</p>
+<script type="math/tex; mode=display">f(n) = \sum^n_{i=1}\frac{1}{\phi(i)}</script><p><img src="https://i.imgur.com/7fm1u48.png" alt=""></p>
+<p>很酷，但我一樣不知道怎麼解釋</p>
+<h3 id="取一堆怪怪的東西"><a href="#取一堆怪怪的東西" class="headerlink" title="取一堆怪怪的東西"></a>取一堆怪怪的東西</h3><p>還沒有結束，這一張圖表示的是 $n$ 對上 $\phi(n)\frac{\ln\ln n}{n}$ 呈現的圖形，據說會滿足以下關係式：</p>
+<script type="math/tex; mode=display">\lim_{n\to\infty}\inf\phi(n)\frac{\ln\ln n}{n} = e^{-\gamma}</script><p>指數次方上面是歐拉-馬斯刻若尼常數，畫出來的圖長這樣：</p>
+<p><img src="https://i.imgur.com/hA52Dxs.png" alt=""></p>
+<p>一樣，公式有夠複雜！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phi</span>(<span class="params">n</span>):</span></span><br><span class="line">    ans = <span class="built_in">int</span>(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> i*i &gt; n:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span>:</span><br><span class="line">            ans = ans - ans/i</span><br><span class="line">            <span class="keyword">while</span> n % i == <span class="number">0</span>:</span><br><span class="line">                n = n / i</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">1</span>:</span><br><span class="line">        ans = ans - ans/n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5000</span>+<span class="number">1</span>):</span><br><span class="line">    ans = <span class="built_in">int</span>(phi(i))</span><br><span class="line">    x.append(i)</span><br><span class="line">    temp = np.log(i)</span><br><span class="line">    ans *= np.log(temp)</span><br><span class="line">    </span><br><span class="line">    y.append(ans/i)</span><br><span class="line">    </span><br><span class="line">plt.vlines(x, <span class="number">0</span>, y, linestyle=<span class="string">&quot;-&quot;</span>,linewidth=<span class="number">0.05</span>)</span><br><span class="line">plt.plot(x,y,<span class="string">&#x27;o&#x27;</span>,markersize = <span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><br></p>
+<p><strong>參考連結：</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mathworld.wolfram.com/TotientFunction.html">連結1</a></li>
+<li><a target="_blank" rel="noopener" href="https://mathworld.wolfram.com/TotientSummatoryFunction.html">連結2</a></li>
+<li><a target="_blank" rel="noopener" href="https://mathworld.wolfram.com/search/?query=Totient+Function&amp;x=0&amp;y=0">連結3</a></li>
+</ul>
+<h2 id="P2303-SDOI2012-Longge-的问题"><a href="#P2303-SDOI2012-Longge-的问题" class="headerlink" title="P2303 [SDOI2012] Longge 的问题"></a>P2303 [SDOI2012] Longge 的问题</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2303">題目敘述</a><br><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/57881277">Submission</a></p>
+<p>這是歐拉函數簡單的應用，對於一個輸入 $n$ 要輸出的是 $\sum_{i=1}^n gcd(i,n)$，也就是每一個數字與 $n$ 的最大公因數總和。簡單的概念就是，$O(n)$ 枚舉所有的因數 $i$ 作為最大公因數，此時只要看與 $\frac{n}{i}$ 互質的數量，$i\times\phi(\frac{n}{i})$ 就會是以 $i$ 作為最大公因數的總和。</p>
+<p>特別注意到，我們可以在枚舉 $i$ 的時候，也可以順便處理 $\frac{n}{i}$ 的情況，這樣就可以只枚舉 $\sqrt{n}$ 次就好了！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,ans = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">phi</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i*i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans = ans - ans/i;</span><br><span class="line">            <span class="keyword">while</span>(n % i==<span class="number">0</span>)n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">1</span>)ans = ans - ans/n;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">int</span> qt = <span class="built_in">sqrt</span>(n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=qt;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans += (n/i) * <span class="built_in">phi</span>(i);</span><br><span class="line">            <span class="keyword">if</span>(i*i!=n)ans += i * <span class="built_in">phi</span>(n/i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/%E9%AB%98%E4%BA%8C%E4%B8%8A%E7%AD%86%E8%A8%98/" rel="tag"># 高二上筆記</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/doppler_effect/" rel="prev" title="二維都卜勒效應模擬實驗計畫">
+      <i class="fa fa-chevron-left"></i> 二維都卜勒效應模擬實驗計畫
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/apcs_2021_11/" rel="next" title="APCS題解：2021年11月">
+      APCS題解：2021年11月 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9%E8%88%87%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">定義與公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E5%B0%8E%E8%88%87%E8%AD%89%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">推導與證明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AD%89%E6%98%8E1"><span class="nav-number">2.1.</span> <span class="nav-text">證明1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AD%89%E6%98%8E2"><span class="nav-number">2.2.</span> <span class="nav-text">證明2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E7%8F%BE"><span class="nav-number">3.</span> <span class="nav-text">程式實現</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E9%9B%A3%E7%9A%84%E5%9C%96%E5%BD%A2"><span class="nav-number">4.</span> <span class="nav-text">好難的圖形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E7%9A%84-n-%E8%88%87-phi-n-%E9%97%9C%E4%BF%82%E5%9C%96"><span class="nav-number">4.1.</span> <span class="nav-text">一般的 $n$ 與 $\phi(n)$ 關係圖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E7%8E%87-frac-1-2-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-number">4.1.1.</span> <span class="nav-text">斜率 $\frac{1}{2}$ 的情況</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E7%8E%87-frac-1-3-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-number">4.1.2.</span> <span class="nav-text">斜率 $\frac{1}{3}$ 的情況</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E7%8E%87-frac-2-3-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-number">4.1.3.</span> <span class="nav-text">斜率 $\frac{2}{3}$ 的情況</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E7%8E%87-frac-4-5-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-number">4.1.4.</span> <span class="nav-text">斜率 $\frac{4}{5}$ 的情況</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%86%E6%AF%94%E8%BC%83%E4%B8%80%E4%B8%8B"><span class="nav-number">4.1.5.</span> <span class="nav-text">來比較一下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E5%92%8C%E7%9A%84%E9%97%9C%E4%BF%82%E5%9C%96"><span class="nav-number">4.2.</span> <span class="nav-text">總和的關係圖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%92%E6%95%B8%E5%8A%A0%E7%B8%BD%E7%9A%84%E5%9C%96%E5%BD%A2"><span class="nav-number">4.3.</span> <span class="nav-text">倒數加總的圖形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E4%B8%80%E5%A0%86%E6%80%AA%E6%80%AA%E7%9A%84%E6%9D%B1%E8%A5%BF"><span class="nav-number">4.4.</span> <span class="nav-text">取一堆怪怪的東西</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P2303-SDOI2012-Longge-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">P2303 [SDOI2012] Longge 的问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">292k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:26</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

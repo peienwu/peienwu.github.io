@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="暑假常常寫題，都幾乎紀錄在Hackmd上，如果能有屬於自己的部落格、用自己的網址，感覺超酷！來自己架設一個試試看！ 網域種類架設網站有好多種方法，有時候是看題解看到了很多的網站XD，上網查了資料以及很多人的部落格，發現寫coding部落格的人的網站大多分成以下四類：  Blogger Hexo GitHub Pages WordPress.org">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo搭配GitHub架設個人部落格">
+<meta property="og:url" content="https://peienwu.com/blog/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="暑假常常寫題，都幾乎紀錄在Hackmd上，如果能有屬於自己的部落格、用自己的網址，感覺超酷！來自己架設一個試試看！ 網域種類架設網站有好多種方法，有時候是看題解看到了很多的網站XD，上網查了資料以及很多人的部落格，發現寫coding部落格的人的網站大多分成以下四類：  Blogger Hexo GitHub Pages WordPress.org">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/eIiT0Pb.png">
+<meta property="og:image" content="https://i.imgur.com/kBpX3gp.png">
+<meta property="og:image" content="https://i.imgur.com/a1zD8Qz.png">
+<meta property="og:image" content="https://i.imgur.com/aP8mwrQ.png">
+<meta property="og:image" content="https://i.imgur.com/TXykwfE.png">
+<meta property="og:image" content="https://i.imgur.com/Y2lE6Qp.png">
+<meta property="og:image" content="https://i.imgur.com/DAUAz3R.png">
+<meta property="og:image" content="https://i.imgur.com/3lPv0uW.png">
+<meta property="og:image" content="https://i.imgur.com/Zoe8Aes.png">
+<meta property="og:image" content="https://i.imgur.com/jguOHwH.png">
+<meta property="og:image" content="https://i.imgur.com/xgmM0EX.png">
+<meta property="og:image" content="https://i.imgur.com/Zmtl0u8.png">
+<meta property="article:published_time" content="2021-08-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:16:11.953Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="個人部落格">
+<meta property="article:tag" content="網站架設">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/eIiT0Pb.png">
+
+<link rel="canonical" href="https://peienwu.com/blog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>使用Hexo搭配GitHub架設個人部落格 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Hexo搭配GitHub架設個人部落格
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-08-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-27T00:00:00+08:00">2021-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blog/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>3 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>暑假常常寫題，都幾乎紀錄在Hackmd上，如果能有屬於自己的部落格、用自己的網址，感覺超酷！來自己架設一個試試看！</p>
+<h2 id="網域種類"><a href="#網域種類" class="headerlink" title="網域種類"></a>網域種類</h2><p>架設網站有好多種方法，有時候是看題解看到了很多的網站XD，上網查了資料以及很多人的部落格，發現寫coding部落格的人的網站大多分成以下四類：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.blogger.com/">Blogger</a></li>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a></li>
+<li><a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a></li>
+<li><a target="_blank" rel="noopener" href="https://wordpress.org/">WordPress.org</a></li>
+</ol>
+<span id="more"></span>
+<p>每一種部落格都有優勢與劣勢，就看使用者覺得哪一個平台使用起來比較方便！在經過多方嘗試之下，最後我是選擇了使用 Hexo 搭配 Github 來架設我的網站，以下來分析一下我個人在架設的過程中，以一個新手的角度看各個平台使用上的優缺點！</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>網站比較</th>
+<th>優點</th>
+<th>缺點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Blogger</strong></td>
+<td>1. 介面清楚，操作方便<br>2. 一鍵預覽及發布，快速查看文章成果<br>3. 免費！</td>
+<td>1. 不支援MarkDown語法<br>2. 對數學式、程式碼支援不便利</td>
+</tr>
+<tr>
+<td><strong>Hexo</strong></td>
+<td>1. 支援MarkDown語法<br>2. Mac終端機操作方便<br>3. 免費！</td>
+<td>1. 純程式碼呈現，較不直覺<br>2. 修改過程中如果程式碼出錯，造成整個網站掛掉</td>
+</tr>
+<tr>
+<td><strong>GitHub Pages</strong></td>
+<td>1. 支援MarkDown語法<br>2. 進行版本控制<br>3. 免費！</td>
+<td>1. 單純使用的話操作、修改不方便<br>2. Git操作有一定難度</td>
+</tr>
+<tr>
+<td><strong>WordPress com</strong></td>
+<td>1. 跟Blogger相近，操作簡單易上手<br>2. 快速查看文章長相</td>
+<td>1. 不支援Markdown<br>2. 免費版限制多、模板不漂亮</td>
+</tr>
+<tr>
+<td><strong>WordPress org</strong></td>
+<td>太貴不考慮</td>
+<td>上網查必須要先付費才能開始架設<br>費用好像一年3000以上</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>經過多方嘗試（花了我好多天），出產了一堆失敗品，最後還是用 Hexo 搭配 GitHub 來架設一個算滿意的網站（至少看起來不錯XD）。以下是我的失敗品網站：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://peienwu1216.blogspot.com/?zx=60407725c2514b18">Blogger</a></li>
+<li><a target="_blank" rel="noopener" href="https://peienwu.wordpress.com/">WorldPress</a></li>
+<li>Github的我已經刪掉了</li>
+</ol>
+<h2 id="Hexo-安裝"><a href="#Hexo-安裝" class="headerlink" title="Hexo 安裝"></a>Hexo 安裝</h2><p>之前遇上很多軟體對Mac都不友善，不過Hexo卻是對Mac的用戶比較友善的工具。只要在終端機輸入以下命令就可以安裝Hexo：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<p>詳細的安裝步驟可以參考<a target="_blank" rel="noopener" href="https://hexo.io/docs/">官方網站</a>，或是網路上的<a target="_blank" rel="noopener" href="https://youtu.be/jOJI9ekTzK8">教學影片</a>就可以一步一步的把網站建立起來！</p>
+<p>在這過程中，我發現影片上有使用到VS Code，於是我就把它也載下來了。用起來感覺VS Code 對專案製作很有幫助，可以同步的在各個檔案之間進行修改，蠻實用的一個IDE！<br><img src="https://i.imgur.com/eIiT0Pb.png" alt=""></p>
+<h2 id="GitHub同步"><a href="#GitHub同步" class="headerlink" title="GitHub同步"></a>GitHub同步</h2><p>將 Hexo 裡面的檔案推送到 Git Hub 裡面的一個Repository中，利用它來將網頁的內容進行發布。在每一次本地修改完成之後，如果本地測試可行，就可以將檔案推送到Github中，在Github將網站進行發布。我使用來架設部落格的<a target="_blank" rel="noopener" href="https://github.com/peienwu/peienwu.github.io">Repository在此</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .                //加入</span><br><span class="line">git commit -m &quot;xxx&quot;      //提交</span><br><span class="line">git push                 //推入</span><br><span class="line">git push -f              //強制推入（聽說很危險）</span><br></pre></td></tr></table></figure>
+<p>在提交的後面的字串表示當前版本的一個提示，例如我做了什麼修改就可以顯示在上面，讓別人知道這份檔案被更改的情況。下圖就是在每一次推入時附加的修改資訊，讓我自己可以看到檔案被更改以及提交的狀況!</p>
+<p><img src="https://i.imgur.com/kBpX3gp.png" alt=""></p>
+<p>Git真是博大精深，版本控制真的有難度，我只會簡單的修改以及推入（之後找時間可以學一下）。</p>
+<h2 id="外掛安裝"><a href="#外掛安裝" class="headerlink" title="外掛安裝"></a>外掛安裝</h2><p>做到這一個步驟已經花了我快三小時，出現的是類似以下的畫面：</p>
+<p><img src="https://i.imgur.com/a1zD8Qz.png" alt=""></p>
+<p>這是 Hexo 預設的樣板，感覺還不錯，不過我的目標是使用另外外掛的模板，看起來比較漂亮XD。於是我就找了<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">Next主題</a>的外掛來安裝，這個模板就感覺舒服很多。這個模板使用的大陸部落格很多，也有一些其他的競程部落格使用了這個主題！</p>
+<p><img src="https://i.imgur.com/aP8mwrQ.png" alt=""></p>
+<h3 id="Hexo-NexT-美化"><a href="#Hexo-NexT-美化" class="headerlink" title="Hexo NexT 美化"></a>Hexo NexT 美化</h3><p>上網查關鍵字其實有很多美化的資訊可以參考，不論是字體或版面配置都有很多種選項可以選擇。最一開始是設計版面的部分，將網站總共分五個子類別，分別是首頁、檔案、類別、標籤以及關於，這五個經典的配置。接下來就是個人資訊的設定，加入自己的圖片以及說明：<br><img src="https://i.imgur.com/TXykwfE.png" alt=""></p>
+<p>以及在網頁瀏覽標籤上方設定icon：<br><img src="https://i.imgur.com/Y2lE6Qp.png" alt=""></p>
+<p>當然最重要的就是文章內容，因為是使用Markdown語法，剛好有幾篇筆記就丟上去看看。當然還有很多的優化以及美化，如果有什麼需要改進的地方要跟我說喔！</p>
+<h3 id="Disqus-留言板功能"><a href="#Disqus-留言板功能" class="headerlink" title="Disqus 留言板功能"></a>Disqus 留言板功能</h3><p>在每一篇文章下方加入留言板功能，感覺還蠻酷的！</p>
+<p><img src="https://i.imgur.com/DAUAz3R.png" alt=""></p>
+<h3 id="Google-Analytics-追蹤分析"><a href="#Google-Analytics-追蹤分析" class="headerlink" title="Google Analytics 追蹤分析"></a>Google Analytics 追蹤分析</h3><p>這是酷東西，使用google 帳號生成一組代碼之後，把一些它提供的程式碼埋到網站中，它可以即時的統計網站的瀏覽狀況，以及觸及、感興趣的主題等等。<strong>假設</strong>未來瀏覽的人次比較多的時候（可能根本沒人會看XDD），還可以用它來分析哪一種文章最受人歡迎、哪一種文章最冷門之類的！</p>
+<p><img src="https://i.imgur.com/3lPv0uW.png" alt=""></p>
+<h3 id="購買個人網址"><a href="#購買個人網址" class="headerlink" title="購買個人網址"></a>購買個人網址</h3><p>昨天終於買到了自己名字的網址了！新的網址名稱是：peienwu.com！在<strong>Godaddy</strong> 上用NT570元買了一年這個網址的使用權限，買完之後到<strong>CloudFlare</strong>設定好Dns之類的，讓這個網址可以指向一個IP位址（這其中的原理有點複雜）。</p>
+<p>設定完之後，發現他一直出現錯誤訊息，點開網址也是不可使用的，差點昏倒ww。晚上處理不了了，隔天一早起床就開始著手處理中這個問題，把檔案刪刪改改，終於成功讓GitHub跳出以下訊息：</p>
+<p><img src="https://i.imgur.com/Zoe8Aes.png" alt=""></p>
+<p>很討厭的，他沒有https，也就是鎖頭，在這種情況下，瀏覽器就會自動設置為<font color="#f00">不安全</font>的網站，接下來早上的時間都拿去處理這個問題。在設定一些SSH以及https的安全性設定之後，終於，在訪問網站時拿到了鎖頭的認證！</p>
+<p><img src="https://i.imgur.com/jguOHwH.png" alt=""></p>
+<h3 id="留言板更新"><a href="#留言板更新" class="headerlink" title="留言板更新"></a>留言板更新</h3><p>最近重新登入後發現文章底部都是一堆Disqus的廣告，真的有夠討厭，如果要消除廣告的方法只剩下付費，好討厭！於是我決定換一個評論系統，叫做<a target="_blank" rel="noopener" href="https://valine.js.org/">Valine</a> 的系統，他的優點是支援Emoji 😉、MarkDown 全语法支持，而且<strong>沒有廣告</strong>！大概的留言就像以下這樣：<br><img src="https://i.imgur.com/xgmM0EX.png" alt=""></p>
+<p>支援Markdown的留言真的很酷！</p>
+<p>至於留言管理的部分，則是用<a target="_blank" rel="noopener" href="https://leancloud.app/">LeanCloud</a> 來實現，可以刪留言之類的XD<br><img src="https://i.imgur.com/Zmtl0u8.png" alt=""></p>
+<h3 id="抱怨一下"><a href="#抱怨一下" class="headerlink" title="抱怨一下"></a>抱怨一下</h3><p>今天在用Icloud 的時候，不小心把電腦上所有的檔案全部刪掉了，哭啊，這真是嚴重的事情ＱＱＱ，用到快掛了！當然，我電腦上的所有東西都不見了，也包括這一個部落格的本地程式碼，我用了 google drive 的備份，可惜那很難下載，所以我就用了github原本的備份的東西。</p>
+<p>這真是不幸中的大幸，還好github的備份直接下載就可以直接用，不用特別再設定一些奇怪的東西，但所有的 hexo 指令都不見了，git的指令也都不見了，必須要重新設定。</p>
+<p>這邊有一個小東西，就是下面這一行警告，就是要你把push設定成你要push的地方，不然只打一個push他並不會知道要push去哪裏，所以設定一下repo的位置就好了。</p>
+<blockquote>
+<p>git push —set-upstream origin master</p>
+</blockquote>
+<p>當然還有一堆bug ，只好慢慢爬文嘍，當你看到這一段文字，也就代表我成功找到解決辦法了！</p>
+<h3 id="我又來更新了"><a href="#我又來更新了" class="headerlink" title="我又來更新了"></a>我又來更新了</h3><p>這幾天網站一直404 not found 超煩，於是我叫出之前的教學影片，重新看了之後，發現我的分支名稱弄錯了，不是用master而是用gh-pages，搞了好多天QQ</p>
+<h2 id="架設心得"><a href="#架設心得" class="headerlink" title="架設心得"></a>架設心得</h2><p>部落格以後會常常更新，最近也會陸續把之前的文章放到部落格上面。整個網站從誕生到現在的結果已經花了15個小時，其中在Debug的時間應該佔了大多數！</p>
+<p>遇到了幾個麻煩的問題，首先碰到的是本地的資料無法上傳到Github，終端機冒出來的是：<font color="#f00">Please make sure you have the correct access rights and the repository exists.</font>。這個錯誤超級煩，爬了一堆文結果他要在GitHub上面設定ssh金鑰之類的東西，才能獲取從本地更新的權限。結果網路上的文章說我要開啟一個名叫”.ssh”的資料夾，可是我翻遍了我的電腦也找不到這一個資料夾！後來我是利用終端機，輸入路徑位置硬是把那一個資料夾打開，它是一個透明的資料夾，還是第一次遇到！</p>
+<p>接著是終端機跑出一堆error，那時候真的差點崩潰，花了超久架設的東西，竟然跑出這麼多的錯誤！難道全部的東西都付之一炬了嗎？翻了每一個被變更過的資料夾，才發現到在user_name的地方踩了雷，把他變回原本的設定就好了，真是不幸中的大幸，幸好我還能把東西救回來！</p>
+<p>最後，終於能用https的前綴連到我的網站：<a href="https://peienwu.com">https://peienwu.com</a> 。如果要打www開頭也是可以連得上，直接打 peienwu.com 也可以順利連上！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%80%8B%E4%BA%BA%E9%83%A8%E8%90%BD%E6%A0%BC/" rel="tag"># 個人部落格</a>
+              <a href="/tags/%E7%B6%B2%E7%AB%99%E6%9E%B6%E8%A8%AD/" rel="tag"># 網站架設</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/closest_pair/" rel="prev" title="最近點對：詳解4種不同複雜度之算法">
+      <i class="fa fa-chevron-left"></i> 最近點對：詳解4種不同複雜度之算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/string/" rel="next" title="字串演算法 (String)">
+      字串演算法 (String) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%B2%E5%9F%9F%E7%A8%AE%E9%A1%9E"><span class="nav-number">1.</span> <span class="nav-text">網域種類</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo-%E5%AE%89%E8%A3%9D"><span class="nav-number">2.</span> <span class="nav-text">Hexo 安裝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub%E5%90%8C%E6%AD%A5"><span class="nav-number">3.</span> <span class="nav-text">GitHub同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E6%8E%9B%E5%AE%89%E8%A3%9D"><span class="nav-number">4.</span> <span class="nav-text">外掛安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-NexT-%E7%BE%8E%E5%8C%96"><span class="nav-number">4.1.</span> <span class="nav-text">Hexo NexT 美化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Disqus-%E7%95%99%E8%A8%80%E6%9D%BF%E5%8A%9F%E8%83%BD"><span class="nav-number">4.2.</span> <span class="nav-text">Disqus 留言板功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Analytics-%E8%BF%BD%E8%B9%A4%E5%88%86%E6%9E%90"><span class="nav-number">4.3.</span> <span class="nav-text">Google Analytics 追蹤分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%BC%E8%B2%B7%E5%80%8B%E4%BA%BA%E7%B6%B2%E5%9D%80"><span class="nav-number">4.4.</span> <span class="nav-text">購買個人網址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%99%E8%A8%80%E6%9D%BF%E6%9B%B4%E6%96%B0"><span class="nav-number">4.5.</span> <span class="nav-text">留言板更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%B1%E6%80%A8%E4%B8%80%E4%B8%8B"><span class="nav-number">4.6.</span> <span class="nav-text">抱怨一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E5%8F%88%E4%BE%86%E6%9B%B4%E6%96%B0%E4%BA%86"><span class="nav-number">4.7.</span> <span class="nav-text">我又來更新了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E8%A8%AD%E5%BF%83%E5%BE%97"><span class="nav-number">5.</span> <span class="nav-text">架設心得</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">292k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:26</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

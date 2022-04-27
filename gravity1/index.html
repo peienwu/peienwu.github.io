@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="萬有引力與四星運動之探討">
+<meta property="og:url" content="https://peienwu.com/gravity1/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/NsxdP20.png">
+<meta property="og:image" content="https://i.imgur.com/mDnymhI.png">
+<meta property="og:image" content="https://i.imgur.com/EHX9hdW.png">
+<meta property="og:image" content="https://i.imgur.com/c8iBRbi.png">
+<meta property="og:image" content="https://i.imgur.com/3LG2sic.png">
+<meta property="og:image" content="https://i.imgur.com/8M7jZIW.png">
+<meta property="og:image" content="https://i.imgur.com/vyLsudD.png">
+<meta property="og:image" content="https://i.imgur.com/dIZdlCU.png">
+<meta property="og:image" content="https://i.imgur.com/6RO0Svz.png">
+<meta property="og:image" content="https://i.imgur.com/qpkSshS.png">
+<meta property="og:image" content="https://i.imgur.com/48i6Oel.png">
+<meta property="og:image" content="https://i.imgur.com/qcVlBQD.png">
+<meta property="og:image" content="https://i.imgur.com/6G4Djws.png">
+<meta property="og:image" content="https://i.imgur.com/fltbWQf.png">
+<meta property="og:image" content="https://i.imgur.com/bOGPPVW.png">
+<meta property="og:image" content="https://i.imgur.com/33rrTPs.gif">
+<meta property="og:image" content="https://i.imgur.com/kQhIG3Q.png">
+<meta property="og:image" content="https://i.imgur.com/xpaRkjF.png">
+<meta property="og:image" content="https://i.imgur.com/NpWDJas.png">
+<meta property="og:image" content="https://i.imgur.com/oSjvetd.png">
+<meta property="og:image" content="https://i.imgur.com/2xo2a8N.png">
+<meta property="og:image" content="https://i.imgur.com/xAtoSH5.png">
+<meta property="og:image" content="https://i.imgur.com/hHWFWIf.png">
+<meta property="og:image" content="https://i.imgur.com/dVP3ywW.png">
+<meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-22T14:58:35.369Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="物理筆記">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/NsxdP20.png">
+
+<link rel="canonical" href="https://peienwu.com/gravity1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>萬有引力與四星運動之探討 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/gravity1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          萬有引力與四星運動之探討
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/gravity1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/gravity1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>6.9k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>6 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
+<p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/">點這裡</a></p>
+<h2 id="理論與數學"><a href="#理論與數學" class="headerlink" title="理論與數學"></a>理論與數學</h2><h3 id="萬有引力定律"><a href="#萬有引力定律" class="headerlink" title="萬有引力定律"></a>萬有引力定律</h3><p>牛頓於1687年提出：「<strong>任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。</strong>」</p>
+<p><img src="https://i.imgur.com/NsxdP20.png" alt=""></p>
+<script type="math/tex; mode=display">F = \frac{GMm}{r^2}</script><span id="more"></span>
+<h3 id="圓周運動公式"><a href="#圓周運動公式" class="headerlink" title="圓周運動公式"></a>圓周運動公式</h3><p>高中選修物理提到，一個質量為$m$的物體以半徑$R$繞著圓心旋轉，角速度為$\omega$，其速度$v$、加速度$a$與週期$T$有以下公式，在分析衛星運動及多體運動中會常常用到。在行星運動當中，就是以彼此間的萬有引力當作向心力，進行圓周運動。</p>
+<p><img src="https://i.imgur.com/mDnymhI.png" alt=""></p>
+<script type="math/tex; mode=display">\begin{align}\omega &= \frac{\Delta\theta}{\Delta t} = \frac{2\pi}{T}
+\\v &= R\omega = \frac{2\pi R}{T}
+\\a &= R\omega^2 =\frac{v^2}{R} =\frac{4\pi^2 R}{T^2}\end{align}</script><h3 id="橢圓性質"><a href="#橢圓性質" class="headerlink" title="橢圓性質"></a>橢圓性質</h3><p>一個橢圓具有兩個焦點分別是下圖的$F_1,F_2$，其定義就是橢圓上任一點$P$到兩焦點的距離和固定，也就是$\overline{PF_1}+\overline{PF_1} = K$，$K$為定值。下圖中，$a$為半長軸，$b$為半短軸，滿足 $a^2 = b^2+c^2$，面積為 $\pi ab$。我們定義了一個決定橢圓扁平程度偏心率 $e = \frac{c}{a}&lt;1$，偏心率愈大，橢圓愈扁平。</p>
+<p><img src="https://i.imgur.com/EHX9hdW.png" alt=""></p>
+<p>也可以說，圓就是一個橢圓的特例，當$F_1,F_2$重合在一點的時候就變成了一個正圓。同時，橢圓軌跡能用以下方程式說明（可用距離公式證明）：</p>
+<script type="math/tex; mode=display">\frac{x^2}{a^2}+\frac{y^2}{b^2} = 1</script><p>平方相加容易聯想到三角函數的平方關係，因此我們可以假設 $x = a\cos\theta,y = b\sin\theta$，如此一來平方相加可得證。<br>由此可知，對於一個中心點為$(h,k)$的橢圓而言，其參數式為：</p>
+<script type="math/tex; mode=display">\left\{\begin{aligned} x &= h+a\cos\theta
+\\y &= k+b\cos\theta\end{aligned}\right.</script><script type="math/tex; mode=display">-\pi≤\theta≤\pi</script><h3 id="克普勒三大行星運動定律"><a href="#克普勒三大行星運動定律" class="headerlink" title="克普勒三大行星運動定律"></a>克普勒三大行星運動定律</h3><p>克普勒提出了行星三大運動定律，分別為：</p>
+<ol>
+<li><strong>軌道定律</strong>：所有行星各以太陽為焦點的橢圓形軌道上運動。</li>
+<li><strong>面積定律</strong>：太陽與行星的連線在相同時間間隔內掃過相等的面積。</li>
+<li><strong>週期定律</strong>：各行星繞行同一恆星，其公轉週期的平方與行星到太陽平均距離的三次方成正比。</li>
+</ol>
+<p>下面主要會用到的是第一和第二定律，以及公式 $r_Av_A = r_Bv_B$進行證明。</p>
+<p><img src="https://i.imgur.com/c8iBRbi.png" alt=""></p>
+<h3 id="力學能守恆定律"><a href="#力學能守恆定律" class="headerlink" title="力學能守恆定律"></a>力學能守恆定律</h3><p>一個質量為$m$的物體以速度$v$前進，與地心相距$r$，則該物體的動能與該處的重力位能為：</p>
+<script type="math/tex; mode=display">\begin{align}E_k &= \frac{1}{2}mv^2\\U &= -\frac{GMm}{r}\end{align}</script><p>在系統只有保守力做功下，其力學能保持不變。在分析以半徑$r$的等速率圓周運動的過程中，其力學能可以表示為：</p>
+<script type="math/tex; mode=display">E = U+E_k = \frac{-GMm}{r}+\frac{1}{2}m\frac{GM}{r} = \frac{-GMm}{2r}</script><p>由此我們可以得到：</p>
+<script type="math/tex; mode=display">E_k = \frac{-1}{2}U</script><h2 id="行星與人造衛星運動"><a href="#行星與人造衛星運動" class="headerlink" title="行星與人造衛星運動"></a>行星與人造衛星運動</h2><h3 id="理論與數學-1"><a href="#理論與數學-1" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>衛星質量$m$以軌道半徑$r$繞質量為$M$的行星行等速率圓周運動，其萬有引力恆指向$M$球心，作為圓周運動所需要的向心力。</p>
+<script type="math/tex; mode=display">F = \frac{GMm}{r^2} = ma_c = m\frac{v^2}{r}</script><p>由此可知，當有一個物體質量$m$在距離行星$r$處行等速率圓周運動，其速度大小$v = \sqrt{\frac{GM}{r}}$，速度方向與向心力方向垂直。在模擬過程中，有兩個很重要的要素，分別是初始的速度大小、以及速度的方向，有了這兩個東西以後，就能讓電腦以彼此之間的萬有引力進行模擬。</p>
+<h3 id="橢圓軌道與運動軌跡方程式"><a href="#橢圓軌道與運動軌跡方程式" class="headerlink" title="橢圓軌道與運動軌跡方程式"></a>橢圓軌道與運動軌跡方程式</h3><p>在實作的過程中，我發現到當速度 $v$ 比$\sqrt{\frac{GM}{r}}$大一點或小一點時，跑出來的軌跡就不會是正圓而是橢圓，讓我十分好奇能否在給定一個速度的情況下，計算出<strong>橢圓軌跡方程式</strong>。</p>
+<p>下圖是初始狀態的設定，白球質量$M$、位置為原點、紅球質量$m$，紅球距離白球$H$、初始速度$v=k\sqrt{\frac{GM}{H}}$垂直向上，透過調整$k$的大小，預測其運動軌跡。顯然，當$k = 1$時軌跡會是正圓形，$k<1,k>1$則是分別以H為近日點、遠日點半徑的橢圓。</p>
+<p><img src="https://i.imgur.com/3LG2sic.png" alt=""></p>
+<p>若近日點距為$r_1$、遠日點距為$r_2$，半軸長$a = \frac{r_1+r_2}{2}$，根據遠日點以及近日點的力學能守恆以及克卜勒第二定律，可以列出以下兩式：</p>
+<script type="math/tex; mode=display">\begin{aligned}\frac{1}{2}mv_1^2 - \frac{GMm}{r_1} &= \frac{1}{2}mv_2^2 - \frac{GMm}{r_2}\\\\
+\frac{\pi ab}{T} = r_1v_1 &= r_2v_2\end{aligned}</script><p>將二式帶入一式可得：</p>
+<script type="math/tex; mode=display">(r_1v_1)^2 = \frac{GMr_1r_2}{\frac{1}{2}(r_1+r_2)} =
+\frac{GM(a+c)(a-c)}{a} = \frac{GMb^2}{a}</script><p>帶入我們的初始速度與近、遠日點距：</p>
+<script type="math/tex; mode=display">(H\cdot k\sqrt{\frac{GM}{H}})^2 = k^2GMH=\frac{GMb^2}{a}</script><p>上面是第一式，還有兩條比較顯而易見的兩條方程式，總共用三條方程式解三個未知數：</p>
+<script type="math/tex; mode=display">\left\{\begin{aligned} \frac{b^2}{a} &= k^2H
+\\a^2 &= b^2+c^2
+\\a &= H-c\end{aligned}\right.</script><p>將三式帶入二式消去$c$，得到：</p>
+<script type="math/tex; mode=display">\left\{\begin{aligned} a &= \frac{H}{2-k^2}
+\\b &= \sqrt{aHk^2}\end{aligned}\right.</script><p>有了$a,b$之後，就可以回推週期：</p>
+<script type="math/tex; mode=display">\begin{aligned}\frac{\pi ab}{T} &= \frac{1}{2}r_1v_1
+\\\\\Longrightarrow \ T &= \frac{2\pi ab}{r_1v_1}\end{aligned}</script><p>最後，就可以用橢圓參數式畫出軌跡，並且完全吻合紅球的運動軌跡！</p>
+<h3 id="程式實作"><a href="#程式實作" class="headerlink" title="程式實作"></a>程式實作</h3><p>程式連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/%E8%A1%8C%E6%98%9F%E9%81%8B%E5%8B%95%EF%BC%BF%E6%A9%A2%E5%9C%93%E8%BB%8C%E9%81%93">點這裡</a></p>
+<p>分別將$k$帶入不同數值，觀察軌跡的變化。左邊為模擬的狀況，右邊則是紅球動能（黑線）、位能（綠線）以及力學能（紅線）大小，由於只有保守力做功，其力學能總和保持不變。初始狀態如下：$M = 10,m = 1,H = 5$。</p>
+<h4 id="K-0-6代入"><a href="#K-0-6代入" class="headerlink" title="K = 0.6代入"></a>K = 0.6代入</h4><p><img src="https://i.imgur.com/8M7jZIW.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+a &= 3.0488
+\\b &= 2.3426
+\\c &= 1.9512\
+\\T &= 4.0955\end{aligned}\right.</script><h4 id="K-1代入"><a href="#K-1代入" class="headerlink" title="K = 1代入"></a>K = 1代入</h4><p><img src="https://i.imgur.com/vyLsudD.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+a &= 5.0000
+\\b &= 5.0000
+\\c &= 0.0000
+\\T &= 8.6015\end{aligned}\right.</script><h4 id="K-1-3代入"><a href="#K-1-3代入" class="headerlink" title="K = 1.3代入"></a>K = 1.3代入</h4><p><img src="https://i.imgur.com/dIZdlCU.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+a &= 16.1290
+\\b &= 11.6743
+\\c &= 11.1290
+\\T &= 49.8344\end{aligned}\right.</script><h4 id="K-2代入"><a href="#K-2代入" class="headerlink" title="K = 2代入"></a>K = 2代入</h4><p><img src="https://i.imgur.com/6RO0Svz.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+a &= -2.5000
+\\b &= nan
+\\c &= nan
+\\T &= nan\end{aligned}\right.</script><p>這種情況是紅球脫離了黑球的重力束縛，一去不復返。可以看到，動能與位能呈現對稱縮小的狀況，動能逐漸趨近於總力學能，而重力位能逐漸趨近於零。</p>
+<p>這裡發生了一個有趣的現象，當我把$k$繼續調小到足夠小，紅球會繞行一個非常扁平的橢圓軌跡，在現實世界中也就是紅球撞上白球的感覺。</p>
+<p>反之，當我把$k$繼續往上調大時，會發現紅球脫離了白球的重力場而一去不復返，我試著找出這個臨界值，從我們上面的推導可知$a = H/(2-k^2),b = \sqrt{aHk^2}$，當$k&gt;\sqrt{2}$時，$b$無解，也就代表這樣的橢圓形軌跡是不存在的。換句話說，當$v&gt;\sqrt 2\cdot\sqrt{\frac{GM}{H}}$時，紅球會擺脫白球重力的影響，也就是<strong>第二宇宙速度</strong>或<strong>脫離速度</strong>。</p>
+<p>由此可知，$|k|&lt;\sqrt 2$。</p>
+<div class="note success">
+            <p><strong>第二宇宙速度</strong>或<strong>脫離速度</strong>是指在地球上發射的物體擺脫地球重力束縛，飛離地球所需的最小初始速度。假設質量$m$的物體速度為$v$，則如果要擺脫地球重力的束縛，其動能要大於其重力位能，取最小值就是兩者相等，因此：</p><script type="math/tex; mode=display">\frac{1}{2}mv^2 =\frac{GMm}{r}</script><p>得到脫離速度：</p><script type="math/tex; mode=display">v = \sqrt{\frac{2GM}{r}}</script>
+          </div>
+<p>很巧的是，我們可以從橢圓半短軸長的無解推出脫離速度，也能從力學能的方向角度切入，得到一樣的結果，可謂殊途同歸！</p>
+<h2 id="雙星運動"><a href="#雙星運動" class="headerlink" title="雙星運動"></a>雙星運動</h2><p>觀察兩個質量分別為$m1,m2$的物體，繞著彼此的質心進行週期運動。</p>
+<p><img src="https://i.imgur.com/qpkSshS.png" alt=""></p>
+<h3 id="理論與數學-2"><a href="#理論與數學-2" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>令兩物體彼此間距離為$d$，則有以下的數學關係式：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"><script type="math/tex">m_1</script></th>
+<th style="text-align:center"><script type="math/tex">m_2</script></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">軌道半徑</td>
+<td style="text-align:center"><script type="math/tex">r_1 = \frac{m_2}{m_1+m_2}\cdot d</script></td>
+<td style="text-align:center"><script type="math/tex">r_2 = \frac{m_1}{m_1+m_2}\cdot d</script></td>
+</tr>
+<tr>
+<td style="text-align:center">向心加速度</td>
+<td style="text-align:center"><script type="math/tex">a_1 = \frac{Gm_2}{d^2}</script></td>
+<td style="text-align:center"><script type="math/tex">a_2 = \frac{Gm_1}{d^2}</script></td>
+</tr>
+<tr>
+<td style="text-align:center">軌道速率</td>
+<td style="text-align:center"><script type="math/tex">v_1 = m_2\sqrt{\frac{G}{d(m_1+m_2)}}</script></td>
+<td style="text-align:center"><script type="math/tex">v_2 = m_1\sqrt{\frac{G}{d(m_1+m_2)}}</script></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="模擬實作"><a href="#模擬實作" class="headerlink" title="模擬實作"></a>模擬實作</h3><p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/%E7%90%86%E6%83%B3%E9%9B%99%E6%98%9F%EF%BC%BF%E5%90%8C%E5%BF%83%E5%9C%93%E8%BB%8C%E9%81%93">點這裡</a></p>
+<h4 id="正圓雙星運動"><a href="#正圓雙星運動" class="headerlink" title="正圓雙星運動"></a>正圓雙星運動</h4><p>正圓形的軌道中，軌道半徑與其質量呈反比。</p>
+<p><img src="https://i.imgur.com/48i6Oel.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+m1 &= 3.0000\\
+m2 &= 1.0000\\
+v1 &= 0.7455\\
+v2 &= 2.2366\\\end{aligned}\right.</script><h4 id="橢圓雙星運動（質量不同）"><a href="#橢圓雙星運動（質量不同）" class="headerlink" title="橢圓雙星運動（質量不同）"></a>橢圓雙星運動（質量不同）</h4><p>橢圓形的軌道中，軌道半徑也會與其質量呈反比（此軌道半徑可以定義為半軸長，由微積分可得證）。</p>
+<p><img src="https://i.imgur.com/qcVlBQD.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+m1 &= 3.0000\\
+m2 &= 1.0000\\
+v1 &= 0.3728\\
+v2 &= 1.1183\\\end{aligned}\right.</script><h4 id="橢圓雙星運動（質量相同）"><a href="#橢圓雙星運動（質量相同）" class="headerlink" title="橢圓雙星運動（質量相同）"></a>橢圓雙星運動（質量相同）</h4><p><img src="https://i.imgur.com/6G4Djws.png" alt=""></p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+m1 &= 1.0000\\
+m2 &= 1.0000\\
+v1 &= 0.5272\\
+v2 &= 0.5272\\\end{aligned}\right.</script><h2 id="三星運動"><a href="#三星運動" class="headerlink" title="三星運動"></a>三星運動</h2><p>再研究天體力學上，<strong>雙星問題</strong>（Two-Body Problem）是已經被證明有精確解，但對於<strong>三體問題</strong>（Three-body problem）甚至是<strong>多體問題</strong>（N-body problem）問題就變得特別複雜，除特別案例以外，並沒有辦法能精確描述各物體運動的行為。儘管如此，此系統還是會遵守動量守恆，其質心不會移動。</p>
+<p>三星問題困難的地方在於，往往初始非常微小的誤差，就有可能造成之後完全不同的結果，變得混亂而不可預測，也就是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Chaos_theory">混沌狀態</a>。</p>
+<h3 id="理論與數學-3"><a href="#理論與數學-3" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>由於三體問題過於複雜，我們簡化成將三個物體的質量都設為$m$，放在邊長為$L$的正三角形三個頂點上，與質心距離$r = \frac{\sqrt3}{3}L$，則彼此間的萬有引力取餘弦將作為繞質心旋轉所需要的向心力：</p>
+<script type="math/tex; mode=display">\sqrt 3\frac{Gm^2}{L^2} = ma_c = m\frac{v^2}{r} = m\frac{4\pi^2r}{T}</script><p>可得到以下：</p>
+<script type="math/tex; mode=display">\left\{\begin{aligned}
+v &= \sqrt{\frac{Gm}{L}}\\
+T &= 2\pi\sqrt{\frac{L^3}{G(3m)}}
+\end{aligned}\right.</script><h3 id="正圓軌跡三星運動模擬"><a href="#正圓軌跡三星運動模擬" class="headerlink" title="正圓軌跡三星運動模擬"></a>正圓軌跡三星運動模擬</h3><p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/%E7%90%86%E6%83%B3%E4%B8%89%E6%98%9F%EF%BC%BF%E6%AD%A3%E5%9C%93%E8%BB%8C%E9%81%93">點這裡</a></p>
+<p>正三角形的三個頂點以相對位置固定、共同質心為旋轉中心進行旋轉。透過彼此的萬有引力餘弦結果當作向心力，設定好初始速度大小與方向（分別在90度、210度、300度），就能讓電腦完成剩下的工作！</p>
+<p><img src="https://i.imgur.com/fltbWQf.png" alt=""></p>
+<h3 id="橢圓軌跡三星運動模擬"><a href="#橢圓軌跡三星運動模擬" class="headerlink" title="橢圓軌跡三星運動模擬"></a>橢圓軌跡三星運動模擬</h3><p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/%E4%B8%89%E6%98%9F%E9%81%8B%E5%8B%95%EF%BC%BF%E6%A9%A2%E5%9C%93%E8%BB%8C%E9%81%93">點這裡</a><br>影片連結：<a target="_blank" rel="noopener" href="https://youtu.be/fJpKcJ9cGFI">點這裡</a></p>
+<p>此為不穩定的模擬，也就是說在一段時間過後，整個系統會失序，呈現混亂的狀態。</p>
+<p><img src="https://i.imgur.com/bOGPPVW.png" alt=""></p>
+<h3 id="其他軌跡的三星運動"><a href="#其他軌跡的三星運動" class="headerlink" title="其他軌跡的三星運動"></a>其他軌跡的三星運動</h3><p>其他三體互繞的軌跡如八字型，就被證明出來是一個穩定的運動模式。</p>
+<p><img src="https://i.imgur.com/33rrTPs.gif" alt=""></p>
+<p>以及衛星的五個拉格朗日點，可以在下圖五個位置放入第三個不考慮其質量的物體，使其與其他星體的相對位置不變。</p>
+<p><img src="https://i.imgur.com/kQhIG3Q.png" alt=""></p>
+<h2 id="四星運動"><a href="#四星運動" class="headerlink" title="四星運動"></a>四星運動</h2><p>在一堂物理課，老師教到三星系統時，順便提及了四星運動應該以什麼樣的性狀、什麼方式運動。若要保持四個物體等距，唯一的方式就是把他們放在正四面體上的四個頂點上，以正四面體之外心為旋轉中心進行旋轉</p>
+<h3 id="理論與數學-4"><a href="#理論與數學-4" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>假設四個質量均為$m$的物體，分別落在正四面體的四個頂點上，若以正六面體思考正四面體，正四個頂點分別是$(0,0,0),(1,1,0),(1,0,1),(0,1,1)$</p>
+<p><img src="https://i.imgur.com/xpaRkjF.png" alt=""></p>
+<p>如下圖，假設$A,B,C,D$上均有一個質量為$m$的物體，我們針對$B$分析其受力狀況（其他點其實是一樣的）。可以看到，$B$受到了分別指向$A,B,D$三點、大小為$\frac{Gm^2}{L^2}$的力，將這些力在指向質心$M$方向做分力。</p>
+<p><img src="https://i.imgur.com/NpWDJas.png" alt=""></p>
+<ol>
+<li><strong>水平方向（ABC平面）</strong>：</li>
+</ol>
+<script type="math/tex; mode=display">2\times\frac{Gm^2}{L^2}\cdot\cos30^{\circ}+\frac{Gm^2}{L^2}\cdot\cos\theta</script><ol>
+<li><strong>垂直方向：</strong></li>
+</ol>
+<script type="math/tex; mode=display">\frac{Gm^2}{L^2}\cdot\sin\theta</script><p>分析正四邊形的長度性質，由於四面體高度是$h = \frac{\sqrt6}{3}$、正三角形外接圓$\frac{\sqrt3}{3}$，我們可以得到$\sin\theta = \frac{\sqrt3}{3},\cos\theta = \frac{\sqrt 6}{3}$，代入上式可得並做畢氏定理可得：</p>
+<script type="math/tex; mode=display">\begin{align}F_B &= \frac{Gm^2}{L^2}\sqrt{(\sqrt3+\frac{\sqrt3}{3})^2 + (\frac{\sqrt6}{3})^2}\\
+&=\sqrt6\cdot\frac{Gm^2}{L^2}\end{align}</script><p>正四面體的外接圓半徑$R = \frac{\sqrt6}{4}L$，因此可得：</p>
+<script type="math/tex; mode=display">\frac{mv^2}{R} = \sqrt6\cdot\frac{Gm^2}{L^2}</script><p>最後得到軌道速度與旋轉週期：</p>
+<script type="math/tex; mode=display">\begin{align}v &= \sqrt{\frac{3Gm}{2L}}\\
+T &= 2\pi\sqrt{\frac{L^3}{G\cdot(4m)}}
+\end{align}</script><h3 id="程式實作-1"><a href="#程式實作-1" class="headerlink" title="程式實作"></a>程式實作</h3><p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/%E5%9B%9B%E6%98%9F%E9%81%8B%E5%8B%95">點這裡</a><br>影片連結：<a target="_blank" rel="noopener" href="https://youtu.be/fNabqv4BYKg">點這裡</a></p>
+<p>有了速度大小以後，接下來就是初始速度方向的設定。這一部分特別困難，以正四面體的四星在立體空間的運動，旋轉的角度若沒有抓好，很有可能整個結構會崩塌。例如下圖情況，前後兩個物體會因為萬有引力作用而不斷吸引：</p>
+<p><img src="https://i.imgur.com/oSjvetd.png" alt=""></p>
+<p>嘗試解決的方法是，將正四面體的四個頂點座標投影到$xy$平面，因為四個頂點是$z$座標極大或極小，如此一來就能讓所有速度方向的$z$分量為零。接著，只要將速度方向依照下圖分解即可：</p>
+<p><img src="https://i.imgur.com/2xo2a8N.png" alt=""></p>
+<p>可以看到下圖左方有兩張圖，上圖是四顆球的總動能、位能與力學能的圖、下圖是黃球與其他球的距離（黑線是與質心距離）。在理想的狀況下，我們預期所有球的相對位置應該保持不變，但在模擬中卻是呈現週期性的變化，並且可以觀察球與質心的距離並不是固定的，而是有上下起伏的變化。</p>
+<p><img src="https://i.imgur.com/xAtoSH5.png" alt=""></p>
+<p>轉了差不多十圈後，會發現四星系統呈現混沌狀態，分析原因可能有以下兩個：</p>
+<ol>
+<li><strong>精度問題</strong>：初始狀態速度方向向量精度不足，初始的些許差別導致後續的混亂。</li>
+<li><strong>模擬本身限制</strong>：我們採用的是對時間微分進行每一個瞬間的力學分析，時間間隔大小也會影響到整個模擬的結果。</li>
+</ol>
+<p><img src="https://i.imgur.com/hHWFWIf.png" alt=""></p>
+<p>這也讓我們思考一個蠻有趣問題，是否真的存在一個穩定的四星系統彼此能在相對位置固定的狀況下進行運動？</p>
+<h2 id="N體問題運動模擬"><a href="#N體問題運動模擬" class="headerlink" title="N體問題運動模擬"></a>N體問題運動模擬</h2><p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/program/N%E9%AB%94%E5%95%8F%E9%A1%8C">點這裡</a></p>
+<p>最後就是N體問題的模擬，將50個質量為$m$的物體在隨機生成的位置上，彼此受到萬有引力運動。右圖的黑線為50個物體的總動能、綠線為彼此的位能，紅線為兩者相加，也就是總力學能。在沒有外力作用的狀況下，能由右圖看出來力學能是守恆的！</p>
+<p><img src="https://i.imgur.com/dVP3ywW.png" alt=""></p>
+<h2 id="總結與延伸問題"><a href="#總結與延伸問題" class="headerlink" title="總結與延伸問題"></a>總結與延伸問題</h2><p>從萬有引力的理論與數學出發，整理行星的運動軌跡、雙星、三星、四星甚至到N星的運動模式以及模擬，讓我們能從不一樣的角度切入物理問題。這邊還有一個十分有趣的問題尚未解決，也就是<strong>是否存在一個穩定的四星系統</strong>？在大部分的N體問體的情況中，都沒有辦法得到一個穩定的運動模式，總會因為起始狀態的小小誤差導致截然不同的結果，穩定的四星系統也就變成蠻難解決的問題。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Two-body_problem">Wiki:Two-body problem</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Three-body_problem">Wiki:Three-body problem</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/N-body_problem">Wiki:N-body problem</a></li>
+<li><a target="_blank" rel="noopener" href="https://highscope.ch.ntu.edu.tw/wordpress/?p=47998">科學online：力學能(Mechanical energy)
+</a></li>
+<li>物理講義：第八、九章</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/%E7%89%A9%E7%90%86%E7%AD%86%E8%A8%98/" rel="tag"># 物理筆記</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/gravity2/" rel="prev" title="橢圓軌道上行星到太陽平均距離">
+      <i class="fa fa-chevron-left"></i> 橢圓軌道上行星到太陽平均距離
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AB%96%E8%88%87%E6%95%B8%E5%AD%B8"><span class="nav-number">1.</span> <span class="nav-text">理論與數學</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%90%AC%E6%9C%89%E5%BC%95%E5%8A%9B%E5%AE%9A%E5%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">萬有引力定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%93%E5%91%A8%E9%81%8B%E5%8B%95%E5%85%AC%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">圓周運動公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A9%A2%E5%9C%93%E6%80%A7%E8%B3%AA"><span class="nav-number">1.3.</span> <span class="nav-text">橢圓性質</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%8B%E6%99%AE%E5%8B%92%E4%B8%89%E5%A4%A7%E8%A1%8C%E6%98%9F%E9%81%8B%E5%8B%95%E5%AE%9A%E5%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">克普勒三大行星運動定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9B%E5%AD%B8%E8%83%BD%E5%AE%88%E6%81%86%E5%AE%9A%E5%BE%8B"><span class="nav-number">1.5.</span> <span class="nav-text">力學能守恆定律</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E6%98%9F%E8%88%87%E4%BA%BA%E9%80%A0%E8%A1%9B%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">2.</span> <span class="nav-text">行星與人造衛星運動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AB%96%E8%88%87%E6%95%B8%E5%AD%B8-1"><span class="nav-number">2.1.</span> <span class="nav-text">理論與數學</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A9%A2%E5%9C%93%E8%BB%8C%E9%81%93%E8%88%87%E9%81%8B%E5%8B%95%E8%BB%8C%E8%B7%A1%E6%96%B9%E7%A8%8B%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">橢圓軌道與運動軌跡方程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">程式實作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#K-0-6%E4%BB%A3%E5%85%A5"><span class="nav-number">2.3.1.</span> <span class="nav-text">K &#x3D; 0.6代入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K-1%E4%BB%A3%E5%85%A5"><span class="nav-number">2.3.2.</span> <span class="nav-text">K &#x3D; 1代入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K-1-3%E4%BB%A3%E5%85%A5"><span class="nav-number">2.3.3.</span> <span class="nav-text">K &#x3D; 1.3代入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K-2%E4%BB%A3%E5%85%A5"><span class="nav-number">2.3.4.</span> <span class="nav-text">K &#x3D; 2代入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%99%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">3.</span> <span class="nav-text">雙星運動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AB%96%E8%88%87%E6%95%B8%E5%AD%B8-2"><span class="nav-number">3.1.</span> <span class="nav-text">理論與數學</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%93%AC%E5%AF%A6%E4%BD%9C"><span class="nav-number">3.2.</span> <span class="nav-text">模擬實作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%9C%93%E9%9B%99%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">3.2.1.</span> <span class="nav-text">正圓雙星運動</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A9%A2%E5%9C%93%E9%9B%99%E6%98%9F%E9%81%8B%E5%8B%95%EF%BC%88%E8%B3%AA%E9%87%8F%E4%B8%8D%E5%90%8C%EF%BC%89"><span class="nav-number">3.2.2.</span> <span class="nav-text">橢圓雙星運動（質量不同）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A9%A2%E5%9C%93%E9%9B%99%E6%98%9F%E9%81%8B%E5%8B%95%EF%BC%88%E8%B3%AA%E9%87%8F%E7%9B%B8%E5%90%8C%EF%BC%89"><span class="nav-number">3.2.3.</span> <span class="nav-text">橢圓雙星運動（質量相同）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">4.</span> <span class="nav-text">三星運動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AB%96%E8%88%87%E6%95%B8%E5%AD%B8-3"><span class="nav-number">4.1.</span> <span class="nav-text">理論與數學</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%9C%93%E8%BB%8C%E8%B7%A1%E4%B8%89%E6%98%9F%E9%81%8B%E5%8B%95%E6%A8%A1%E6%93%AC"><span class="nav-number">4.2.</span> <span class="nav-text">正圓軌跡三星運動模擬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A9%A2%E5%9C%93%E8%BB%8C%E8%B7%A1%E4%B8%89%E6%98%9F%E9%81%8B%E5%8B%95%E6%A8%A1%E6%93%AC"><span class="nav-number">4.3.</span> <span class="nav-text">橢圓軌跡三星運動模擬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%BB%8C%E8%B7%A1%E7%9A%84%E4%B8%89%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">4.4.</span> <span class="nav-text">其他軌跡的三星運動</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E6%98%9F%E9%81%8B%E5%8B%95"><span class="nav-number">5.</span> <span class="nav-text">四星運動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AB%96%E8%88%87%E6%95%B8%E5%AD%B8-4"><span class="nav-number">5.1.</span> <span class="nav-text">理論與數學</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C-1"><span class="nav-number">5.2.</span> <span class="nav-text">程式實作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#N%E9%AB%94%E5%95%8F%E9%A1%8C%E9%81%8B%E5%8B%95%E6%A8%A1%E6%93%AC"><span class="nav-number">6.</span> <span class="nav-text">N體問題運動模擬</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90%E8%88%87%E5%BB%B6%E4%BC%B8%E5%95%8F%E9%A1%8C"><span class="nav-number">7.</span> <span class="nav-text">總結與延伸問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">8.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">292k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:26</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
