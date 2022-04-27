@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peienwu.com/about/index.html</loc>
+    
+    <lastmod>2022-04-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://peienwu.com/404.html</loc>
+    
+    <lastmod>2022-04-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://peienwu.com/dp_basic/</loc>
     
     <lastmod>2022-04-27</lastmod>
@@ -293,15 +311,6 @@
     <loc>https://peienwu.com/gravity2/</loc>
     
     <lastmod>2022-04-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/about/index.html</loc>
-    
-    <lastmod>2022-02-07</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
