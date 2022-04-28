@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CSES Geometry Point Location Test Line Segment Intersection Polygon Area Point in Polygon Polygon Lattice Points Minimum Euclidean Distance Convex Hull">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Geometry in Leetcode &amp; CSES">
+<meta property="og:url" content="https://peienwu.com/geo3/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="CSES Geometry Point Location Test Line Segment Intersection Polygon Area Point in Polygon Polygon Lattice Points Minimum Euclidean Distance Convex Hull">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/q3bqqWZ.png">
+<meta property="og:image" content="https://i.imgur.com/FbcWiwl.png">
+<meta property="og:image" content="https://i.imgur.com/yMs369S.png">
+<meta property="article:published_time" content="2021-12-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-31T04:08:43.644Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="計算幾何">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/q3bqqWZ.png">
+
+<link rel="canonical" href="https://peienwu.com/geo3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Geometry in Leetcode & CSES | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/geo3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Geometry in Leetcode & CSES
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-12-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-20T00:00:00+08:00">2021-12-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95/" itemprop="url" rel="index"><span itemprop="name">計算幾何</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/geo3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/geo3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>15 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="CSES-Geometry"><a href="#CSES-Geometry" class="headerlink" title="CSES Geometry"></a>CSES Geometry</h2><ul>
+<li>Point Location Test</li>
+<li>Line Segment Intersection</li>
+<li>Polygon Area</li>
+<li>Point in Polygon</li>
+<li>Polygon Lattice Points</li>
+<li>Minimum Euclidean Distance</li>
+<li>Convex Hull</li>
+</ul>
+<span id="more"></span>
+<h3 id="Point-Location-Test"><a href="#Point-Location-Test" class="headerlink" title="Point Location Test"></a>Point Location Test</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/3a495a0f4bdec8af2df7b4/">CODE</a></p>
+<p>給你三個點 $P_1,P_2,P_3$ ，判斷出向量 $(P_1,P_2)$ 之於 $P_3$ 的方向為何？<br>關係共有相交、位於左側以及位於右側。</p>
+<h3 id="Line-Segment-Intersection"><a href="#Line-Segment-Intersection" class="headerlink" title="Line Segment Intersection"></a>Line Segment Intersection</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/854258b8f67b255c2df828/">CODE</a></p>
+<p>給你兩條線段，判斷他們是否相交。線段相交裸題。</p>
+<h3 id="Polygon-Area"><a href="#Polygon-Area" class="headerlink" title="Polygon Area"></a>Polygon Area</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/49f2a020a47797b42df861/">CODE</a></p>
+<p>給你N個點，計算出此多邊形圍成的面積為何。帶入行列式公式可解。</p>
+<h3 id="Point-in-Polygon"><a href="#Point-in-Polygon" class="headerlink" title="Point in Polygon"></a>Point in Polygon</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/d0edfaf7380124852e075e/">CODE</a></p>
+<p>給你N個點構成的一個簡單多邊形，判斷一個點是否在多邊形內部。</p>
+<p>參考資料：<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/how-to-check-if-a-given-point-lies-inside-a-polygon/">greekforgreek</a></p>
+<p><img src="https://i.imgur.com/q3bqqWZ.png" alt=""></p>
+<p>凸多邊形的情況，我們可以利用內角和是360度轉一圈的的方法，判斷一點是否在多邊形內部。但本題是簡單多邊形，因此用這種方法是不可行的。</p>
+<p><img src="https://i.imgur.com/FbcWiwl.png" alt=""></p>
+<p>這張圖是作法，我們做出一個由x點出發向x軸正向的射線，計算這一條射線跟多邊形共有幾個交點。如果是奇數，表示在內部；反之則是在外部。交在多邊形上的點要特別注意，因為他可能會被統計到兩次，因此我們特別處理當點相交一點時，只計算那條邊的兩端點中，y座標比較大的那一點是否相交的情況。</p>
+<p>最後，我們發現遇上如圖中g點的狀況直接就被處理好了！他會被算到零次，因為在看兩條邊加上去之後，又因為頂點是y座標比較大的，會被剪掉兩次。</p>
+<h3 id="Polygon-Lattice-Points"><a href="#Polygon-Lattice-Points" class="headerlink" title="Polygon Lattice Points"></a>Polygon Lattice Points</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/7fa78ccd60f7877f2e07dc/">CODE</a></p>
+<p>給定頂點座標均是整點（或正方形格子點）的簡單多邊形，皮克定理說明了其面積 $A$ 和內部格點數目 $i$、邊上格點數目 $b$ 的關係：</p>
+<script type="math/tex; mode=display">A = i + \frac{b}{2} - 1</script><p><a target="_blank" rel="noopener" href="http://episte.math.ntu.edu.tw/articles/sm/sm_25_10_1/index.html">PROOF</a></p>
+<h3 id="Minimum-Euclidean-Distance"><a href="#Minimum-Euclidean-Distance" class="headerlink" title="Minimum Euclidean Distance"></a>Minimum Euclidean Distance</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/a728ec171111ce792e091f/">CODE</a></p>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@peienwu/closest_pair">最近點對問題</a>。不過，既然是計算幾何，我們就用掃描線做最近點對。掃描線有兩個做法（可以參考那個連結），至於搭配set輔助步驟就是：</p>
+<ol>
+<li>將點輸入並且排序，X座標為主，Y座標為輔。</li>
+<li>使用set，並以Y座標為排序基準（pair的首項），以儲存第 $i$ 點的左方、水平距離小於等於d的點。</li>
+<li>右掃描線依序窮舉各點作為右端點。<br>　(1) Erase與右端點水平距離大於d的點們（左掃描線右移）<br>　(2) 用二分搜找出與第 $i$ 點垂直距離小於d的點，並嘗試更新<br>　(3) 將第 $i$ 點加入set中。</li>
+</ol>
+<p><img src="https://i.imgur.com/yMs369S.png" alt=""></p>
+<h3 id="Convex-Hull"><a href="#Convex-Hull" class="headerlink" title="Convex Hull"></a>Convex Hull</h3><p><a target="_blank" rel="noopener" href="https://cses.fi/paste/ac97fa8545e467692e09aa/">CODE</a></p>
+<p>凸包裸題。</p>
+<h2 id="Leetcode：Geography"><a href="#Leetcode：Geography" class="headerlink" title="Leetcode：Geography"></a>Leetcode：Geography</h2><p>Leetcode 總共有27題的tag是計算幾何的，<a target="_blank" rel="noopener" href="https://leetcode.com/tag/geometry/">題單在這裡</a>。有三題被鎖起來不能看，所以總共有24題。</p>
+<h3 id="149-Max-Points-on-a-Line"><a href="#149-Max-Points-on-a-Line" class="headerlink" title="149 Max Points on a Line"></a>149 Max Points on a Line</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/max-points-on-a-line">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">gcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(a &gt; b)<span class="built_in">swap</span>(a,b);</span><br><span class="line">        <span class="keyword">if</span>(a == <span class="number">0</span>)<span class="keyword">return</span> b;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">gcd</span>(b % a, a);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxPoints</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = points.<span class="built_in">size</span>(),ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            map&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;,<span class="keyword">int</span>&gt; mp;</span><br><span class="line">            <span class="keyword">int</span> same = <span class="number">0</span>,hori = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> dx = points[i][<span class="number">0</span>] - points[j][<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">int</span> dy = points[i][<span class="number">1</span>] - points[j][<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">if</span>(dx == <span class="number">0</span> &amp;&amp; dy == <span class="number">0</span>)&#123;same++;<span class="keyword">continue</span>;&#125;</span><br><span class="line">                <span class="keyword">if</span>(dx == <span class="number">0</span> &amp;&amp; dy != <span class="number">0</span>)&#123;hori++;<span class="keyword">continue</span>;&#125;</span><br><span class="line">                <span class="keyword">int</span> g = <span class="built_in">gcd</span>(<span class="built_in">abs</span>(dx),<span class="built_in">abs</span>(dy));</span><br><span class="line">                <span class="keyword">if</span>(dy &lt; <span class="number">0</span> || (dy == <span class="number">0</span> &amp;&amp; dx &lt; <span class="number">0</span>))&#123;dx = -dx;dy = -dy;&#125;</span><br><span class="line">                mp[&#123;dx/g,dy/g&#125;]++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> sum = hori + same + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> it : mp)sum = <span class="built_in">max</span>(sum,it.second + <span class="number">1</span>);</span><br><span class="line">            ans = <span class="built_in">max</span>(ans,sum);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="223-Rectangle-Area"><a href="#223-Rectangle-Area" class="headerlink" title="223 Rectangle Area"></a>223 Rectangle Area</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rectangle-area">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">computeArea</span><span class="params">(<span class="keyword">int</span> ax1, <span class="keyword">int</span> ay1, <span class="keyword">int</span> ax2, <span class="keyword">int</span> ay2, <span class="keyword">int</span> bx1, <span class="keyword">int</span> by1, <span class="keyword">int</span> bx2, <span class="keyword">int</span> by2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="built_in">max</span>(<span class="built_in">min</span>(ax2,bx2) - <span class="built_in">max</span>(ax1,bx1),<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> y = <span class="built_in">max</span>(<span class="built_in">min</span>(ay2,by2) - <span class="built_in">max</span>(ay1,by1),<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> ans = (ax2 - ax1)*(ay2 - ay1)+(bx2 - bx1)*(by2 - by1)-x * y;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="335-Self-Crossing"><a href="#335-Self-Crossing" class="headerlink" title="335 Self Crossing"></a>335 Self Crossing</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/self-crossing">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSelfCrossing</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; d)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = d.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n &lt;= <span class="number">3</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">3</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="comment">//第四條、第五條、第六條交第一條</span></span><br><span class="line">            <span class="keyword">if</span>(d[i] &gt;= d[i<span class="number">-2</span>] &amp;&amp; d[i<span class="number">-1</span>] &lt;= d[i<span class="number">-3</span>])<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= <span class="number">4</span> &amp;&amp; d[i<span class="number">-1</span>] == d[i<span class="number">-3</span>] &amp;&amp; d[i] + d[i<span class="number">-4</span>] &gt;= d[i<span class="number">-2</span>])<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= <span class="number">5</span> &amp;&amp; d[i<span class="number">-2</span>] &gt;= d[i<span class="number">-4</span>] &amp;&amp; d[i] &gt;= d[i<span class="number">-2</span>] - d[i<span class="number">-4</span>]</span><br><span class="line">              &amp;&amp; d[i<span class="number">-1</span>] &gt;= d[i<span class="number">-3</span>]-d[i<span class="number">-5</span>] &amp;&amp; d[i<span class="number">-1</span>] &lt;= d[i<span class="number">-3</span>])<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="587-Erect-the-Fence"><a href="#587-Erect-the-Fence" class="headerlink" title="587 Erect the Fence"></a>587 Erect the Fence</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/erect-the-fence">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ff first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ss second</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(pii a,pii b,pii o)</span></span>&#123;</span><br><span class="line">        pii aa = &#123;a.ff - o.ff,a.ss - o.ss&#125;;</span><br><span class="line">        pii bb = &#123;b.ff - o.ff,b.ss - o.ss&#125;;</span><br><span class="line">        <span class="keyword">int</span> cross = aa.ff * bb.ss - aa.ss * bb.ff;</span><br><span class="line">        <span class="keyword">return</span> cross &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">outerTrees</span>(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; point) &#123;</span><br><span class="line">        vector&lt;pii&gt; h;</span><br><span class="line">        <span class="keyword">int</span> n = point.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;pii&gt; <span class="title">p</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)p[i] = &#123;point[i][<span class="number">0</span>],point[i][<span class="number">1</span>]&#125;;</span><br><span class="line">        <span class="built_in">sort</span>(p.<span class="built_in">begin</span>(),p.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : p)&#123;</span><br><span class="line">            <span class="keyword">while</span>(h.<span class="built_in">size</span>() &gt; <span class="number">1</span> &amp;&amp; <span class="built_in">check</span>(i,h[h.<span class="built_in">size</span>()<span class="number">-1</span>],h[h.<span class="built_in">size</span>()<span class="number">-2</span>]))</span><br><span class="line">                h.<span class="built_in">pop_back</span>();</span><br><span class="line">            h.<span class="built_in">push_back</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> down = h.<span class="built_in">size</span>();</span><br><span class="line">        h.<span class="built_in">pop_back</span>();</span><br><span class="line">        <span class="built_in">reverse</span>(p.<span class="built_in">begin</span>(),p.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : p)&#123;</span><br><span class="line">            <span class="keyword">while</span>(h.<span class="built_in">size</span>() &gt; down &amp;&amp; <span class="built_in">check</span>(i,h[h.<span class="built_in">size</span>()<span class="number">-1</span>],h[h.<span class="built_in">size</span>()<span class="number">-2</span>]))</span><br><span class="line">                h.<span class="built_in">pop_back</span>();</span><br><span class="line">            h.<span class="built_in">push_back</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">        set&lt;pii&gt; s;<span class="keyword">for</span>(<span class="keyword">auto</span> i : h)s.<span class="built_in">insert</span>(i);</span><br><span class="line">        n = s.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; ans;ans.<span class="built_in">resize</span>(n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)ans[i].<span class="built_in">resize</span>(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : s)&#123;ans[id][<span class="number">0</span>] = i.ff;ans[id][<span class="number">1</span>] = i.ss;id++;&#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="593-Valid-Square"><a href="#593-Valid-Square" class="headerlink" title="593 Valid Square"></a>593 Valid Square</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-square">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dis</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; p1, vector&lt;<span class="keyword">int</span>&gt;&amp; p2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = p1[<span class="number">0</span>] - p2[<span class="number">0</span>],y = p1[<span class="number">1</span>] - p2[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> x * x + y * y;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validSquare</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; p1, vector&lt;<span class="keyword">int</span>&gt;&amp; p2, vector&lt;<span class="keyword">int</span>&gt;&amp; p3, vector&lt;<span class="keyword">int</span>&gt;&amp; p4)</span> </span>&#123;</span><br><span class="line">        map&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;mp;     <span class="comment">//長度、個數</span></span><br><span class="line">        mp[<span class="built_in">dis</span>(p1,p2)]++;</span><br><span class="line">        mp[<span class="built_in">dis</span>(p1,p3)]++;</span><br><span class="line">        mp[<span class="built_in">dis</span>(p1,p4)]++;</span><br><span class="line">        mp[<span class="built_in">dis</span>(p2,p3)]++;</span><br><span class="line">        mp[<span class="built_in">dis</span>(p2,p4)]++;</span><br><span class="line">        mp[<span class="built_in">dis</span>(p3,p4)]++;</span><br><span class="line">        <span class="keyword">return</span> mp.<span class="built_in">size</span>() == <span class="number">2</span> &amp;&amp; mp.<span class="built_in">begin</span>()-&gt;second == <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="812-Largest-Triangle-Area"><a href="#812-Largest-Triangle-Area" class="headerlink" title="812    Largest Triangle Area"></a>812    Largest Triangle Area</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/largest-triangle-area">題目連結</a><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cross</span><span class="params">(<span class="keyword">int</span> x1,<span class="keyword">int</span> y1,<span class="keyword">int</span> x2,<span class="keyword">int</span> y2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x1 * y2 - x2 * y1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">area</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c,<span class="keyword">int</span> d,<span class="keyword">int</span> e,<span class="keyword">int</span> f)</span></span>&#123;</span><br><span class="line">        <span class="keyword">double</span> sum = <span class="number">0</span>;</span><br><span class="line">        sum += <span class="built_in">cross</span>(a,b,c,d);</span><br><span class="line">        sum += <span class="built_in">cross</span>(c,d,e,f);</span><br><span class="line">        sum += <span class="built_in">cross</span>(e,f,a,b);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">abs</span>(sum / <span class="number">2.0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">largestTriangleArea</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = points.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">double</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i + <span class="number">1</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> p = j + <span class="number">1</span>;p &lt; n;p++)&#123;</span><br><span class="line">                    ans = <span class="built_in">max</span>(ans,<span class="built_in">area</span>(points[i][<span class="number">0</span>],points[i][<span class="number">1</span>]</span><br><span class="line">                                      ,points[j][<span class="number">0</span>],points[j][<span class="number">1</span>]</span><br><span class="line">                                      ,points[p][<span class="number">0</span>],points[p][<span class="number">1</span>]));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="836-Rectangle-Overlap"><a href="#836-Rectangle-Overlap" class="headerlink" title="836 Rectangle Overlap"></a>836 Rectangle Overlap</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/rectangle-overlap">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isRectangleOverlap</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; rec1, vector&lt;<span class="keyword">int</span>&gt;&amp; rec2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//最小的右端點 - 最大的左端點</span></span><br><span class="line">        <span class="keyword">int</span> x = <span class="built_in">min</span>(rec1[<span class="number">2</span>],rec2[<span class="number">2</span>]) - <span class="built_in">max</span>(rec1[<span class="number">0</span>],rec2[<span class="number">0</span>]);</span><br><span class="line">        <span class="comment">//最小的上端點 - 最大的下端點</span></span><br><span class="line">        <span class="keyword">int</span> y = <span class="built_in">min</span>(rec1[<span class="number">3</span>],rec2[<span class="number">3</span>]) - <span class="built_in">max</span>(rec1[<span class="number">1</span>],rec2[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">return</span> x &gt; <span class="number">0</span> &amp;&amp; y &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="858-Mirror-Reflection"><a href="#858-Mirror-Reflection" class="headerlink" title="858 Mirror Reflection"></a>858 Mirror Reflection</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/mirror-reflection">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">gcd</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(a == <span class="number">0</span>)<span class="keyword">return</span> b;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">gcd</span>(b % a,a);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">mirrorReflection</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = p * q / <span class="built_in">gcd</span>(q,p);</span><br><span class="line">        <span class="keyword">int</span> a = (len / p) % <span class="number">2</span>,b = (len / q) % <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(a == <span class="number">0</span> &amp;&amp; b == <span class="number">1</span>)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a == <span class="number">1</span> &amp;&amp; b == <span class="number">1</span>)<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="478-Generate-Random-Point-in-a-Circle"><a href="#478-Generate-Random-Point-in-a-Circle" class="headerlink" title="478 Generate Random Point in a Circle"></a>478 Generate Random Point in a Circle</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/generate-random-point-in-a-circle">題目連結</a></p>
+<p>直接Random半徑會出事（可能不夠亂，或是半徑太小），如果random面積之後算半徑才OK。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">double</span> R,X,Y;</span><br><span class="line">    <span class="built_in">Solution</span>(<span class="keyword">double</span> radius, <span class="keyword">double</span> x_center, <span class="keyword">double</span> y_center) &#123;</span><br><span class="line">        R = radius;X = x_center;Y = y_center;</span><br><span class="line">        <span class="built_in">srand</span>(<span class="built_in">time</span>(<span class="literal">NULL</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">double</span>&gt; <span class="title">randPoint</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">double</span> Area = <span class="built_in">rand</span>() * R * R * M_PI / (RAND_MAX + <span class="number">1.0</span>);</span><br><span class="line">        <span class="keyword">double</span> r = <span class="built_in">sqrt</span>(Area / M_PI);</span><br><span class="line">        <span class="keyword">double</span> theta = <span class="number">2.0</span> * M_PI * <span class="built_in">rand</span>() / (RAND_MAX + <span class="number">1.0</span>);</span><br><span class="line">        vector&lt;<span class="keyword">double</span>&gt; ans;</span><br><span class="line">        ans.<span class="built_in">push_back</span>(X + r * <span class="built_in">cos</span>(theta));</span><br><span class="line">        ans.<span class="built_in">push_back</span>(Y + r * <span class="built_in">sin</span>(theta));</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your Solution object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * Solution* obj = new Solution(radius, x_center, y_center);</span></span><br><span class="line"><span class="comment"> * vector&lt;double&gt; param_1 = obj-&gt;randPoint();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<h3 id="883-Projection-Area-of-3D-Shapes"><a href="#883-Projection-Area-of-3D-Shapes" class="headerlink" title="883 Projection Area of 3D Shapes"></a>883 Projection Area of 3D Shapes</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/projection-area-of-3d-shapes">題目連結</a></p>
+<p>三種不同的投影對應到三種不同的角度看圖形。x-y的面積即為由上而下看有方格的個數。x-z是從前方看，因此對應到的是每一行的最大方塊個數。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">projectionArea</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = grid.<span class="built_in">size</span>(),ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> maxR = <span class="number">0</span>,maxC = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(grid[i][j] &gt; <span class="number">0</span>)ans++;        <span class="comment">//由上往下看</span></span><br><span class="line">                maxR = <span class="built_in">max</span>(maxR,grid[i][j]);    <span class="comment">//由側邊看</span></span><br><span class="line">                maxC = <span class="built_in">max</span>(maxC,grid[j][i]);    <span class="comment">//由前面看</span></span><br><span class="line">            &#125;</span><br><span class="line">            ans += maxR + maxC;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="892-Surface-Area-of-3D-Shapes"><a href="#892-Surface-Area-of-3D-Shapes" class="headerlink" title="892 Surface Area of 3D Shapes"></a>892 Surface Area of 3D Shapes</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/surface-area-of-3d-shapes">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">surfaceArea</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>,n = grid.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(grid[i][j] &gt; <span class="number">0</span>)ans += <span class="number">4</span> * grid[i][j] + <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(i &lt; n - <span class="number">1</span>)&#123;</span><br><span class="line">                    ans -= <span class="built_in">min</span>(grid[i][j],grid[i+<span class="number">1</span>][j])*<span class="number">2</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(j &lt; n - <span class="number">1</span>)&#123;</span><br><span class="line">                    ans -= <span class="built_in">min</span>(grid[i][j],grid[i][j+<span class="number">1</span>])*<span class="number">2</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="939-Minimum-Area-Rectangle"><a href="#939-Minimum-Area-Rectangle" class="headerlink" title="939 Minimum Area Rectangle"></a>939 Minimum Area Rectangle</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-area-rectangle">題目連結</a><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minAreaRect</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;p = points;</span><br><span class="line">        <span class="keyword">int</span> n = points.<span class="built_in">size</span>();</span><br><span class="line">        set&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt;s;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)s.<span class="built_in">insert</span>(&#123;p[i][<span class="number">0</span>],p[i][<span class="number">1</span>]&#125;);</span><br><span class="line">        <span class="keyword">int</span> ans = INT_MAX;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(s.<span class="built_in">find</span>(&#123;p[i][<span class="number">0</span>],p[j][<span class="number">1</span>]&#125;)!=s.<span class="built_in">end</span>() </span><br><span class="line">                   &amp;&amp; s.<span class="built_in">find</span>(&#123;p[j][<span class="number">0</span>],p[i][<span class="number">1</span>]&#125;)!=s.<span class="built_in">end</span>())&#123;</span><br><span class="line">                    <span class="keyword">if</span>(p[i][<span class="number">0</span>] == p[j][<span class="number">0</span>] || p[i][<span class="number">1</span>] == p[j][<span class="number">1</span>])<span class="keyword">continue</span>;</span><br><span class="line">                    ans = <span class="built_in">min</span>(ans,<span class="built_in">abs</span>(p[i][<span class="number">0</span>]-p[j][<span class="number">0</span>])*<span class="built_in">abs</span>(p[i][<span class="number">1</span>]-p[j][<span class="number">1</span>]));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ans == INT_MAX)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h3 id="963-Minimum-Area-Rectangle-II"><a href="#963-Minimum-Area-Rectangle-II" class="headerlink" title="963 Minimum Area Rectangle II"></a>963 Minimum Area Rectangle II</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-area-rectangle-ii">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">minAreaFreeRect</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; p)</span></span>&#123;</span><br><span class="line">        set&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; s;</span><br><span class="line">        <span class="keyword">int</span> n = p.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)s.<span class="built_in">insert</span>(&#123;p[i][<span class="number">0</span>],p[i][<span class="number">1</span>]&#125;);</span><br><span class="line">        <span class="keyword">double</span> ans = <span class="number">1e9</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> x1 = p[j][<span class="number">0</span>] - p[i][<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">int</span> y1 = p[j][<span class="number">1</span>] - p[i][<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = j+<span class="number">1</span>;k &lt; n;k++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> x2 = p[k][<span class="number">0</span>] - p[i][<span class="number">0</span>];</span><br><span class="line">                    <span class="keyword">int</span> y2 = p[k][<span class="number">1</span>] - p[i][<span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">if</span>(x1 * x2 + y1 * y2 != <span class="number">0</span>)<span class="keyword">continue</span>;</span><br><span class="line">                    <span class="keyword">int</span> nx = p[k][<span class="number">0</span>] + x1,ny = p[k][<span class="number">1</span>] + y1;</span><br><span class="line">                    <span class="keyword">if</span>(s.<span class="built_in">find</span>(&#123;nx,ny&#125;) != s.<span class="built_in">end</span>())&#123;</span><br><span class="line">                        ans = <span class="built_in">min</span>(ans,<span class="built_in">sqrt</span>(x1*x1+y1*y1) * <span class="built_in">sqrt</span>(x2*x2+y2*y2));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ans == <span class="number">1e9</span>)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="973-K-Closest-Points-to-Origin"><a href="#973-K-Closest-Points-to-Origin" class="headerlink" title="973 K Closest Points to Origin"></a>973 K Closest Points to Origin</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/k-closest-points-to-origin">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">kClosest</span>(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="keyword">int</span> n = points.<span class="built_in">size</span>();</span><br><span class="line">        multimap&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; mp;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> x = points[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> y = points[i][<span class="number">1</span>];</span><br><span class="line">            mp.<span class="built_in">insert</span>(&#123;x * x + y * y,i&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">auto</span> it = mp.<span class="built_in">begin</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;k;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> id = it-&gt;second;</span><br><span class="line">            ans.<span class="built_in">push_back</span>(points[id]);</span><br><span class="line">            it++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1030-Matrix-Cells-in-Distance-Order"><a href="#1030-Matrix-Cells-in-Distance-Order" class="headerlink" title="1030 Matrix Cells in Distance Order"></a>1030 Matrix Cells in Distance Order</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/matrix-cells-in-distance-order">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">allCellsDistOrder</span>(<span class="keyword">int</span> rows, <span class="keyword">int</span> cols, <span class="keyword">int</span> rCenter, <span class="keyword">int</span> cCenter) &#123;</span><br><span class="line">        <span class="keyword">int</span> n = rows,m = cols;</span><br><span class="line">        multimap&lt;<span class="keyword">int</span>,pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; mp;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; m;j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> dis = <span class="built_in">abs</span>(i - rCenter) + <span class="built_in">abs</span>(j - cCenter);</span><br><span class="line">                mp.<span class="built_in">insert</span>(&#123;dis,&#123;i,j&#125;&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; ans;ans.<span class="built_in">resize</span>(n*m);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n*m;i++)ans[i].<span class="built_in">resize</span>(<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> it : mp)&#123;</span><br><span class="line">            ans[id][<span class="number">0</span>] = (it.second.first);</span><br><span class="line">            ans[id][<span class="number">1</span>] = (it.second.second);</span><br><span class="line">            id++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1037-Valid-Boomerang"><a href="#1037-Valid-Boomerang" class="headerlink" title="1037 Valid Boomerang"></a>1037 Valid Boomerang</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-boomerang">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isBoomerang</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x1 = points[<span class="number">1</span>][<span class="number">0</span>]-points[<span class="number">0</span>][<span class="number">0</span>],y1 = points[<span class="number">1</span>][<span class="number">1</span>]-points[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> x2 = points[<span class="number">2</span>][<span class="number">0</span>]-points[<span class="number">1</span>][<span class="number">0</span>],y2 = points[<span class="number">2</span>][<span class="number">1</span>]-points[<span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> cross = x1 * y2 - x2 * y1;</span><br><span class="line">        <span class="keyword">if</span>(cross == <span class="number">0</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1232-Check-If-It-Is-a-Straight-Line"><a href="#1232-Check-If-It-Is-a-Straight-Line" class="headerlink" title="1232 Check If It Is a Straight Line"></a>1232 Check If It Is a Straight Line</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/check-if-it-is-a-straight-line">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkStraightLine</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; coordinates)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; p = coordinates;</span><br><span class="line">        <span class="keyword">int</span> n = p.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n<span class="number">-2</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> x1 = p[i+<span class="number">1</span>][<span class="number">0</span>] - p[i][<span class="number">0</span>],y1 = p[i+<span class="number">1</span>][<span class="number">1</span>] - p[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">int</span> x2 = p[i+<span class="number">2</span>][<span class="number">0</span>] - p[i+<span class="number">1</span>][<span class="number">0</span>],y2 = p[i+<span class="number">2</span>][<span class="number">1</span>] - p[i+<span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>(x1 * y2 != x2 * y1)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1266-Minimum-Time-Visiting-All-Points"><a href="#1266-Minimum-Time-Visiting-All-Points" class="headerlink" title="1266 Minimum Time Visiting All Points"></a>1266 Minimum Time Visiting All Points</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-time-visiting-all-points">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minTimeToVisitAllPoints</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = points.<span class="built_in">size</span>(),ans = <span class="number">0</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; p = points;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">            ans += <span class="built_in">max</span>(<span class="built_in">abs</span>(p[i+<span class="number">1</span>][<span class="number">0</span>] - p[i][<span class="number">0</span>]),<span class="built_in">abs</span>(p[i+<span class="number">1</span>][<span class="number">1</span>] - p[i][<span class="number">1</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1401-Circle-and-Rectangle-Overlapping"><a href="#1401-Circle-and-Rectangle-Overlapping" class="headerlink" title="1401 Circle and Rectangle Overlapping"></a>1401 Circle and Rectangle Overlapping</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/circle-and-rectangle-overlapping">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">checkOverlap</span><span class="params">(<span class="keyword">int</span> radius, <span class="keyword">int</span> x_center, <span class="keyword">int</span> y_center, <span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="built_in">clamp</span>(x_center,x1,x2) - x_center;</span><br><span class="line">        <span class="keyword">int</span> y = <span class="built_in">clamp</span>(y_center,y1,y2) - y_center;</span><br><span class="line">        <span class="keyword">return</span> x*x + y*y &lt;= radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1453-Maximum-Number-of-Darts-Inside-of-a-Circular-Dartboard"><a href="#1453-Maximum-Number-of-Darts-Inside-of-a-Circular-Dartboard" class="headerlink" title="1453 Maximum Number of Darts Inside of a Circular Dartboard"></a>1453 Maximum Number of Darts Inside of a Circular Dartboard</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-number-of-darts-inside-of-a-circular-dartboard">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdd pair<span class="meta-string">&lt;ld,ld&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> exp 1e-6</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">dis</span><span class="params">(pdd a,pdd b)</span></span>&#123;</span><br><span class="line">        ld x = a.x - b.x,y = a.y - b.y;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sqrt</span>(x * x + y * y);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">pair&lt;pdd,pdd&gt; <span class="title">get_center</span><span class="params">(pdd a,pdd b,ld R)</span></span>&#123;</span><br><span class="line">        pdd mid = &#123;(a.x + b.x) / <span class="number">2</span>,(a.y + b.y) / <span class="number">2</span>&#125;;</span><br><span class="line">        ld theta = <span class="built_in">atan2</span>(a.y - b.y, b.x - a.x);</span><br><span class="line">        ld tmp = <span class="built_in">dis</span>(a,b) / <span class="number">2</span>, d = <span class="built_in">sqrt</span>(R * R - tmp * tmp);</span><br><span class="line">        </span><br><span class="line">        pair&lt;pdd,pdd&gt; ans;</span><br><span class="line">        ans.x = &#123;mid.x - d * <span class="built_in">sin</span>(theta),mid.y - d * <span class="built_in">cos</span>(theta)&#125;;</span><br><span class="line">        ans.y = &#123;mid.x + d * <span class="built_in">sin</span>(theta),mid.y + d * <span class="built_in">cos</span>(theta)&#125;;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numPoints</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; point, <span class="keyword">int</span> R)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = point.<span class="built_in">size</span>(),ans = <span class="number">1</span>;</span><br><span class="line">        pdd p[n];<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;p[i] = &#123;point[i][<span class="number">0</span>],point[i][<span class="number">1</span>]&#125;;&#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>;j &lt; n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">dis</span>(p[i],p[j]) - <span class="number">2.0</span> * R &gt;= exp)<span class="keyword">continue</span>;</span><br><span class="line">                pair&lt;pdd,pdd&gt; cur = <span class="built_in">get_center</span>(p[i],p[j],R);</span><br><span class="line">                <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>;k &lt; n;k++)</span><br><span class="line">                    <span class="keyword">if</span>(<span class="built_in">dis</span>(p[k], cur.x) - R&lt;= exp)cnt ++;</span><br><span class="line">                ans = <span class="built_in">max</span>(ans, cnt);cnt = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>;k &lt; n;k++)</span><br><span class="line">                    <span class="keyword">if</span>(<span class="built_in">dis</span>(p[k], cur.y) - R &lt;= exp)cnt ++;</span><br><span class="line">                ans = <span class="built_in">max</span>(ans, cnt);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1515-Best-Position-for-a-Service-Centre"><a href="#1515-Best-Position-for-a-Service-Centre" class="headerlink" title="1515 Best Position for a Service Centre"></a>1515 Best Position for a Service Centre</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-position-for-a-service-centre">題目連結</a></p>
+<p>這一題是模擬退火，非常酷，之前沒有寫過的東西。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> eps 1e-6</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdd pair<span class="meta-string">&lt;ld,ld&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    pdd p[<span class="number">105</span>];<span class="keyword">int</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="function">ld <span class="title">dis_all</span><span class="params">(pdd mid)</span></span>&#123;</span><br><span class="line">        ld sum;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            ld x = p[i].x - mid.x,y = p[i].y - mid.y;</span><br><span class="line">            sum += <span class="built_in">sqrt</span>(x * x + y * y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getMinDistSum</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; pos)</span> </span>&#123;</span><br><span class="line">        n = pos.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)p[i] = &#123;pos[i][<span class="number">0</span>],pos[i][<span class="number">1</span>]&#125;;</span><br><span class="line">        pdd cur = p[<span class="number">0</span>];ld mid_dis = <span class="built_in">dis_all</span>(p[<span class="number">0</span>]);</span><br><span class="line">        ld test_size = <span class="number">100</span>;</span><br><span class="line">        ld dx[<span class="number">4</span>] = &#123;<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">-1.0</span>,<span class="number">0.0</span>&#125;,dy[<span class="number">4</span>] = &#123;<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">-1.0</span>&#125;;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(test_size &gt; eps)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">4</span>;i++)&#123;</span><br><span class="line">                pdd newp = cur;</span><br><span class="line">                newp.x += dx[i] * test_size;</span><br><span class="line">                newp.y += dy[i] * test_size;</span><br><span class="line">                ld new_dis = <span class="built_in">dis_all</span>(newp);</span><br><span class="line">                <span class="keyword">if</span>(new_dis &lt; mid_dis)&#123;</span><br><span class="line">                    mid_dis = new_dis;</span><br><span class="line">                    cur = newp;</span><br><span class="line">                    flag = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>)test_size /= <span class="number">2.0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mid_dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>換另外一種迭代方式</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> eps 1e-8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdd pair<span class="meta-string">&lt;ld,ld&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    pdd p[<span class="number">105</span>];<span class="keyword">int</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="function">ld <span class="title">dis_all</span><span class="params">(pdd mid)</span></span>&#123;</span><br><span class="line">        ld sum;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            ld x = p[i].x - mid.x,y = p[i].y - mid.y;</span><br><span class="line">            sum += <span class="built_in">sqrt</span>(x * x + y * y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getMinDistSum</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; pos)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">srand</span>(<span class="built_in">time</span>(<span class="literal">NULL</span>));</span><br><span class="line">        n = pos.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)p[i] = &#123;pos[i][<span class="number">0</span>],pos[i][<span class="number">1</span>]&#125;;</span><br><span class="line">        pdd cur = p[<span class="number">0</span>];ld mid_dis = <span class="built_in">dis_all</span>(p[<span class="number">0</span>]);</span><br><span class="line">        ld test_size = <span class="number">150.0</span>;</span><br><span class="line">        <span class="keyword">while</span>(test_size &gt; eps)&#123;</span><br><span class="line">            pdd newp = cur;</span><br><span class="line">            <span class="keyword">int</span> temp = <span class="built_in">rand</span>();</span><br><span class="line">            newp.x += <span class="built_in">cos</span>(temp) * test_size;</span><br><span class="line">            newp.y += <span class="built_in">sin</span>(temp) * test_size;</span><br><span class="line">            ld new_dis = <span class="built_in">dis_all</span>(newp);</span><br><span class="line">            <span class="keyword">if</span>(new_dis &lt; mid_dis)&#123;</span><br><span class="line">                mid_dis = new_dis;</span><br><span class="line">                cur = newp;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> test_size *= <span class="number">0.99</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mid_dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1610-Maximum-Number-of-Visible-Points"><a href="#1610-Maximum-Number-of-Visible-Points" class="headerlink" title="1610 Maximum Number of Visible Points"></a>1610 Maximum Number of Visible Points</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-number-of-visible-points">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">visiblePoints</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points, <span class="keyword">int</span> angle, vector&lt;<span class="keyword">int</span>&gt;&amp; loc)</span> </span>&#123;</span><br><span class="line">        vector&lt;ld&gt; ang;</span><br><span class="line">        <span class="keyword">int</span> overlap = <span class="number">0</span>,n = points.<span class="built_in">size</span>(),ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> p : points)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p[<span class="number">0</span>] == loc[<span class="number">0</span>] &amp;&amp; p[<span class="number">1</span>] == loc[<span class="number">1</span>])overlap++;</span><br><span class="line">            <span class="keyword">else</span> ang.<span class="built_in">push_back</span>(<span class="built_in">atan2l</span>(p[<span class="number">1</span>]-loc[<span class="number">1</span>],p[<span class="number">0</span>]-loc[<span class="number">0</span>]) * <span class="number">180</span> / (ld)M_PI);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> sz = ang.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; sz;i++)ang.<span class="built_in">push_back</span>(ang[i] + <span class="number">360</span>);</span><br><span class="line">        <span class="built_in">sort</span>(ang.<span class="built_in">begin</span>(),ang.<span class="built_in">end</span>());</span><br><span class="line">        sz = ang.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>,it2 = <span class="number">0</span>;i &lt; sz;i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(it2 &lt; sz &amp;&amp; ang[it2] - ang[i] &lt;= angle)it2++;</span><br><span class="line">            ans = <span class="built_in">max</span>(ans,it2 - i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans + overlap;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="1828-Queries-on-Number-of-Points-Inside-a-Circle"><a href="#1828-Queries-on-Number-of-Points-Inside-a-Circle" class="headerlink" title="1828 Queries on Number of Points Inside a Circle"></a>1828 Queries on Number of Points Inside a Circle</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/queries-on-number-of-points-inside-a-circle">題目連結</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">countPoints</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; points, vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; queries)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = queries.<span class="built_in">size</span>(),m = points.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; ans;ans.<span class="built_in">resize</span>(n);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> rx = queries[i][<span class="number">0</span>],ry = queries[i][<span class="number">1</span>],sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; m;j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> x = points[j][<span class="number">0</span>] - rx,y = points[j][<span class="number">1</span>] - ry;</span><br><span class="line">                <span class="keyword">if</span>(x * x + y * y &lt;= queries[i][<span class="number">2</span>] * queries[i][<span class="number">2</span>])sum++;</span><br><span class="line">            &#125;</span><br><span class="line">            ans[i] = sum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="2101-Detonate-the-Maximum-Bombs"><a href="#2101-Detonate-the-Maximum-Bombs" class="headerlink" title="2101. Detonate the Maximum Bombs"></a>2101. Detonate the Maximum Bombs</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/detonate-the-maximum-bombs/">題目連結</a></p>
+<p>把圖形考慮成一張圖，符合條件的就增加一條有向邊，接著對每一個點做一次DFS即可。時間 $O(n^2)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; E[<span class="number">105</span>];</span><br><span class="line">    <span class="function">ld <span class="title">dis</span><span class="params">(pii a,pii b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = a.first - b.first,y = a.second - b.second;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sqrt</span>((<span class="keyword">long</span> <span class="keyword">long</span>)x * x + (<span class="keyword">long</span> <span class="keyword">long</span>)y * y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">bool</span> vis[<span class="number">105</span>];</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> now)</span></span>&#123;</span><br><span class="line">        vis[now] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : E[now])&#123;</span><br><span class="line">            <span class="keyword">if</span>(vis[i])<span class="keyword">continue</span>;</span><br><span class="line">            sum++;vis[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">dfs</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximumDetonation</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; bomb)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = bomb.<span class="built_in">size</span>(),ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)&#123;</span><br><span class="line">                pii a = &#123;bomb[i][<span class="number">0</span>],bomb[i][<span class="number">1</span>]&#125;,b = &#123;bomb[j][<span class="number">0</span>],bomb[j][<span class="number">1</span>]&#125;;</span><br><span class="line">                <span class="keyword">int</span> r1 = bomb[i][<span class="number">2</span>],r2 = bomb[j][<span class="number">2</span>];</span><br><span class="line">                ld d = <span class="built_in">dis</span>(a,b);</span><br><span class="line">                <span class="keyword">if</span>(r1 &gt;= d)E[i].<span class="built_in">push_back</span>(j);</span><br><span class="line">                <span class="keyword">if</span>(r2 &gt;= d)E[j].<span class="built_in">push_back</span>(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)&#123;</span><br><span class="line">            <span class="built_in">fill</span>(vis,vis+<span class="number">105</span>,<span class="number">0</span>);</span><br><span class="line">            sum = <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">dfs</span>(i);</span><br><span class="line">            ans = <span class="built_in">max</span>(ans,sum);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="延伸問題"><a href="#延伸問題" class="headerlink" title="延伸問題"></a>延伸問題</h2><ul>
+<li>給定平面上N個點，問一條直線最多能穿越幾個點</li>
+<li>線段相交座標</li>
+<li>給你一個線段及一個圓，判斷圓跟線段的最短距離</li>
+<li>給你一個三角形（其中一頂點為圓心）和圓形，求出兩者的交集面積</li>
+<li>兩圓交點</li>
+<li>圓跟多邊形交集面積</li>
+<li>最小包覆圓</li>
+<li>半平面交</li>
+<li>Bentley–Ottmann Algorithm</li>
+<li>Voronoi Diagram</li>
+<li>Delaunay Triangulation</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95/" rel="tag"># 計算幾何</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/apcs2111/" rel="prev" title="APCS題解：2021年11月">
+      <i class="fa fa-chevron-left"></i> APCS題解：2021年11月
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/marriage/" rel="next" title="婚姻匹配問題（Stable Marriage Problem）">
+      婚姻匹配問題（Stable Marriage Problem） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSES-Geometry"><span class="nav-number">1.</span> <span class="nav-text">CSES Geometry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Location-Test"><span class="nav-number">1.1.</span> <span class="nav-text">Point Location Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Line-Segment-Intersection"><span class="nav-number">1.2.</span> <span class="nav-text">Line Segment Intersection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polygon-Area"><span class="nav-number">1.3.</span> <span class="nav-text">Polygon Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-in-Polygon"><span class="nav-number">1.4.</span> <span class="nav-text">Point in Polygon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polygon-Lattice-Points"><span class="nav-number">1.5.</span> <span class="nav-text">Polygon Lattice Points</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minimum-Euclidean-Distance"><span class="nav-number">1.6.</span> <span class="nav-text">Minimum Euclidean Distance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Convex-Hull"><span class="nav-number">1.7.</span> <span class="nav-text">Convex Hull</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode%EF%BC%9AGeography"><span class="nav-number">2.</span> <span class="nav-text">Leetcode：Geography</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#149-Max-Points-on-a-Line"><span class="nav-number">2.1.</span> <span class="nav-text">149 Max Points on a Line</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#223-Rectangle-Area"><span class="nav-number">2.2.</span> <span class="nav-text">223 Rectangle Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#335-Self-Crossing"><span class="nav-number">2.3.</span> <span class="nav-text">335 Self Crossing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#587-Erect-the-Fence"><span class="nav-number">2.4.</span> <span class="nav-text">587 Erect the Fence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#593-Valid-Square"><span class="nav-number">2.5.</span> <span class="nav-text">593 Valid Square</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#812-Largest-Triangle-Area"><span class="nav-number">2.6.</span> <span class="nav-text">812    Largest Triangle Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#836-Rectangle-Overlap"><span class="nav-number">2.7.</span> <span class="nav-text">836 Rectangle Overlap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#858-Mirror-Reflection"><span class="nav-number">2.8.</span> <span class="nav-text">858 Mirror Reflection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#478-Generate-Random-Point-in-a-Circle"><span class="nav-number">2.9.</span> <span class="nav-text">478 Generate Random Point in a Circle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#883-Projection-Area-of-3D-Shapes"><span class="nav-number">2.10.</span> <span class="nav-text">883 Projection Area of 3D Shapes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#892-Surface-Area-of-3D-Shapes"><span class="nav-number">2.11.</span> <span class="nav-text">892 Surface Area of 3D Shapes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#939-Minimum-Area-Rectangle"><span class="nav-number">2.12.</span> <span class="nav-text">939 Minimum Area Rectangle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#963-Minimum-Area-Rectangle-II"><span class="nav-number">2.13.</span> <span class="nav-text">963 Minimum Area Rectangle II</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#973-K-Closest-Points-to-Origin"><span class="nav-number">2.14.</span> <span class="nav-text">973 K Closest Points to Origin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1030-Matrix-Cells-in-Distance-Order"><span class="nav-number">2.15.</span> <span class="nav-text">1030 Matrix Cells in Distance Order</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1037-Valid-Boomerang"><span class="nav-number">2.16.</span> <span class="nav-text">1037 Valid Boomerang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1232-Check-If-It-Is-a-Straight-Line"><span class="nav-number">2.17.</span> <span class="nav-text">1232 Check If It Is a Straight Line</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1266-Minimum-Time-Visiting-All-Points"><span class="nav-number">2.18.</span> <span class="nav-text">1266 Minimum Time Visiting All Points</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1401-Circle-and-Rectangle-Overlapping"><span class="nav-number">2.19.</span> <span class="nav-text">1401 Circle and Rectangle Overlapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1453-Maximum-Number-of-Darts-Inside-of-a-Circular-Dartboard"><span class="nav-number">2.20.</span> <span class="nav-text">1453 Maximum Number of Darts Inside of a Circular Dartboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1515-Best-Position-for-a-Service-Centre"><span class="nav-number">2.21.</span> <span class="nav-text">1515 Best Position for a Service Centre</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1610-Maximum-Number-of-Visible-Points"><span class="nav-number">2.22.</span> <span class="nav-text">1610 Maximum Number of Visible Points</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1828-Queries-on-Number-of-Points-Inside-a-Circle"><span class="nav-number">2.23.</span> <span class="nav-text">1828 Queries on Number of Points Inside a Circle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2101-Detonate-the-Maximum-Bombs"><span class="nav-number">2.24.</span> <span class="nav-text">2101. Detonate the Maximum Bombs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E4%BC%B8%E5%95%8F%E9%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">延伸問題</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

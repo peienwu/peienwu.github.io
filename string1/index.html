@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這個暑假看了動態規劃(1),(2)，線段樹、最短路徑、計算幾何、字串演算法，這一篇的完成算是暑假的一個里程吧！接下來繼續學習不同的主題，再把筆記更新到部落格中！ 課程內容字串 定義 大寫 $\Sigma$ 表示字元集 字串：有限個字元集組成 $|\Sigma|$ 字元集大小、|S|字串長度 S[a:b]表示連續從字元a到b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字串演算法 (String)">
+<meta property="og:url" content="https://peienwu.com/string1/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="這個暑假看了動態規劃(1),(2)，線段樹、最短路徑、計算幾何、字串演算法，這一篇的完成算是暑假的一個里程吧！接下來繼續學習不同的主題，再把筆記更新到部落格中！ 課程內容字串 定義 大寫 $\Sigma$ 表示字元集 字串：有限個字元集組成 $|\Sigma|$ 字元集大小、|S|字串長度 S[a:b]表示連續從字元a到b">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/6WU1JWG.png">
+<meta property="og:image" content="https://i.imgur.com/Pf1S21i.png">
+<meta property="og:image" content="https://i.imgur.com/zsb6blx.png">
+<meta property="og:image" content="https://i.imgur.com/l1aGK8f.png">
+<meta property="article:published_time" content="2021-09-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T04:19:42.408Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="演算法">
+<meta property="article:tag" content="字串">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/6WU1JWG.png">
+
+<link rel="canonical" href="https://peienwu.com/string1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>字串演算法 (String) | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/string1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字串演算法 (String)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-09-04 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-04T00:00:00+08:00">2021-09-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E5%AD%97%E4%B8%B2%E6%BC%94%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">字串演算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/string1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/string1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>2 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這個暑假看了動態規劃(1),(2)，線段樹、最短路徑、計算幾何、字串演算法，這一篇的完成算是暑假的一個里程吧！接下來繼續學習不同的主題，再把筆記更新到部落格中！</p>
+<h2 id="課程內容"><a href="#課程內容" class="headerlink" title="課程內容"></a>課程內容</h2><h3 id="字串"><a href="#字串" class="headerlink" title="字串"></a>字串</h3><ul>
+<li>定義<ul>
+<li>大寫 $\Sigma$ 表示字元集</li>
+<li>字串：有限個字元集組成</li>
+<li>$|\Sigma|$ 字元集大小、|S|字串長度</li>
+<li>S[a:b]表示連續從字元a到b<span id="more"></span></li>
+</ul>
+</li>
+<li>子字串：S[a:b]</li>
+<li>前綴：S[0:b]</li>
+<li>後綴：S[a:|S|-1]</li>
+</ul>
+<h3 id="字典樹Trie"><a href="#字典樹Trie" class="headerlink" title="字典樹Trie"></a>字典樹Trie</h3><ul>
+<li>定義<ul>
+<li>例題：字串出現次數</li>
+<li>一顆由根、邊一綠往下指的有向樹</li>
+<li>每個邊為字元、每一點代表字串</li>
+<li>每經過一條邊，字串加上邊的字元</li>
+<li>根節點為空字串！</li>
+</ul>
+</li>
+<li>操作<ul>
+<li>查詢字串：$O(L)$，由根順著邊往下找</li>
+<li>插入字串：$O(L)$，不斷往下走直到空節點，在Trie加入一個節點</li>
+<li>節點必須記錄當前是否為有效字串</li>
+<li>Trie結構中包含：字串、紀錄字串出現次數</li>
+</ul>
+</li>
+</ul>
+<h3 id="KMP"><a href="#KMP" class="headerlink" title="KMP"></a>KMP</h3><ul>
+<li>功能：進行字串匹配</li>
+<li>例題：字串S在字串T哪些位置出現<ul>
+<li>暴力匹配：時間 $O(|S|\times|T|)$</li>
+</ul>
+</li>
+<li>F[i]表示當配對成功A[0:i]後即配對失敗，將A[F[i]]對齊原本A[i]的位置</li>
+<li>搭配F[i]調整在串移動的長度</li>
+<li>匹配：複雜度 $O(|T|)$，建立F函數：$O(|S|)$</li>
+</ul>
+<h3 id="漢明距離-Hamming-distance"><a href="#漢明距離-Hamming-distance" class="headerlink" title="漢明距離(Hamming distance)"></a>漢明距離(Hamming distance)</h3><ul>
+<li>兩個等長字符串對應位置的不同字符的個數</li>
+</ul>
+<h3 id="Z-value"><a href="#Z-value" class="headerlink" title="Z-value"></a>Z-value</h3><ul>
+<li>z[i] 是指由 s[i] 開始的字串，與 s[0] 開始的字串可以匹配到多長</li>
+<li>S[0:k-1] = S[i:i+k-1]</li>
+<li>z[0] = 0</li>
+</ul>
+<h3 id="Rolling-Hash"><a href="#Rolling-Hash" class="headerlink" title="Rolling Hash"></a>Rolling Hash</h3><ul>
+<li>之前隨機講過</li>
+</ul>
+<h3 id="後綴數組（Suffix-Array）"><a href="#後綴數組（Suffix-Array）" class="headerlink" title="後綴數組（Suffix Array）"></a>後綴數組（Suffix Array）</h3><ul>
+<li>將一個字串的所有後綴進行排序</li>
+<li>基數排序（Radix Sort）</li>
+</ul>
+<h3 id="最長共同前綴（LCP-Longest-Common-Prefix）"><a href="#最長共同前綴（LCP-Longest-Common-Prefix）" class="headerlink" title="最長共同前綴（LCP,Longest Common Prefix）"></a>最長共同前綴（LCP,Longest Common Prefix）</h3><ul>
+<li>兩字串的最長共同前綴</li>
+<li>將最長共同前綴轉換成區間最小值問題</li>
+</ul>
+<h2 id="字串演算法主題"><a href="#字串演算法主題" class="headerlink" title="字串演算法主題"></a>字串演算法主題</h2><h3 id="字典樹Trie-1"><a href="#字典樹Trie-1" class="headerlink" title="字典樹Trie"></a>字典樹Trie</h3><p>字典樹是以指標型態建立的一棵樹，邊代表一個字元、節點代表從根一路走來的邊形成的字串，從根節點開始（根節點為空），每經過一條邊，就把字串加上那一條邊對應的字元，直到找出要匹配的字串。如果有多筆獨立的詢問，只要加上Delete函數就可以了！</p>
+<h4 id="Trie結構"><a href="#Trie結構" class="headerlink" title="Trie結構"></a>Trie結構</h4><p>實作上的陣列c指向個別的字元，不一定要用cnt，根據題目的所求調整不同的變數設定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Trie</span>&#123;</span>        <span class="comment">//利用指標建立一棵樹</span></span><br><span class="line">    Trie* c[<span class="number">26</span>];    <span class="comment">//對應a-z每一條邊</span></span><br><span class="line">    <span class="keyword">int</span> cnt;        <span class="comment">//字串出現次數</span></span><br><span class="line">    <span class="built_in">Trie</span>(): <span class="built_in">cnt</span>(<span class="number">0</span>)&#123; <span class="comment">//初始設定</span></span><br><span class="line">        <span class="built_in">memset</span>(c,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(c));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Trie* root;</span><br></pre></td></tr></table></figure>
+<h4 id="Insert函數"><a href="#Insert函數" class="headerlink" title="Insert函數"></a>Insert函數</h4><p>在插入的過程中言錄新增路徑，一樣嘢可以根據題目要求在過程中進行變數紀錄等。如<strong>NEOJ 267 自動完成系統</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">char</span> *s)</span></span>&#123;</span><br><span class="line">    Trie *ptr = root;           <span class="comment">//從根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])     <span class="comment">//如果樹上無此字元則new</span></span><br><span class="line">            ptr-&gt;c[<span class="built_in">ch</span>(*s)] = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];   <span class="comment">//繼續造訪Trie</span></span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    ptr-&gt;cnt += <span class="number">1</span>;              <span class="comment">//字串出現次數(字串對應唯一葉節點)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="查詢函數"><a href="#查詢函數" class="headerlink" title="查詢函數"></a>查詢函數</h4><p>一個字串對應到唯一的路徑，從根節點根據每一個字元決定路徑。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">char</span> *s)</span></span>&#123;              <span class="comment">//查找字串s</span></span><br><span class="line">    Trie *ptr = root;           <span class="comment">//根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;                  <span class="comment">//無此字串，回傳次數0</span></span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];</span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ptr-&gt;cnt;            <span class="comment">//回傳字串出現次數</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Delete函數"><a href="#Delete函數" class="headerlink" title="Delete函數"></a>Delete函數</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(Trie *s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s-&gt;c[i])&#123;</span><br><span class="line">            <span class="built_in">clear</span>(s-&gt;c[i]);</span><br><span class="line">            <span class="keyword">delete</span> s-&gt;c[i];</span><br><span class="line">            s-&gt;c[i] = <span class="literal">nullptr</span>;    <span class="comment">//很重要</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="KMP-Algorithm"><a href="#KMP-Algorithm" class="headerlink" title="KMP Algorithm"></a>KMP Algorithm</h3><p>首先要求出Failure Function，它可以在 $O(|S|)$ 建立。失敗函數的定義是：</p>
+<blockquote>
+<p>$F[i]$ 表示當成功配對 $A[0:i]$ 之後，配對失敗時，我們會將 $A[ F[i]]$ 對齊原本 $A[i]$ 的位置</p>
+</blockquote>
+<p>如果寫成數學式的定義：</p>
+<script type="math/tex; mode=display">F_A(J)=\left\{
+\begin{array}{l}
+-1,&&\text{if j = 0}\\
+max\{p:A_{0...p} = A_{j-p...j} \text{ and 0≤p<j}\},&&\text{otherwise}\\
+\end{array} \right.</script><p>這個函式以中文來說就是「<strong>最大前綴後綴</strong>」！</p>
+<p>這個函數可以讓我們知道，當配對在較短字串 $S$ 在第 $i$ 位配對失敗時，要找到第 $F[i]$ 去繼續比對。從比較直觀的角度去理解，就是把字串要往右移幾格才能正確匹配上，如果配對失敗，則尋找更前面更短的子字串試試看。</p>
+<p>以比較數學的角度看到底要怎麼建立Failure Function，可以從以下推導得知：</p>
+<div class="note info">
+            <p>假設 $F[i] = x, x≠-1$，根據上面的定義有這樣的等式：$A[0:x] = A[i-x:i]$<br>分成以下兩種情況做討論：</p><ul><li><p>$A[x+1] = A[i+1]$<br>這種情況就是兩邊的下一個字串都相同，直接將繼承前面的長度為x的子字串，因此有關係式$F[i+1] = x+1$</p></li><li><p>$A[x+1] ≠ A[i+1]$<br>這種情況比較棘手，我們無法繼續使用之前長度為x的子字串，因此我們要尋找前面更短的字串進行匹配。假設我們找到 $K$ 滿足 k&lt;x，同時 $A[0:k] = A[i-k:i]$ ，這時候我們只需確認 $A[k+1]=A[i+1]$ 是否成立即可，如果不成立則繼續尋找比 $K$ 更短的子字串。</p></li></ul><p><br></p><p>從剛剛的關係式，我們可以繼續寫下去： $A[0:k] = A[i-k:i]=A[x-k:x]$，理由是i的後綴與x後綴相同，因此 k的後綴就會和x的後綴相同。由失敗函式的定義推斷，我們要找的 $k$ 就會是 x 的失敗函式，$K = F[x]$。</p><p>如果找到的k不滿足 $A[k+1]=A[i+1]$ ，則會繼續尋找下一個更小的 $k$ 值直到滿足條件或是 $k=-1$ 為止。</p>
+          </div>
+<p>再來則是KMP MATCH，能在時間複雜度 $O(|T|)$ 內將匹配出來的位置找出來。具體的方法與建立Failure Function 相近，如果 $A[p+1]≠A[i+1]$，則尋找更小的字串長度 $k&lt;F[i]$ 看能否繼續匹配。當匹配成功，記得把p設為F[p]，因為匹配完成其實也可以看作是下一個字元匹配失敗（$S$ 的空字元對上 $T$ 的下一個）。</p>
+<p>至於時間複雜度的部分，分析一下while迴圈總共會執行的次數，當每執行一次，p的值一定會遞減，而p只會在每一個迴圈最多加上一，因此p的增加會是字串長度 $|T|$ 的常數倍，使總複雜度為 $O(|T|)$。</p>
+<h4 id="Build-Function"><a href="#Build-Function" class="headerlink" title="Build Function"></a>Build Function</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//O(|S|)要配對的字串以及Fail Function</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KMP_build</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *F)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = F[<span class="number">0</span>] = <span class="number">-1</span>;              <span class="comment">//初始設定為-1</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;          <span class="comment">//1到接下來字元</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=S[i])</span><br><span class="line">            p = F[p];               <span class="comment">//無法繼續配對，尋找更短字串</span></span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == S[i])          <span class="comment">//配對成功(如都沒有一樣的就-1)</span></span><br><span class="line">            p += <span class="number">1</span>;</span><br><span class="line">        F[i] = p;                   <span class="comment">//設定F[i]</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Match-Function"><a href="#Match-Function" class="headerlink" title="Match Function"></a>Match Function</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">KMP_match</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *F,<span class="keyword">char</span> *T)</span></span>&#123;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; ans;            <span class="comment">//回傳匹配相同地方</span></span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">-1</span>;                 <span class="comment">//紀錄短字串有多少被匹配</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;T[i];i++)&#123;      <span class="comment">//每一迴圈都讓T[i]被匹配到</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=T[i])</span><br><span class="line">            p = F[p];           <span class="comment">//使T[i]一定可以被匹配到</span></span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == T[i])</span><br><span class="line">            p += <span class="number">1</span>;             <span class="comment">//T的第i個與S的p+1可以匹配</span></span><br><span class="line">        <span class="keyword">if</span>(!S[p+<span class="number">1</span>])&#123;            <span class="comment">//S[p]已經匹配完成</span></span><br><span class="line">            ans.<span class="built_in">push_back</span>(i-p); <span class="comment">//回推匹配開頭</span></span><br><span class="line">            p = F[p];           <span class="comment">//繼續下一輪匹配</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Hash-Robin-Karp-Algorithm"><a href="#Hash-Robin-Karp-Algorithm" class="headerlink" title="Hash (Robin-Karp Algorithm)"></a>Hash (Robin-Karp Algorithm)</h3><p>雜湊算法的核心概念就是以下公式，可以透過它進行字串比對等等。</p>
+<script type="math/tex; mode=display">H(s[1:n]) = \sum_{i=0}^n S_i\times C^{n-i}</script><p>詳細內容可以參閱這一篇：<a target="_blank" rel="noopener" href="https://hackmd.io/@peienwu/random">隨機演算法</a></p>
+<h3 id="Z-Algorithm-Gusfield’s-Algorithm"><a href="#Z-Algorithm-Gusfield’s-Algorithm" class="headerlink" title="Z Algorithm (Gusfield’s Algorithm)"></a>Z Algorithm (Gusfield’s Algorithm)</h3><p>Z函數的定義是對於字串長度 $n$ 的字串 $S$ ，$z[i]$ 函數代表 $S[0:n-1]$ 和 $S[i:n-1]$ 的<strong>最長共同前綴</strong>，也就是LCP長度。定義 $z[0] = 0$。</p>
+<p>有講義上面寫Z Function很簡單，但我覺得有夠難，難度跟KMP的理解差不多。根據Z函數的定義，我們可以$O(N^2)$建立z函數，顯然時間有些太多了。如果我們算 $Z[i]$ 的值可以用 $Z[0:i-1]$ 轉移過來，會省下許多時間，把時間降成 $O(N)$。</p>
+<h4 id="算法概念"><a href="#算法概念" class="headerlink" title="算法概念"></a>算法概念</h4><p>整個算法的核心概念就是利用前面已經算好的Z Function去推現在的值，有點像動態規劃的概念。在整個過程中我們會維護右端點最大的匹配段（與前綴匹配），其表示為 $[l:l+Z[l]]$，也可以寫作 $[l:r]$，保證 $l ≤ r$。在計算 $Z[i]$ 的過程中，分別討論以下三種情形：</p>
+<ol>
+<li><p>$i ≤ r$<br>根據定義，因為區間 $[l:r]$ 本身是前綴，因此當 $i$ 在區間中間時會將區間分成左右兩半邊，將正個區間往前平移會讓 $i$ 對應到 $i-l$ 的位置，又此時區間為 $[0:r-l]$ ，因此$z[i] = min(z[i-l],r-i)$。</p>
+<ul>
+<li>$z[i-l] ≤ r-i$<br>已經知道 $z[i-l] &lt; r-i$ 表示在前後兩區間（分別從0,i開始）在一樣的情況下做多不超過 $z[i-l]$ 長度的匹配，因此第 $z[i-l]$ 的下一個字元必定無法繼續匹配成前綴。</li>
+<li>$z[i-l] &gt; r-i$<br>在這種情況下已知 $s[0:r-l] = s[l:r]$，根據定義 $s[i-l:r-l] = s[i:r]$。因為 $z[i-l] &gt; r-i$，$z[i-l]$ 右端的範圍會超過 $r$ ，也就是說超過 $r$ 之後這個性質 $s[i-l:r-l] = s[i:r]$ 就不會成立，但可以確定 $z[i]$ 至少為 $r-i$。接著就暴力枚舉即可！</li>
+</ul>
+</li>
+</ol>
+<p>上面的內容可以用下圖解釋，兩條紅線段是一樣的，$x=i-l$ ，接著討論$Z[x]$ 的長度就可以知道該如何更新。<br><img src="https://i.imgur.com/6WU1JWG.png" alt=""></p>
+<ol>
+<li>$i &gt; r$<br>這種情況我們可以直接暴力跟前綴匹配。</li>
+</ol>
+<h4 id="程式實作1"><a href="#程式實作1" class="headerlink" title="程式實作1"></a>程式實作1</h4><p>程式碼中 $bst$ 表示的是左界 $l$，右界則是 $bst+Z[bst]$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Z_algo1</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *Z)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> bst = <span class="number">0</span>;                            <span class="comment">//相當於左界，大小為z[bst]</span></span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Z[bst]+bst &lt; i)Z[i] = <span class="number">0</span>;         <span class="comment">//直接暴力枚舉</span></span><br><span class="line">        <span class="keyword">else</span> Z[i] = <span class="built_in">min</span>(Z[i-bst],bst+Z[bst]-i);</span><br><span class="line">        <span class="keyword">while</span>(S[Z[i]]==S[i+Z[i]])Z[i]++;    <span class="comment">//依序暴力枚舉</span></span><br><span class="line">        <span class="keyword">if</span>(Z[i]+i &gt; bst+Z[bst])bst = i;     <span class="comment">//更新更遠的右界</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="程式實作2"><a href="#程式實作2" class="headerlink" title="程式實作2"></a>程式實作2</h4><p>這個實作超級短，沒有幾行就解決了，但他的效果卻是一樣的！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Z_algo2</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *Z)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>, r = <span class="number">0</span>;                       <span class="comment">//左右界</span></span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;</span><br><span class="line">        Z[i] = <span class="built_in">max</span>(<span class="built_in">min</span>(Z[i-l],r-i),<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span>(S[i+Z[i]] &amp;&amp; S[Z[i]] == S[i+Z[i]])&#123;</span><br><span class="line">            r = i+Z[i];               <span class="comment">//更新右界</span></span><br><span class="line">            Z[i]++;</span><br><span class="line">        &#125;<span class="comment">//保證當Z[i]從Z[i-l]轉移時不會被更新！</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h4><p>根據以上兩個程式碼可以發現，右界 $r$ 或是 $bst+Z[bst]$ 在過程中是不斷增大的，且r必定不會超過n，因此迴圈跑下來複雜度會是 $O(N)$。</p>
+<h3 id="LPS-Manacher’s-Algorithm"><a href="#LPS-Manacher’s-Algorithm" class="headerlink" title="LPS (Manacher’s Algorithm)"></a>LPS (Manacher’s Algorithm)</h3><p>LPS (Longest Palindromic Substring)就是最長回文子字串，Naive的作法是每次 $O(n)$ 向兩側擴展，時間是 $O(n^2)$。</p>
+<p>Manacher’s Algorithm這個演算法的概念和Z Alogorithm相近，可以在 $O(n)$ 的時間內找出以每一個點為中心之最長回文長度。回文的定義是無論從正序或是逆序看一個字串都是一樣的，分為兩種：一種是奇數的對稱，也就是以一個字元為對稱中心往兩側擴展；另一種則是以字元間的空格為對稱中心向兩側對稱。</p>
+<p>這兩個的性質很不同，在處理的時候我們也不知道到底是呈現怎麼樣對稱的狀況，因此可以使用一種手法：將每一個字元中間插入同樣沒有出現過的字元，如此一來不論是偶數或是奇數長度的字串，在加入這個沒有出現過的字元之後，都會變成奇數長度的回文了！</p>
+<p>定義 $z[i]$ 為以 $s[i]$ 為中心，最長的回文長度LPS（如果字元i是自己回文，定義Z[i] = 0]）。以字串abba來說就是以下情況：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>編號</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原字串</td>
+<td>a</td>
+<td>b</td>
+<td>b</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>變更後</td>
+<td>.</td>
+<td>a</td>
+<td>.</td>
+<td>b</td>
+<td>.</td>
+<td>b</td>
+<td>.</td>
+<td>a</td>
+<td>.</td>
+</tr>
+<tr>
+<td>Z函數</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>跟Z Alogrithm 一樣，維護一個右界最遠的區間 $[l,r]$，作為在算 $z[i]$ 時能使用到的 $z[0:i-1]$ 的最大值，令他為 $r$。取j滿足 $j+z[j]$ 有最大值，分成以下兩個條件做討論：</p>
+<p><strong>1. r &lt; i</strong><br>這種情況就表示不能用之前算的東西去更新現在的值，因此只能暴力枚舉 $s[i]$ 的左右兩側，看最長回文的長度為何。</p>
+<p><strong>2. r &gt; i</strong><br>分成三種情況討論（比z algorithm多了一個），首先因為 $r &gt; i$，右界覆蓋了 $i$，表示我們可以從 $j$ 的另外一端映射出與 $s[i]$ 相同的 $s[i’]$（以 $j$ 為中心回文呈現兩側對稱），映射的索引值為 $2j-i$，如下圖：</p>
+<p><img src="https://i.imgur.com/Pf1S21i.png" alt=""></p>
+<p>因為 $z[i’]$ 已經計算過了，因此可以將 $r-i$ 以及 $z[i’]$ 的大小分成三種情況討論：</p>
+<ul>
+<li><p>$z[i’] &lt; r-i$<br>這種情況表示 $z[i’]$ 無法繼續往右邊更新，因為 $i$ 與 $i’$ 都是在以 $j$ 為中心的回文中，兩邊是一樣的，代表 $z[i] = z[i’]$ 且不可能再被更新成更大的範圍。</p>
+</li>
+<li><p>$z[i’] = r-i$<br>這種情況下是要枚舉的，從兩側映射的關係知道 $z[i]$ 的長度至少為 $r-i-1$，因此將 $z[i]$ 設為 $r-i$ 繼續枚舉就可以了！</p>
+</li>
+<li><p>$z[i’] &gt; r-i$<br>由下圖觀察發現，$z[i]$ 不可能比 $r-i$ 還要大，直接將值設為 $r-i$ 即可。<br><img src="https://i.imgur.com/zsb6blx.png" alt=""></p>
+</li>
+</ul>
+<h4 id="時間複雜度-1"><a href="#時間複雜度-1" class="headerlink" title="時間複雜度"></a>時間複雜度</h4><p>觀察到while迴圈執行的狀況，只有當 $r &lt; i$ 以及 $z[i’] = r-i$ 時右界才有被更新的可能，兩種情況都會讓右界 $r$ 遞增，範圍最大到 $n$ ，因為不會減小的關係，總時間複雜度為線性的 $O(n)$！</p>
+<h4 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Longest</span><span class="params">()</span></span>&#123;</span><br><span class="line">    n = <span class="built_in">strlen</span>(T);m = <span class="number">2</span>*n+<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">memset</span>(S,<span class="string">&#x27;.&#x27;</span>,m);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)S[<span class="number">2</span>*i+<span class="number">1</span>] = T[i];    <span class="comment">//間隔插入沒出現過字元</span></span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">1</span>;                               <span class="comment">//計算時使用右開區間</span></span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>,r = <span class="number">0</span>;                        <span class="comment">//維護最大右界左右界</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;m;i++)&#123;</span><br><span class="line">        Z[i] = <span class="built_in">max</span>(<span class="built_in">min</span>(Z[<span class="number">2</span>*l-i],r-i),<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">while</span>(i-Z[i]&gt;=<span class="number">0</span> &amp;&amp; i+Z[i] &lt; m &amp;&amp; S[i+Z[i]]==S[i-Z[i]])&#123;</span><br><span class="line">            l = i;r = i+Z[i];</span><br><span class="line">            Z[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="後綴數組"><a href="#後綴數組" class="headerlink" title="後綴數組"></a>後綴數組</h3><p>一些基本定義，我們定義 $suf[i]$ 是字串 $S$ 從 $i$ 開始的後綴，也就是 $S[i:n-1]$。將一個字串所有的後綴取出來按照字典序進行排序，就是<strong>後綴數組</strong>。總共有三個複雜度：$O(n^2\log n)$、$O(n\log^2 n)$、$O(n\log n)$ 分別是使用暴力、倍增、基數排序的優化。</p>
+<h4 id="暴力解-O-N-2-log-n"><a href="#暴力解-O-N-2-log-n" class="headerlink" title="暴力解 $O(N^2\log n)$"></a>暴力解 $O(N^2\log n)$</h4><p>$O(n)$ 的字串比對，排序 $O(n\log n)$，因此時間複雜度為 $O(n^2\log n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"><span class="keyword">char</span> S[<span class="number">10</span>] = <span class="string">&quot;algorithm&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strcmp</span>(S+a,S+b) &lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> SA[<span class="number">10</span>];</span><br><span class="line">    n = <span class="built_in">strlen</span>(S);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)SA[i] = i;</span><br><span class="line">    <span class="built_in">sort</span>(SA,SA+n,cmp);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cout&lt;&lt;SA[i]&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="倍增-Quick-Sort"><a href="#倍增-Quick-Sort" class="headerlink" title="倍增+Quick Sort"></a>倍增+Quick Sort</h4><p>使用倍增可以讓複雜度做到 $O(n\log^2 n)$，其原理主要是讓比較的時間併入排序，同時多做 $O(\log n)$ 層的排序。定義 $sa[i]$ 為將後綴排序後第 $i$ 小的後綴編號；$rk[i]$ 表示後綴 $i$ 的排名。</p>
+<p>倍增顧名思義，跟將數量乘上兩倍有關，因此會帶一個log。下圖就是一個排序的示例，首先按這字典序初始每一個字元的排名 $rk[i]$，進行 $O(\log n)$ 層，每一層用 $O(n\log n)$ 的時間進行排序。倍增讓原本的字串比較 $O(n)$ 降到 $O(\log n)$ 。</p>
+<p>接下來的每一層的每一個字元 $s[i]$，在比較大小的時候，將 $rk[i]$ 以及 $rk[i+k]$ 組成一個 $pair$ 進行排序，從第一層開始，每一層的 $k$ 都會增加為2倍（倍增的概念）。pair的first就好比倍增時前 $s[i:i+k]$ 的排名、second就是 $s[i+k+1:i+2k]$ 的排名，搭配字典序是按照由前到後進行排名，比完fisrt才會比second，如此一來我們可以利用倍增的性質，也就是已經排名好的較短長度的字串，直接利用排好的名次進行下一輪的排序，這就導致我們不需要對每一個字元都看過一遍！</p>
+<p><img src="https://i.imgur.com/l1aGK8f.png" alt=""><br><a target="_blank" rel="noopener" href="https://oi-wiki.org/string/sa/">圖片出處</a>圖中的黑線岔開距離都會因為每一層而越岔越開（乘上2倍），也就是「倍增」所代表的意義！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">suffix_array</span><span class="params">(string S)</span></span>&#123;</span><br><span class="line">    n = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> lg = <span class="number">32</span>-__builtin_clz(n);<span class="comment">//回傳第一個1之前0的個數（二進位）</span></span><br><span class="line">    <span class="function">vector&lt;pt&gt; <span class="title">cur</span><span class="params">(n,&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n+<span class="number">1</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cur[i] = &#123;S[i],<span class="number">0</span>,i&#125;;</span><br><span class="line">    <span class="built_in">rep</span>(p,<span class="number">0</span>,lg)&#123;                <span class="comment">//進行O(lgn)次</span></span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">1</span> &lt;&lt; p;         <span class="comment">//現在倍增的大小</span></span><br><span class="line">        <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">        rk[cur[<span class="number">0</span>].id] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)            <span class="comment">//設定rk，與前一個相同則設定跟前一個一樣</span></span><br><span class="line">            rk[cur[i].id] = (cur[i<span class="number">-1</span>]==cur[i] ? rk[cur[i<span class="number">-1</span>].id]:i);</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)            <span class="comment">//倍增pair的second</span></span><br><span class="line">            cur[i] = &#123;rk[i],rk[<span class="built_in">min</span>(n,i+k)],i&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)sa[i] = cur[i].id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="搭配-Radix-Sort"><a href="#搭配-Radix-Sort" class="headerlink" title="搭配 Radix Sort"></a>搭配 Radix Sort</h4><p>基數排序 (Raddix sort) 以及計數排序 (Counting sort) 兩者是有點從屬的關係，計數排序是基數排序的子程序，也就是說基數排序是透過對每一位進行計數排序完成的！</p>
+<p>首先，我們需要 $O(n)$ 的空間進行每一輪的計數排序，對每一個元素進行排名（從1到n-1），如此一來才能確保不會有溢位的問題。先對第二個關鍵字進行排序，排完之後再按照第一個關鍵字排序。Raddix Sort 是穩定的，相同元素為在前面在排序之後一定會在前面。</p>
+<p>有幾個地方有實作上進行基數排序的限制，首先第一輪會按照個別字母的字典序進行排序，用快排等基於比較的排序方法可以順利完成，但可惜基數排序不行，一定要乖乖的按照 1 到 n-1 順序進行排名。因此在第一輪會先使用 $std::sort$ 排名，之後進行raddix_sort！</p>
+<p>最後一個小小的地方，就是當第二個 key 的值為 -1的情況（倍增超出範圍），在比較時可以直接push進去答案裡面，因為並沒有一個box的index 是-1，同時他們也是最小，丟進去即可。</p>
+<p><strong>時間複雜度：</strong> 每一層進行 $O(n)$ 排序，因為倍增共有 $O(\log n)$ 層，因此總時間複雜度為 $O(n)\times O(\log n) = O(n\log n)$！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">raddix_sort</span><span class="params">(vector&lt;pt&gt; &amp;cur)</span></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(cur[i].y == <span class="number">-1</span>)temp.<span class="built_in">push_back</span>(cur[i]);</span><br><span class="line">        <span class="keyword">else</span> box[cur[i].y].<span class="built_in">push_back</span>(cur[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : box[i])temp.<span class="built_in">push_back</span>(j);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)box[i].<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        box[temp[i].x].<span class="built_in">push_back</span>(temp[i]);</span><br><span class="line">    cur.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : box[i])cur.<span class="built_in">push_back</span>(j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最長共同前綴-LCP-Kasai’s-Algorithm"><a href="#最長共同前綴-LCP-Kasai’s-Algorithm" class="headerlink" title="最長共同前綴 LCP (Kasai’s Algorithm)"></a>最長共同前綴 LCP (Kasai’s Algorithm)</h3><p>最長共同前綴，以現在字串演算法中，假設 $lcp(i,j)$ 為後綴 $i$ 與 $j$ 的最長共同前綴。在<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/%C2%AD%C2%ADkasais-algorithm-for-construction-of-lcp-array-from-suffix-array/">這篇文章</a>中給出這個定義：</p>
+<blockquote>
+<p>A value lcp[i] indicates length of the longest common prefix of the suffixes inexed by suffix[i] and suffix[i+1]</p>
+</blockquote>
+<p>定義 $lcp[i]$ 為後綴 $i$ 與後綴 $i+1$ 的最長共同前綴，其中 $lcp[n-1]$ 沒有定義。再複習一下，$rk[i]$ 為第 $i$ 個後綴數組的排名$rk[i]$、$sa[i]$ 為排名為 $i$ 的字串所對應到的從 $sa[i]$ 開始的後綴數組。</p>
+<p>到底我們要求的LCP是什麼？如果只是給兩個字串要求出共同最長前綴，那我們只要 $O(min(L_A,L_B))$ 就好，是可以接受的複雜度。但Kasai’s Algorithm不是要求這個。一般都在講到後綴字串之後講到LCP，為的就是要求出所有的後綴數組中，任兩個字串的共同最長前綴為何。以一個字串長度為 $l$ 來說，後綴的配對數量共有 $O(l^2)$ 組，暴力肯定會TLE。</p>
+<p>求出 $lcs$ 需要有兩個引理：</p>
+<ul>
+<li><strong>第一個引理</strong><script type="math/tex; mode=display">lcp[rk[i]] ≥ lcp[rk[i-1]]-1</script>其中 $i$ 為<strong>尚未經過排序</strong>的從 $i$ 開始的後綴字串。</li>
+</ul>
+<p><strong>說明：</strong> 將後綴數組排序之後有點像將相似的字串排在一起（按字典序由小排到大），鄰近的字串其實代表著一個意義，兩者相似程度越高。因此 $lcp[rk[i-1]]$ 某種意義代表著與 $i-1$ 開始的後綴數組（簡稱後綴 $i-1$）跟其他字串最大的共同前綴長度。</p>
+<p>接著我們看 $lcp[rk[i]]$ ，後綴 $i$ 就是後綴 $i-1$ 刪掉一個前綴字元的結果。我們假設跟後綴 $i-1$ 相近的那個字串叫做 $T$ （其實就是後綴 $rk[i-1]+1$），把 $T$ 刪除一個前綴字元之後所形成的字串（也就是比 $T$ 再短一字元的後綴）也就可以跟後綴 $i$ 進行匹配，其長度因為被刪掉一個前綴字元所以少一，因此得到了以上式子。</p>
+<p>聽說很難證明，不過至少可以情感上的接受這件事是對的！</p>
+<ul>
+<li><strong>第二個引理</strong><script type="math/tex; mode=display">lcp(S_i,S-j) = min_{i≤k<j}(S_k,S_{k+1})</script></li>
+</ul>
+<p>為什麼可以算出最近的排名的LCP即可得到最長的LCP？從這個定理可以看出來，對於後綴 $i$ 以及後綴 $j$ ，取 $min$ 的原因是要確保所有的中間後綴 $k$ 都包含了下界 $k$ ，也就是說每個在 $i$ 與 $j$ 中間的人都至少跟前一個人相同個字元。</p>
+<hr>
+<p>以下以字串 $aabaabc$ 作為範例：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>後綴</th>
+<th>RK</th>
+<th style="text-align:left">String</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td style="text-align:left">aabaabc</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td style="text-align:left">abaabc</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td style="text-align:left">baabc</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td style="text-align:left">aabc</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td style="text-align:left">abc</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td style="text-align:left">bc</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td style="text-align:left">c</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以下是SA與對應的String</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>RK</th>
+<th>SA</th>
+<th>String</th>
+<th>LCP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>aabaabc</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>aabc</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>abaabc</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>abc</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>baabc</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>bc</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>c</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>以下是找LCP流程：</p>
+<ul>
+<li>首先從後綴0開始，找到對應的下一個rk，也就是後綴3，得到LCP為3</li>
+<li>接下來看後綴1，查表得到RK為2，找到RK為3的找LCP，得到2</li>
+<li>看後綴2，與RK為4,5名找LCA，得到1</li>
+<li>後綴3，看RK 1,2，LCA為1</li>
+<li>接下來以此推累</li>
+</ul>
+<p>接下來有兩種不同設定方法，端看要採用的是上表還是下表的字串排序方法。我以上表為例，程式執行時印出順序：$3211000$；也可以採用後綴數組排序後的結果（一般都採用此方法），直接對應出順序（對照的是下表）：$3120100$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">LCP</span><span class="params">(string s)</span></span>&#123;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n,<span class="number">0</span>)</span>,<span class="title">lcp</span><span class="params">(n,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)rk[sa[i]] = i;      <span class="comment">//利用sa反函數得到rk</span></span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(k)k--;</span><br><span class="line">        <span class="keyword">if</span>(rk[i] == n<span class="number">-1</span>)<span class="keyword">continue</span>;   <span class="comment">//rk[n-1]未定義</span></span><br><span class="line">        <span class="keyword">int</span> j = sa[rk[i]+<span class="number">1</span>];        <span class="comment">//下一名後綴從何開始</span></span><br><span class="line">        <span class="keyword">while</span>(i+k&lt;n &amp;&amp; j+k&lt;n &amp;&amp; s[i+k] == s[j+k])k++;</span><br><span class="line">        lcp[rk[i]] = k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lcp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>時間複雜度：</strong> 主要觀察 $k$ 的變化，$k$ 最多就是n，最少是0，最差的情況是 $k$ 被減掉 $n$ 次，加上 $2n$ 次，因此複雜度是線性 $O(n)$！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%BC%94%E7%AE%97%E6%B3%95/" rel="tag"># 演算法</a>
+              <a href="/tags/%E5%AD%97%E4%B8%B2/" rel="tag"># 字串</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/" rel="prev" title="使用Hexo搭配GitHub架設個人部落格">
+      <i class="fa fa-chevron-left"></i> 使用Hexo搭配GitHub架設個人部落格
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/string2/" rel="next" title="字串演算法例題 (String)">
+      字串演算法例題 (String) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AA%B2%E7%A8%8B%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">課程內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E4%B8%B2"><span class="nav-number">1.1.</span> <span class="nav-text">字串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A8%B9Trie"><span class="nav-number">1.2.</span> <span class="nav-text">字典樹Trie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KMP"><span class="nav-number">1.3.</span> <span class="nav-text">KMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%A2%E6%98%8E%E8%B7%9D%E9%9B%A2-Hamming-distance"><span class="nav-number">1.4.</span> <span class="nav-text">漢明距離(Hamming distance)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Z-value"><span class="nav-number">1.5.</span> <span class="nav-text">Z-value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rolling-Hash"><span class="nav-number">1.6.</span> <span class="nav-text">Rolling Hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%B6%B4%E6%95%B8%E7%B5%84%EF%BC%88Suffix-Array%EF%BC%89"><span class="nav-number">1.7.</span> <span class="nav-text">後綴數組（Suffix Array）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E9%95%B7%E5%85%B1%E5%90%8C%E5%89%8D%E7%B6%B4%EF%BC%88LCP-Longest-Common-Prefix%EF%BC%89"><span class="nav-number">1.8.</span> <span class="nav-text">最長共同前綴（LCP,Longest Common Prefix）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%B8%B2%E6%BC%94%E7%AE%97%E6%B3%95%E4%B8%BB%E9%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">字串演算法主題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A8%B9Trie-1"><span class="nav-number">2.1.</span> <span class="nav-text">字典樹Trie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Trie%E7%B5%90%E6%A7%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">Trie結構</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Insert%E5%87%BD%E6%95%B8"><span class="nav-number">2.1.2.</span> <span class="nav-text">Insert函數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E8%A9%A2%E5%87%BD%E6%95%B8"><span class="nav-number">2.1.3.</span> <span class="nav-text">查詢函數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Delete%E5%87%BD%E6%95%B8"><span class="nav-number">2.1.4.</span> <span class="nav-text">Delete函數</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KMP-Algorithm"><span class="nav-number">2.2.</span> <span class="nav-text">KMP Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Build-Function"><span class="nav-number">2.2.1.</span> <span class="nav-text">Build Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Match-Function"><span class="nav-number">2.2.2.</span> <span class="nav-text">Match Function</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash-Robin-Karp-Algorithm"><span class="nav-number">2.3.</span> <span class="nav-text">Hash (Robin-Karp Algorithm)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Z-Algorithm-Gusfield%E2%80%99s-Algorithm"><span class="nav-number">2.4.</span> <span class="nav-text">Z Algorithm (Gusfield’s Algorithm)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%A6%82%E5%BF%B5"><span class="nav-number">2.4.1.</span> <span class="nav-text">算法概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程式實作1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C2"><span class="nav-number">2.4.3.</span> <span class="nav-text">程式實作2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="nav-number">2.4.4.</span> <span class="nav-text">時間複雜度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LPS-Manacher%E2%80%99s-Algorithm"><span class="nav-number">2.5.</span> <span class="nav-text">LPS (Manacher’s Algorithm)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6-1"><span class="nav-number">2.5.1.</span> <span class="nav-text">時間複雜度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">2.5.2.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%B6%B4%E6%95%B8%E7%B5%84"><span class="nav-number">2.6.</span> <span class="nav-text">後綴數組</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E8%A7%A3-O-N-2-log-n"><span class="nav-number">2.6.1.</span> <span class="nav-text">暴力解 $O(N^2\log n)$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%8D%E5%A2%9E-Quick-Sort"><span class="nav-number">2.6.2.</span> <span class="nav-text">倍增+Quick Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%90%AD%E9%85%8D-Radix-Sort"><span class="nav-number">2.6.3.</span> <span class="nav-text">搭配 Radix Sort</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E9%95%B7%E5%85%B1%E5%90%8C%E5%89%8D%E7%B6%B4-LCP-Kasai%E2%80%99s-Algorithm"><span class="nav-number">2.7.</span> <span class="nav-text">最長共同前綴 LCP (Kasai’s Algorithm)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

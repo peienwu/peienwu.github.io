@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="暑假剩沒多少天了，趕緊追進度啊！ 課程內容座標與向量 長度、角度、座標、向量 最常以座標、向量表示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="計算幾何（Computational Geometry）">
+<meta property="og:url" content="https://peienwu.com/geo1/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="暑假剩沒多少天了，趕緊追進度啊！ 課程內容座標與向量 長度、角度、座標、向量 最常以座標、向量表示">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/Si0hlNr.png">
+<meta property="og:image" content="https://i.imgur.com/ozKfaKL.png">
+<meta property="og:image" content="https://i.imgur.com/did2OzY.png">
+<meta property="og:image" content="https://i.imgur.com/9mUdyV6.png">
+<meta property="article:published_time" content="2021-08-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-27T05:07:05.214Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="計算幾何">
+<meta property="article:tag" content="暑期筆記">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/Si0hlNr.png">
+
+<link rel="canonical" href="https://peienwu.com/geo1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>計算幾何（Computational Geometry） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/geo1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          計算幾何（Computational Geometry）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-08-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-20T00:00:00+08:00">2021-08-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95/" itemprop="url" rel="index"><span itemprop="name">計算幾何</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/geo1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/geo1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>6.5k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>6 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>暑假剩沒多少天了，趕緊追進度啊！</p>
+<h2 id="課程內容"><a href="#課程內容" class="headerlink" title="課程內容"></a>課程內容</h2><h3 id="座標與向量"><a href="#座標與向量" class="headerlink" title="座標與向量"></a>座標與向量</h3><ul>
+<li>長度、角度、座標、向量</li>
+<li>最常以座標、向量表示<span id="more"></span></li>
+<li>Define x first, y second</li>
+<li>內積Dot：$A \cdot B = A_xB_x+A_yB_y$</li>
+<li>外積Cross：$A \times B = A_xB_y-A_yB_x$</li>
+<li>運算子重載：加減乘除、取純量（$abs()$）</li>
+</ul>
+<h3 id="有向面積"><a href="#有向面積" class="headerlink" title="有向面積"></a>有向面積</h3><ul>
+<li>用外積算面積（有正負：有向面積）</li>
+<li>逆時針為正、順時針為負</li>
+<li>多邊形面積：任選平面上一點A，將所有點與A連線</li>
+<li>透過順、逆加總有向面積（p0,p1…pn,其中p0=pn）</li>
+<li>AREA = $\frac{1}{2}\sum<em>{i=0}^{N-1}\vec{P_i}\times\vec{P</em>{i+1}}$</li>
+</ul>
+<h3 id="線段相交"><a href="#線段相交" class="headerlink" title="線段相交"></a>線段相交</h3><ul>
+<li>線段不平行：$P_1$ 與$P_2$ 會在線段$P_3$、$P_4$異側（方向函數）</li>
+<li>線段平行：檢驗是否共線、並確認某一個點是否在線段上</li>
+</ul>
+<h3 id="誤差分析：EPS"><a href="#誤差分析：EPS" class="headerlink" title="誤差分析：EPS"></a>誤差分析：EPS</h3><ul>
+<li>使用二進位儲存：必產生誤差</li>
+<li>精度：float $10^{-7}$, double $10^{-16}$, long double $10^{-19}$</li>
+<li>誤差容忍值$eps$，將 $x\pm eps$視為 $x$</li>
+<li>重載運算子：==（視為相等）,&gt;,&lt;，加上誤差範圍</li>
+<li>Eps大小：多落在 $10^{-6}$到 $10^{-12}$ 之間</li>
+<li>誤差：加減法，絕對誤差相加；乘除法，相對誤差相加</li>
+<li>下界：數字範圍為V內時，$eps$ 至少要VK 乘上資料型態本身誤差</li>
+<li>上界：題目一般會給</li>
+<li>避免誤差大法：非到最後關頭，否則都用整數運算！</li>
+</ul>
+<h3 id="三角函數"><a href="#三角函數" class="headerlink" title="三角函數"></a>三角函數</h3><ul>
+<li>泰勒展開式逼近，時間並非O(1)</li>
+<li>$atan2(y,x) = \theta$，回傳值域$(-pi,pi]$</li>
+<li>回傳long double ：使用$atan2l(y,x)$</li>
+<li>常數大，不建議使用</li>
+</ul>
+<h3 id="IEEE-754"><a href="#IEEE-754" class="headerlink" title="IEEE 754"></a>IEEE 754</h3><ul>
+<li>Sign, Exponent, Mantissa</li>
+<li>正負號、指數部分、小數部分</li>
+</ul>
+<h3 id="極角排序"><a href="#極角排序" class="headerlink" title="極角排序"></a>極角排序</h3><ul>
+<li>給定很多點，依照與某特定點（原點）的角度進行排序</li>
+<li>Sort by cross，依照內積排序</li>
+<li>題目：平面上n個點，問一條直線最多通過幾個點</li>
+</ul>
+<h3 id="凸包"><a href="#凸包" class="headerlink" title="凸包"></a>凸包</h3><ul>
+<li>多邊形：簡單多邊形（邊不相交）、凸多邊形（內角都≤180）、凹多邊形（有內角&gt;180）</li>
+<li>能包住所有點的凸多邊形</li>
+<li>凸包求法：Monotone Chain（二維平面）、DC（三維）</li>
+<li><strong>Monotone Chain</strong><ul>
+<li>將所有點按照(x,y)排序</li>
+<li>把下凸包、上凸包「圍」出來</li>
+<li>合併下凸包、上凸包</li>
+<li>開一個vector（功能為stack）紀錄當前下半凸包</li>
+<li>檢查新加入的點會讓哪些點不再是凸包上的點</li>
+</ul>
+</li>
+</ul>
+<h3 id="模擬退火-SA"><a href="#模擬退火-SA" class="headerlink" title="模擬退火(SA)"></a>模擬退火(SA)</h3><ul>
+<li>尋找空間中近似最優解</li>
+<li>一個隨機算法</li>
+<li>例題：給你平面上 N 個點，請你找出一個點，使得這個點連到這 N 個點的距離總和最短</li>
+</ul>
+<h2 id="計算幾何函式模板"><a href="#計算幾何函式模板" class="headerlink" title="計算幾何函式模板"></a>計算幾何函式模板</h2><p>計算幾何最重要的莫過於座標上的點，實作方式可以用 $std::pair$ 或是自己定義一個類別，將點的資訊以及相關的運算式定義出來。我們總共需要重載點的大於、等於、小於的運算子，以及加法減法、向量外積內積等，同時還有很多功能是可以繼續定義下去，例如向量乘上一個定值，可以繼續加入類別中。</p>
+<h3 id="點的模板及運算子重載"><a href="#點的模板及運算子重載" class="headerlink" title="點的模板及運算子重載"></a>點的模板及運算子重載</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pt</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x == b.x)<span class="keyword">return</span> y &lt; b.y;</span><br><span class="line">        <span class="keyword">return</span> x &lt; b.x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &gt; (pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x == b.x)<span class="keyword">return</span> y &gt; b.y;</span><br><span class="line">        <span class="keyword">return</span> x &gt; b.x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> == (pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">abs</span>(x-b.x)&lt;=eps &amp;&amp; <span class="built_in">abs</span>(y-b.y)&lt;=eps)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    pt <span class="keyword">operator</span>+(pt b) &#123;<span class="keyword">return</span> &#123;x + b.x, y + b.y&#125;;&#125; <span class="comment">//向量相加</span></span><br><span class="line">    pt <span class="keyword">operator</span>-(pt b) &#123;<span class="keyword">return</span> &#123;x - b.x, y - b.y&#125;;&#125; <span class="comment">//向量相減</span></span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>^(pt b) &#123;<span class="keyword">return</span> x * b.y - y * b.x;&#125; <span class="comment">//向量外積cross</span></span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>*(pt b) &#123;<span class="keyword">return</span> x * b.x + y * b.y;&#125; <span class="comment">//向量內積dot</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以上是預設點的x座標y座標都是整數的情況，如果要改成使用自定義型別，可以改用樣板(Template)自定義資料型別，根據題目的要求，使用整數或是浮點數進行運算。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">pt</span>&#123;</span></span><br><span class="line">    T x,y;</span><br><span class="line">    <span class="comment">//下方運算子重載與上方相同</span></span><br><span class="line">&#125;</span><br><span class="line">pt&lt;<span class="keyword">int</span>&gt; p[N];        <span class="comment">//點座標宣告為整數</span></span><br><span class="line">pt&lt;<span class="keyword">double</span>&gt; pp[N];    <span class="comment">//點的不同資料型別宣告</span></span><br></pre></td></tr></table></figure>
+<h3 id="方向函數"><a href="#方向函數" class="headerlink" title="方向函數"></a>方向函數</h3><p>針對 $\vec a$ 以及 $\vec b$ 外積的結果，可以知道兩者之間相對的方向。如果 $\vec a$ 和 $\vec b$ 共線，則回傳0，$\vec a$ 轉向 $\vec b$ 如果是順時針則回傳1，其餘回傳-1。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dir</span><span class="params">(pt a, pt b, pt o)</span> </span>&#123;                         <span class="comment">//方向函數</span></span><br><span class="line">    <span class="keyword">int</span> cross = (a - o) ^ (b - o);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">fabs</span>(cross) &lt;= eps) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(cross &gt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="點與線段關係"><a href="#點與線段關係" class="headerlink" title="點與線段關係"></a>點與線段關係</h3><p>以下函式可以判斷點o是否在 $\overline{AB}$ 上，首先利用外積是否為0判斷是 $\overline{OA}$ 與 $\overline{OB}$ 是否平行；接著以內積判斷是否在線段中，而非線段的兩側（平行的條件下內積只可能是1或是-1）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">onseg</span><span class="params">(pt a, pt b, pt o)</span></span>&#123;         <span class="comment">//o是否在ab線段上</span></span><br><span class="line">    <span class="keyword">int</span> cross = (a - o) ^ (b - o);    <span class="comment">//是否平行</span></span><br><span class="line">    <span class="keyword">int</span> dot = (a - o) * (b - o);      <span class="comment">//是否在線段中</span></span><br><span class="line">    <span class="keyword">return</span> (cross == <span class="number">0</span>)&amp;&amp;(dot &lt;= <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="線段相交-1"><a href="#線段相交-1" class="headerlink" title="線段相交"></a>線段相交</h3><p>以下函式為給定四個點$A,B,C,D$，判斷 $\overline{AB}$ 是否相交於 $\overline{CD}$。首先是特例的判斷，線段的其中一端點在另一線段上，利用上方點與線段關係的函式完成這個判斷。</p>
+<p>特例判斷完成之後，我們需要用到上方方向函式判斷線段兩端點是否在另一條線段的異側，即以下的關係式：</p>
+<script type="math/tex; mode=display">dir(A,B,C)\times dir(A,B,D) < 0</script><p>我們要檢查兩條線段，其相乘結果必須皆為負數，表示處於線段的異側！最後是平行線的判斷，如果兩線平行且相交，表示兩線共線，這可以在特例時就被判斷出來。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Intersection</span><span class="params">(pt a, pt b, pt c, pt d)</span></span>&#123;      <span class="comment">//線段ab是否與cd相交</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">onseg</span>(a,b,c)||<span class="built_in">onseg</span>(a,b,d))<span class="keyword">return</span> <span class="literal">true</span>;  <span class="comment">//點c、d是否洽在線段ab上</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">onseg</span>(c,d,a)||<span class="built_in">onseg</span>(c,d,b))<span class="keyword">return</span> <span class="literal">true</span>;  <span class="comment">//點a、b是否洽在線段cd上</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">dir</span>(a,b,c)*<span class="built_in">dir</span>(a,b,d)==<span class="number">-1</span> &amp;&amp; <span class="built_in">dir</span>(c,d,a)*<span class="built_in">dir</span>(c,d,b)==<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;                            <span class="comment">//對於線段兩端點看另外兩端點必須方向相反</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="極角排序-1"><a href="#極角排序-1" class="headerlink" title="極角排序"></a>極角排序</h3><p>在進行全點對線段共線問題的判斷時，使用極角排序通常會比單純暴力枚舉更快速。極角也就是極座標中每一個跟原點的夾角。如果兩個點位在左半平與右半平面，則先將其判斷出來，如此才能確定起始的角度為何。</p>
+<p>如果位在同一個左右半平面，則透過外積的方式比較兩個向量的先後順序。以下程式碼是從座標平面270度的地方開始逆時針掃一圈依序經過的點。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(pt a, pt b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> f1 = a &lt; pt&#123;<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">bool</span> f2 = b &lt; pt&#123;<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span>(f1 != f2)<span class="keyword">return</span> f1 &lt; f2;</span><br><span class="line">    <span class="keyword">return</span> (a ^ b) &gt; <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//逆時針將點進行極角排序，從270度開始逆時針</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">sort</span>(p.<span class="built_in">begin</span>(),p.<span class="built_in">end</span>(),cmp);     <span class="comment">//以id為原點進行極角排序</span></span><br></pre></td></tr></table></figure>
+<h3 id="凸包函數（使用Monotone-Chain）"><a href="#凸包函數（使用Monotone-Chain）" class="headerlink" title="凸包函數（使用Monotone Chain）"></a>凸包函數（使用Monotone Chain）</h3><p>首先先將所有點依照x座標進行排序，之後用掃描線由左而右的將符合要求的點推入維護的單調容器中，維護下凸包，接著利用reverse()函數將所有點逆序，也就是x座標由大到小讓掃描線由右而左掃過一遍，將上凸包也圍起來。時間複雜度為$O(n\log n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(pt a, pt b, pt o)</span></span>&#123;</span><br><span class="line">    pt aa = a - o;</span><br><span class="line">    pt bb = b - o;</span><br><span class="line">    <span class="keyword">return</span> (aa ^ bb) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;pt&gt; <span class="title">convex_hull</span><span class="params">()</span></span>&#123;</span><br><span class="line">    vector&lt;pt&gt; hull;</span><br><span class="line">    <span class="built_in">sort</span>(p.<span class="built_in">begin</span>(),p.<span class="built_in">end</span>(),cmp);       <span class="comment">//首先對x進行排序</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> i : p)&#123;                   <span class="comment">//依序走訪，如果遇到外積&lt;0則不在凸包上</span></span><br><span class="line">        <span class="keyword">while</span>(hull.<span class="built_in">size</span>() &gt; <span class="number">1</span> &amp;&amp; <span class="built_in">check</span>(i,hull[hull.<span class="built_in">size</span>()<span class="number">-1</span>],hull[hull.<span class="built_in">size</span>()<span class="number">-2</span>]))&#123;</span><br><span class="line">            hull.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        hull.<span class="built_in">push_back</span>(i);             <span class="comment">//在凸包hull的每一點都符合外積小於0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> down_hull = hull.<span class="built_in">size</span>();</span><br><span class="line">    hull.<span class="built_in">pop_back</span>();                   <span class="comment">//x最大的點會在凸包上，不用做兩次先pop一次</span></span><br><span class="line">    <span class="built_in">reverse</span>(p.<span class="built_in">begin</span>(),p.<span class="built_in">end</span>());        <span class="comment">//將所有點逆序之後做一次上面的凸包</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> i: p)&#123;</span><br><span class="line">        <span class="keyword">while</span>(hull.<span class="built_in">size</span>() &gt; down_hull &amp;&amp; <span class="built_in">check</span>(i,hull[hull.<span class="built_in">size</span>()<span class="number">-1</span>],hull[hull.<span class="built_in">size</span>()<span class="number">-2</span>]))&#123;</span><br><span class="line">            hull.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        hull.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> hull;                       <span class="comment">//起點會經過兩次，剛好來算有向面積</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="旋轉卡尺"><a href="#旋轉卡尺" class="headerlink" title="旋轉卡尺"></a>旋轉卡尺</h3><p>旋轉卡尺可以被應用在尋找最遠點對、面積最大三角形等問題。利用兩條平行的線中間夾著凸包，繞一圈的過程中更新需要求的數值。實作上來說就是使用兩個指針，分別指向旋轉卡尺的平行線所在的兩個點，依照旋轉的方向進行增減的動作！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check2</span><span class="params">(pt a,pt b,pt c,pt d)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> aa = <span class="built_in">abs</span>((a - c)^(b - c));</span><br><span class="line">    <span class="keyword">int</span> bb = <span class="built_in">abs</span>((a - d)^(b - d));</span><br><span class="line">    <span class="keyword">return</span> aa &lt; bb;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>,d = h,sz = hull.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,sz<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="built_in">check2</span>(hull[i],hull[(i+<span class="number">1</span>)%sz],hull[d],hull[(d+<span class="number">1</span>)%sz]))</span><br><span class="line">            d = (d+<span class="number">1</span>)%sz;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans,(hull[i]-hull[d]).<span class="built_in">dis</span>());</span><br><span class="line">        ans = <span class="built_in">max</span>(ans,(hull[(i+<span class="number">1</span>)%sz]-hull[d]).<span class="built_in">dis</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="基本數學知識"><a href="#基本數學知識" class="headerlink" title="基本數學知識"></a>基本數學知識</h2><p>計算幾何圍繞著幾個主軸，向量運算、內積、外積，利用它們進行角度、共線與否、距離等等的判斷。之前有稍微接觸過向量，不過內積與外積是第一次碰到的主題。</p>
+<p>因為目前絕大部分的討論都是在二維平面上進行，因此以下都是以二維平面為前提所進行的討論！</p>
+<h3 id="內積（點積）"><a href="#內積（點積）" class="headerlink" title="內積（點積）"></a>內積（點積）</h3><p>內積跟 $\cos\theta$ 有關，因此主要可以幫助我們判斷線段是否垂直（等於零）、以及共線時點位於正向或是反向的判斷（等於正負一）。兩個向量 $\vec u$ 以及 $\vec v$ 的內積可以寫成以下關係式：</p>
+<script type="math/tex; mode=display">\vec u\cdot \vec v = |\vec u||\vec v|\cos\theta = u_1v_1 + u_2v_2</script><p>兩個向量做內積的正負號會跟餘弦函數的正負變化相同（如下圖），值域為 $[-|\vec u||\vec v|,|\vec u||\vec v|]$，並且在 $\theta = 0,\pi$ 有最大最小值，$\theta = \frac{\pi}{2},\frac{3\pi}{2}$ 的值為零。</p>
+<p><img src="https://i.imgur.com/Si0hlNr.png" alt=""></p>
+<h3 id="外積（叉積）"><a href="#外積（叉積）" class="headerlink" title="外積（叉積）"></a>外積（叉積）</h3><p>外積跟 $\sin\theta$ 有關，主要可以判斷兩向量方向關係（順逆時針旋轉）、是否平行、比較角度大小等。外積的應用十分廣泛，找凸包以及旋轉卡尺都會用到外積判斷兩個向量角度關係。兩個向量 $\vec u$ 以及 $\vec v$ 的外積可以寫成以下關係式：</p>
+<script type="math/tex; mode=display">\vec u\times \vec v = |\vec u||\vec v|\sin\theta = \begin{bmatrix}u_1&u_2\\v_1&v_2\end{bmatrix}=u_1v_2 - u_2v_1</script><p>用更簡單的方式理解外積 $\vec u\times \vec v$ ，其正負值可以想像成 $\vec u$ 轉向 $\vec v$ 所經的劣弧順逆時鐘方向。順時針為正、逆時針為負。</p>
+<p>關於外積的數值變化，與正弦函數的變化是一樣的（下圖），其值域跟內積一樣，不過最大最小值發生在 $\theta = \frac{\pi}{2},\frac{3\pi}{2}$，並在 $\theta = 0,\pi$ 時兩向量叉積為零。</p>
+<p><img src="https://i.imgur.com/ozKfaKL.png" alt=""></p>
+<h3 id="面積"><a href="#面積" class="headerlink" title="面積"></a>面積</h3><h4 id="測量師公式（行列式）"><a href="#測量師公式（行列式）" class="headerlink" title="測量師公式（行列式）"></a>測量師公式（行列式）</h4><p>這是一個從給定多邊形的座標推得面積的公式，寫成很多個三角形有向面積的總和。以下圖來說，$\triangle FBC$、$\triangle FCD$ 、$\triangle FDE$ 的有向面積皆大於零，而 $\triangle FAB$、$\triangle FEA$ 都會因為有向面積是負的（逆時針旋轉）而被扣除掉，運算的總和即是多邊形 $ABCDE$ 的面積！</p>
+<p><img src="https://i.imgur.com/did2OzY.png" alt=""></p>
+<p>一般化的公式，多邊形上總共有 $N$ 個點，令第 $N+1$ 個點為第1個點（為了要繞一圈計算面積），多邊形面積為：</p>
+<script type="math/tex; mode=display">AREA = \frac{1}{2}\sum_{i=1}^{N}\vec{P_i}\times\vec{P_{i+1}}</script><h4 id="三角形外積面積公式"><a href="#三角形外積面積公式" class="headerlink" title="三角形外積面積公式"></a>三角形外積面積公式</h4><p>三角形面積有非常多算法，不過利用外積的公式還是第一次聽到。以下是公式推導過程：</p>
+<p>先從高中三角函數的三角形公式開始：</p>
+<script type="math/tex; mode=display">\begin{split}\triangle ABC &= \frac{1}{2}\overline{AB}\,\overline{AC}\cdot\sin A
+\\&=\frac{1}{2}\sqrt{\overline{AB}^2\,\overline{AC}^2\,(1-\cos^2A)}
+\\&=\frac{1}{2}\sqrt{\overline{AB}^2\,\overline{AC}^2-(\overline{AB}\cdot\overline{AC})^2}
+\\&=\frac{1}{2}\sqrt{(x_1^2+y_1^2)(x_2^2+y_2^2)-(x_1\,x_2+y_1\,y_2)^2}
+\\&=\frac{1}{2}\sqrt{(x_1^2\,y_2^2)+(x_2^2\,y_1^2)-2x_1\,y_2\,x_2\,y_1}
+\\&=\frac{1}{2}\sqrt{[(x_1\,y_2)-(x_2\,y_1)]^2}
+\\&=\frac{1}{2}|\overrightarrow{AB}\times \overrightarrow{AC}|\end{split}</script><p>將三角形其中一點對另外兩點的向量做外積，除以2即為三角形面積。這個公式會在旋轉卡尺的地方使用到！</p>
+<h4 id="平行四邊形面積"><a href="#平行四邊形面積" class="headerlink" title="平行四邊形面積"></a>平行四邊形面積</h4><p>根據上面三角形面積公式的推導，可以相對應得知道兩向量所夾平行四邊形面積公式：</p>
+<script type="math/tex; mode=display">AREA = |\overrightarrow{AB}\times \overrightarrow{AC}|</script><p><img src="https://i.imgur.com/9mUdyV6.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95/" rel="tag"># 計算幾何</a>
+              <a href="/tags/%E6%9A%91%E6%9C%9F%E7%AD%86%E8%A8%98/" rel="tag"># 暑期筆記</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/path2/" rel="prev" title="最短路徑例題（Shortest Path Problem）">
+      <i class="fa fa-chevron-left"></i> 最短路徑例題（Shortest Path Problem）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/geo2/" rel="next" title="計算幾何例題（Computational Geometry Problems）">
+      計算幾何例題（Computational Geometry Problems） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AA%B2%E7%A8%8B%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">課程內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%A7%E6%A8%99%E8%88%87%E5%90%91%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">座標與向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%90%91%E9%9D%A2%E7%A9%8D"><span class="nav-number">1.2.</span> <span class="nav-text">有向面積</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%9A%E6%AE%B5%E7%9B%B8%E4%BA%A4"><span class="nav-number">1.3.</span> <span class="nav-text">線段相交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%A4%E5%B7%AE%E5%88%86%E6%9E%90%EF%BC%9AEPS"><span class="nav-number">1.4.</span> <span class="nav-text">誤差分析：EPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B8"><span class="nav-number">1.5.</span> <span class="nav-text">三角函數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IEEE-754"><span class="nav-number">1.6.</span> <span class="nav-text">IEEE 754</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A5%B5%E8%A7%92%E6%8E%92%E5%BA%8F"><span class="nav-number">1.7.</span> <span class="nav-text">極角排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E5%8C%85"><span class="nav-number">1.8.</span> <span class="nav-text">凸包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%93%AC%E9%80%80%E7%81%AB-SA"><span class="nav-number">1.9.</span> <span class="nav-text">模擬退火(SA)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95%E5%87%BD%E5%BC%8F%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">計算幾何函式模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%9E%E7%9A%84%E6%A8%A1%E6%9D%BF%E5%8F%8A%E9%81%8B%E7%AE%97%E5%AD%90%E9%87%8D%E8%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">點的模板及運算子重載</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%90%91%E5%87%BD%E6%95%B8"><span class="nav-number">2.2.</span> <span class="nav-text">方向函數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%9E%E8%88%87%E7%B7%9A%E6%AE%B5%E9%97%9C%E4%BF%82"><span class="nav-number">2.3.</span> <span class="nav-text">點與線段關係</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%9A%E6%AE%B5%E7%9B%B8%E4%BA%A4-1"><span class="nav-number">2.4.</span> <span class="nav-text">線段相交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A5%B5%E8%A7%92%E6%8E%92%E5%BA%8F-1"><span class="nav-number">2.5.</span> <span class="nav-text">極角排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E5%8C%85%E5%87%BD%E6%95%B8%EF%BC%88%E4%BD%BF%E7%94%A8Monotone-Chain%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">凸包函數（使用Monotone Chain）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%8B%E8%BD%89%E5%8D%A1%E5%B0%BA"><span class="nav-number">2.7.</span> <span class="nav-text">旋轉卡尺</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B8%E5%AD%B8%E7%9F%A5%E8%AD%98"><span class="nav-number">3.</span> <span class="nav-text">基本數學知識</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A7%E7%A9%8D%EF%BC%88%E9%BB%9E%E7%A9%8D%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">內積（點積）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E7%A9%8D%EF%BC%88%E5%8F%89%E7%A9%8D%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">外積（叉積）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E7%A9%8D"><span class="nav-number">3.3.</span> <span class="nav-text">面積</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%AC%E9%87%8F%E5%B8%AB%E5%85%AC%E5%BC%8F%EF%BC%88%E8%A1%8C%E5%88%97%E5%BC%8F%EF%BC%89"><span class="nav-number">3.3.1.</span> <span class="nav-text">測量師公式（行列式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%BD%A2%E5%A4%96%E7%A9%8D%E9%9D%A2%E7%A9%8D%E5%85%AC%E5%BC%8F"><span class="nav-number">3.3.2.</span> <span class="nav-text">三角形外積面積公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E8%A1%8C%E5%9B%9B%E9%82%8A%E5%BD%A2%E9%9D%A2%E7%A9%8D"><span class="nav-number">3.3.3.</span> <span class="nav-text">平行四邊形面積</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

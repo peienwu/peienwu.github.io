@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上課內容這一週的主題是枚舉(enumeration)，內容主要環繞二分搜、三分搜、DFS剪枝這些部分。這一週的內容算是相對輕鬆，解數獨的部分也是蠻有趣的！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資芽第四週：枚舉算法">
+<meta property="og:url" content="https://peienwu.com/sprout4/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="上課內容這一週的主題是枚舉(enumeration)，內容主要環繞二分搜、三分搜、DFS剪枝這些部分。這一週的內容算是相對輕鬆，解數獨的部分也是蠻有趣的！">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/cKGOtgP.png">
+<meta property="og:image" content="https://i.imgur.com/sOjMiuk.png">
+<meta property="article:published_time" content="2021-03-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T05:00:54.627Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="資芽筆記">
+<meta property="article:tag" content="枚舉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/cKGOtgP.png">
+
+<link rel="canonical" href="https://peienwu.com/sprout4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>資芽第四週：枚舉算法 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/sprout4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          資芽第四週：枚舉算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-27T00:00:00+08:00">2021-03-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">資訊之芽筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/sprout4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/sprout4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>7 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="上課內容"><a href="#上課內容" class="headerlink" title="上課內容"></a>上課內容</h2><p>這一週的主題是<strong>枚舉(enumeration)</strong>，內容主要環繞二分搜、三分搜、DFS剪枝這些部分。<br>這一週的內容算是相對輕鬆，解數獨的部分也是蠻有趣的！<br><span id="more"></span></p>
+<h2 id="上機作業"><a href="#上機作業" class="headerlink" title="上機作業"></a>上機作業</h2><h3 id="數獨"><a href="#數獨" class="headerlink" title="數獨"></a>數獨</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/62/">題目連結</a><br>首先是數獨，很有趣，之前有做過類似的是<strong>八皇后問題</strong><br>用到<strong>DFS剪枝</strong>，<a href="https://peienwu.com/2021/03/07/Sudoku/">筆記在這</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sudoku</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> maze[<span class="number">9</span>][<span class="number">9</span>];</span><br><span class="line">    <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(string s)</span></span>;<span class="comment">//</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">scan_maze</span><span class="params">()</span></span>;<span class="comment">//</span></span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">select</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">next_empty</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">solving</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col )</span></span>;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sudoku::print</span><span class="params">(string s)</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;endl&lt;&lt;<span class="string">&quot;=====&quot;</span>&lt;&lt;s&lt;&lt;<span class="string">&quot;======&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;|&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">9</span>;j++)&#123;</span><br><span class="line">            cout&lt;&lt;maze[i][j];</span><br><span class="line">            <span class="keyword">if</span>(j%<span class="number">3</span>==<span class="number">2</span>)cout&lt;&lt;<span class="string">&quot;|&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">3</span>==<span class="number">2</span>)cout&lt;&lt;<span class="string">&quot;-------------&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">Sudoku::select</span><span class="params">(<span class="keyword">int</span> r, <span class="keyword">int</span> c)</span></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> box[<span class="number">9</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(maze[i][c]&gt;<span class="number">0</span>)box[maze[i][c]<span class="number">-1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(maze[r][i]&gt;<span class="number">0</span>)box[maze[r][i]<span class="number">-1</span>] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> row_start = <span class="number">3</span>*(r/<span class="number">3</span>),col_start = <span class="number">3</span>*(c/<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">3</span>;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(maze[row_start+i][col_start+j]&gt;<span class="number">0</span>)</span><br><span class="line">                box[maze[row_start+i][col_start+j]<span class="number">-1</span>] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)</span><br><span class="line">        <span class="keyword">if</span>(!box[i])ans.<span class="built_in">push_back</span>(i+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Sudoku::next_empty</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ind = col;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=row;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(ind&lt;<span class="number">9</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(maze[i][ind]==<span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">int</span> pos = i*<span class="number">9</span>+ind;</span><br><span class="line">                <span class="keyword">return</span> pos;</span><br><span class="line">            &#125;</span><br><span class="line">            ind++;</span><br><span class="line">        &#125;</span><br><span class="line">        ind = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sudoku::dfs</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col )</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pos = <span class="built_in">next_empty</span>(row, col),nr,nc;</span><br><span class="line">    <span class="keyword">if</span>(pos == <span class="number">-1</span>)&#123;</span><br><span class="line">        flag = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; candidate = <span class="built_in">select</span>(row, col);</span><br><span class="line">    <span class="keyword">int</span> len = candidate.<span class="built_in">size</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        maze[row][col] = candidate[i];</span><br><span class="line">        pos = <span class="built_in">next_empty</span>(row, col);</span><br><span class="line">        nr = pos/<span class="number">9</span>; nc = pos%<span class="number">9</span>;</span><br><span class="line">        <span class="built_in">dfs</span>(nr, nc);</span><br><span class="line">        <span class="keyword">if</span>(flag)<span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    maze[row][col] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sudoku::scan_maze</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">9</span>;j++)&#123;</span><br><span class="line">            <span class="keyword">char</span> temp;cin&gt;&gt;temp;</span><br><span class="line">            <span class="keyword">if</span>(temp==<span class="string">&#x27;.&#x27;</span>)maze[i][j] = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span> maze[i][j] = temp -<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Sudoku::solving</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> first_empty = <span class="built_in">next_empty</span>(<span class="number">0</span>, <span class="number">0</span>),nr,nc;</span><br><span class="line">    nr = first_empty/<span class="number">9</span>; nc = first_empty%<span class="number">9</span>;</span><br><span class="line">    <span class="built_in">dfs</span>(nr, nc);</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">9</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">9</span>;j++)&#123;</span><br><span class="line">            vector&lt;<span class="keyword">int</span>&gt; v = <span class="built_in">select</span>(i,j);</span><br><span class="line">            <span class="keyword">if</span>(v.<span class="built_in">size</span>()&gt;<span class="number">0</span>)f = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!flag || f)cout&lt;&lt;<span class="string">&quot;No solution.&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;solved&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    flag = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Sudoku sodoku1;</span><br><span class="line">    sodoku1.<span class="built_in">scan_maze</span>();</span><br><span class="line">    sodoku1.<span class="built_in">print</span>(<span class="string">&quot;begin&quot;</span>);</span><br><span class="line">    sodoku1.<span class="built_in">solving</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Lotto-UVA"><a href="#Lotto-UVA" class="headerlink" title="Lotto(UVA)"></a>Lotto(UVA)</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/63/">題目連結</a><br>這一題主要就是建立一個排列樹，把每一種可能的情況用遞迴列出來<br><img src="https://i.imgur.com/cKGOtgP.png" alt=""><br>這一題用DFS明顯比BFS來得好、<strong>空間</strong>省很多（用一下資芽的圖XD)<br><img src="https://i.imgur.com/sOjMiuk.png" alt=""></p>
+<p>來看程式碼吧！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,arr[<span class="number">15</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">permutation</span><span class="params">(<span class="keyword">int</span> arr_ind, <span class="keyword">int</span> cur[],<span class="keyword">int</span> cur_ind)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr_ind&gt;n)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(cur_ind&gt;=<span class="number">6</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span>)cout&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">            cout&lt;&lt;cur[i];</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n-(<span class="number">6</span>-cur_ind); i++)&#123;</span><br><span class="line">        cur[cur_ind] = arr[arr_ind+i];</span><br><span class="line">        <span class="built_in">permutation</span>(arr_ind+i+<span class="number">1</span>, cur, cur_ind+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> f=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    <span class="keyword">while</span>(cin&gt;&gt;n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>)<span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span>(f)cout&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(arr));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">    <span class="built_in">sort</span>(arr, arr+n);</span><br><span class="line">    <span class="keyword">int</span> cur[<span class="number">10</span>];</span><br><span class="line">    <span class="built_in">permutation</span>(<span class="number">0</span>, cur, <span class="number">0</span>);</span><br><span class="line">    f=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note warning">
+            <p>這一題必須很小心輸入輸出，它們會讓你WA很久呀！</p><ol><li>行末不要多餘空白</li><li>測資全部印出來後，末端<strong>不要多餘換行</strong></li></ol><p>大概就這兩點</p>
+          </div>
+<h3 id="田忌賽馬-NPSC"><a href="#田忌賽馬-NPSC" class="headerlink" title="田忌賽馬(NPSC)"></a>田忌賽馬(NPSC)</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/69/">題目連結</a><br>之前有寫過這一題，不過現在再寫一次還是WA了很久，對於二分搜的維護（到底是取到0還是1）還要更熟悉<br>除此之外，我因為邊界問題（$10^8$ 或是$10^8+1$）沒有仔細注意就一直WA</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 10000 </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;  </span><br><span class="line">lli n,k,t,M,upper = <span class="number">100000000</span>,lower = <span class="number">-1</span>;  </span><br><span class="line">lli mine[N],develop[N],enemy[N],curr[N];  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">win</span><span class="params">(lli day)</span></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> it = <span class="number">0</span>,sum = <span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        curr[i] = mine[i]+day*develop[i];  </span><br><span class="line">    <span class="built_in">sort</span>(curr, curr+n);  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;  </span><br><span class="line">        <span class="keyword">if</span>(curr[i]&gt;enemy[it])&#123;  </span><br><span class="line">            sum++;  </span><br><span class="line">            it++;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> (sum&gt;=k);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;  </span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);  </span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);  </span><br><span class="line">    cin&gt;&gt;t;  </span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;  </span><br><span class="line">        upper = <span class="number">100000000</span>;lower = <span class="number">-1</span>;  </span><br><span class="line">        cin&gt;&gt;n&gt;&gt;k;  </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;  </span><br><span class="line">            cin&gt;&gt;mine[i]&gt;&gt;develop[i];  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;  </span><br><span class="line">            cin&gt;&gt;enemy[i];  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="built_in">sort</span>(enemy, enemy+n);  </span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">win</span>(upper))cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;  </span><br><span class="line">        <span class="keyword">else</span>&#123;  </span><br><span class="line">            <span class="keyword">while</span>(upper-lower!=<span class="number">1</span>)&#123;  </span><br><span class="line">                M = (upper+lower)/<span class="number">2</span>;  </span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">win</span>(M))upper = M;  </span><br><span class="line">                <span class="keyword">else</span> lower = M;  </span><br><span class="line">            &#125;  </span><br><span class="line">            cout&lt;&lt;upper&lt;&lt;endl;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<div class="note success">
+            <p>這樣維護二分搜也可以，就是保證 r 一定是1（l就不一定）</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(r&gt;l)&#123;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>, arr[n+<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)arr[i] = mine[i]+mid*rate[i];</span><br><span class="line">        <span class="built_in">sort</span>(arr, arr+n,greater&lt;<span class="keyword">int</span>&gt;());</span><br><span class="line">        <span class="keyword">int</span> f = <span class="built_in">can_win</span>(arr, enemy);</span><br><span class="line">        <span class="keyword">if</span>(f)r = mid;</span><br><span class="line">        <span class="keyword">else</span> l = mid+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><p>單純二分搜，找01分界點！</p>
+          </div>
+<h3 id="Happiness-Function-2013-台清交程式設計競賽"><a href="#Happiness-Function-2013-台清交程式設計競賽" class="headerlink" title="Happiness Function(2013 台清交程式設計競賽)"></a>Happiness Function(2013 台清交程式設計競賽)</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/72/">題目連結</a><br>很酷的題目，首先必須做一點數學上的分析<br><div class="note info">
+            <p>假設題目給定的n個二次函數依序為$A_1(x),A_2(x),…,A_n(x)$<br>令函數$f(t)=max(A_j(t), 1&lt;=j&lt;=n)$<br>則$f(t)$為一個U型函數</p>
+          </div><br>有了這個性質之後就可以利用<strong>三分搜</strong>來找U型函數的最小值!</p>
+<p>值得注意的是：</p>
+<ol>
+<li><em>float</em> 是<strong>單精度</strong>浮點數、<em>double</em> 是<strong>雙精度</strong>浮點數，我用 float吃了好幾個WA，結果用double 直接 AC</li>
+<li>while 迴圈裡面的判斷不要用浮點數相減，會出事（TLE）</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> float a</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> T,n;</span><br><span class="line"><span class="keyword">double</span> a[<span class="number">12</span>],b[<span class="number">12</span>],c[<span class="number">12</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">func</span><span class="params">(<span class="keyword">double</span> t, <span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[i]*(t-b[i])*(t-b[i])+c[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cout&lt;&lt;fixed&lt;&lt;<span class="built_in">setprecision</span>(<span class="number">5</span>);</span><br><span class="line">    cin&gt;&gt;T;</span><br><span class="line">    <span class="keyword">while</span>(T--)&#123;</span><br><span class="line">        cin&gt;&gt;n;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)cin&gt;&gt;a[i]&gt;&gt;b[i]&gt;&gt;c[i];</span><br><span class="line">        <span class="keyword">double</span> left = <span class="number">0.0</span>, right = <span class="number">300.0</span>;</span><br><span class="line">        <span class="keyword">double</span> now_l = <span class="number">0</span>,now_r = <span class="number">0</span>,nl = <span class="number">0</span>,nr = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(cnt&lt;=<span class="number">10000</span>)&#123;</span><br><span class="line">            nl = (<span class="number">2</span>*left+right)/<span class="number">3</span>;</span><br><span class="line">            nr = (<span class="number">2</span>*right+left)/<span class="number">3</span>;</span><br><span class="line">            now_l = now_r = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)now_r = <span class="built_in">max</span>(now_r, <span class="built_in">func</span>(nr,i));</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)now_l = <span class="built_in">max</span>(now_l, <span class="built_in">func</span>(nl,i));</span><br><span class="line">            <span class="keyword">if</span>(now_r &gt; now_l)right = nr;</span><br><span class="line">            <span class="keyword">else</span> left = nl;</span><br><span class="line">            cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;now_l&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>簡單統整，就是三分搜找最低點！</p>
+<h3 id="東方古墓古文"><a href="#東方古墓古文" class="headerlink" title="東方古墓古文"></a>東方古墓古文</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/73">題目連結</a><br>這一題主要是二分搜工作量上限X，寫一個函數判斷是否工作量X是否可行<br>Debug 超久，不知道在幹嘛，結果最後是卡在二分搜的上界範圍不夠大<br>要開到$10^9$這麼大！<br>時間複雜度：$N$$log$(總工作量)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"><span class="keyword">int</span> n,m,arr[<span class="number">100005</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_ok</span><span class="params">(<span class="keyword">int</span> lim)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>,ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr[i]&gt;lim)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        sum += arr[i];</span><br><span class="line">        <span class="keyword">if</span>(sum+arr[i+<span class="number">1</span>] &gt; lim)&#123;</span><br><span class="line">            sum = <span class="number">0</span>;</span><br><span class="line">            ans++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans&gt;m)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">        <span class="built_in">memset</span>(arr, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(arr));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">        arr[n] = -INT_MAX;</span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">1000000001</span>,l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(r-l &gt; <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">is_ok</span>(mid))r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(r == <span class="number">1000000001</span>)cout&lt;&lt;<span class="number">1000000000</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">else</span> cout&lt;&lt;r&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="極速馬拉松"><a href="#極速馬拉松" class="headerlink" title="極速馬拉松"></a>極速馬拉松</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/60">題目連結</a><br>這一題難的主要是變數太多<br>只要理解它到底要幹嘛，就可以發現可以利用$O(N)$枚舉出固定去間內最大的距離<br>之後再$O(logN)$ 二分搜時間<br>就可以用$O(logN)$ AC這一題</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> a,b,c,d,m,s,t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> time)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> speed_time = m/c,max_distance = <span class="number">0</span>,cur_m = m%c;</span><br><span class="line">    <span class="keyword">int</span> cur_distance = b*speed_time,<span class="keyword">cur_t</span> = speed_time;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">cur_t</span>&lt;time)&#123;</span><br><span class="line">        <span class="keyword">int</span> len = time-<span class="keyword">cur_t</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=len;i++)&#123;<span class="comment">//時限內最多可以跑多遠</span></span><br><span class="line">            cur_distance = b*speed_time;</span><br><span class="line">            <span class="keyword">cur_t</span> = speed_time+i;</span><br><span class="line">            cur_m = (m%c)+d*i;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> step = <span class="built_in">min</span>(cur_m/c,time-<span class="keyword">cur_t</span>);</span><br><span class="line"></span><br><span class="line">            cur_m = cur_m-step*c;</span><br><span class="line">            <span class="keyword">cur_t</span>+=step;</span><br><span class="line">            cur_distance += b*step;</span><br><span class="line"></span><br><span class="line">            cur_distance+=a*(time-<span class="keyword">cur_t</span>);</span><br><span class="line">            max_distance = <span class="built_in">max</span>(max_distance,cur_distance);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> max_distance = b*time;</span><br><span class="line">    <span class="keyword">return</span> max_distance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;m&gt;&gt;s&gt;&gt;t;</span><br><span class="line">    <span class="keyword">int</span> max_distance = <span class="built_in">func</span>(t);</span><br><span class="line">    <span class="keyword">if</span>(s&gt;=max_distance)cout&lt;&lt;<span class="string">&quot;No&quot;</span>&lt;&lt;endl&lt;&lt;max_distance&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Yes&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">int</span> r = t,l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(r-l&gt;<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (r+l)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">func</span>(mid)&gt;s)r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;r&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="人生低潮"><a href="#人生低潮" class="headerlink" title="人生低潮"></a>人生低潮</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1926">題目連結</a></p>
+<h2 id="手寫作業"><a href="#手寫作業" class="headerlink" title="手寫作業"></a>手寫作業</h2><p>手寫作業介紹字串比對、各種排序演算法。這是我算是第一次搞懂快速排序在幹嘛，不然之前都是看兩個指針在指來指去不知道確切的功能是什麼。<br>除了快排之外，基數排序也是第一次看到，原來排序可以做到<strong>線性時間複雜度！</strong><br>大開眼界！（不過只是用於整數排序）<br>這次手寫覺得有些困難，不過學到了很多東西！（可以來做一個各種排序演算的筆記）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B3%87%E8%8A%BD%E7%AD%86%E8%A8%98/" rel="tag"># 資芽筆記</a>
+              <a href="/tags/%E6%9E%9A%E8%88%89/" rel="tag"># 枚舉</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/sprout3/" rel="prev" title="資芽第三週：基礎圖論、淹水問題">
+      <i class="fa fa-chevron-left"></i> 資芽第三週：基礎圖論、淹水問題
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/sprout5/" rel="next" title="資芽第五週：貪心算法">
+      資芽第五週：貪心算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E8%AA%B2%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">上課內容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%A9%9F%E4%BD%9C%E6%A5%AD"><span class="nav-number">2.</span> <span class="nav-text">上機作業</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B8%E7%8D%A8"><span class="nav-number">2.1.</span> <span class="nav-text">數獨</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lotto-UVA"><span class="nav-number">2.2.</span> <span class="nav-text">Lotto(UVA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B0%E5%BF%8C%E8%B3%BD%E9%A6%AC-NPSC"><span class="nav-number">2.3.</span> <span class="nav-text">田忌賽馬(NPSC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Happiness-Function-2013-%E5%8F%B0%E6%B8%85%E4%BA%A4%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%E7%AB%B6%E8%B3%BD"><span class="nav-number">2.4.</span> <span class="nav-text">Happiness Function(2013 台清交程式設計競賽)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%B1%E6%96%B9%E5%8F%A4%E5%A2%93%E5%8F%A4%E6%96%87"><span class="nav-number">2.5.</span> <span class="nav-text">東方古墓古文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A5%B5%E9%80%9F%E9%A6%AC%E6%8B%89%E6%9D%BE"><span class="nav-number">2.6.</span> <span class="nav-text">極速馬拉松</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%BA%E7%94%9F%E4%BD%8E%E6%BD%AE"><span class="nav-number">2.7.</span> <span class="nav-text">人生低潮</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%AF%AB%E4%BD%9C%E6%A5%AD"><span class="nav-number">3.</span> <span class="nav-text">手寫作業</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="題目目錄 NEOJ 80 RMQ練習 NEOJ 249 最大連續和？ ZJ d799 區間求和 NEOJ 367 RMQ˙改 TIOJ 1224 矩形覆蓋面積計算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="線段樹例題（Segment Tree）">
+<meta property="og:url" content="https://peienwu.com/seg2/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="題目目錄 NEOJ 80 RMQ練習 NEOJ 249 最大連續和？ ZJ d799 區間求和 NEOJ 367 RMQ˙改 TIOJ 1224 矩形覆蓋面積計算">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/MJMDQE9.jpg">
+<meta property="og:image" content="https://i.imgur.com/tC2Wucw.png">
+<meta property="og:image" content="https://i.imgur.com/pAsHmXd.jpg">
+<meta property="og:image" content="https://i.imgur.com/DOeuFyx.png">
+<meta property="og:image" content="https://i.imgur.com/xGuEmB4.jpg">
+<meta property="og:image" content="https://i.imgur.com/1UNrejV.png">
+<meta property="article:published_time" content="2021-08-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-27T05:07:37.012Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="2021暑假筆記">
+<meta property="article:tag" content="2020資訊之芽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/MJMDQE9.jpg">
+
+<link rel="canonical" href="https://peienwu.com/seg2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>線段樹例題（Segment Tree） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/seg2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          線段樹例題（Segment Tree）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-08-06 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-06T00:00:00+08:00">2021-08-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E7%B7%9A%E6%AE%B5%E6%A8%B9/" itemprop="url" rel="index"><span itemprop="name">線段樹</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/seg2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/seg2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>10 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="題目目錄"><a href="#題目目錄" class="headerlink" title="題目目錄"></a>題目目錄</h2><ul>
+<li>NEOJ 80 RMQ練習</li>
+<li>NEOJ 249 最大連續和？</li>
+<li>ZJ d799 區間求和</li>
+<li>NEOJ 367 RMQ˙改</li>
+<li>TIOJ 1224 矩形覆蓋面積計算<span id="more"></span>
+</li>
+</ul>
+<h3 id="RMQ練習"><a href="#RMQ練習" class="headerlink" title="RMQ練習"></a>RMQ練習</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/80/">題目連結</a><br>RMQ = Range minimun query，也就是詢問一個區間的最小值。分析一下兩種不同作法的複雜度：<br><div class="note default">
+            <p>對於數列 $a_n$ 共n項，k筆詢問，每一次詢問區間$[l,r]$的最大、最小值</p><p><strong>1. 暴力做</strong><br>時間複雜度：<font color="#f00">詢問$O(n)$</font><br>對於每一筆詢問都暴力搜索，最多掃過n個數字，時間複雜度$O(kn)$，對於數字大一點的情況就會TLE<br><br></p><p><strong>2. 分塊算法</strong><br>可以參見 <a target="_blank" rel="noopener" href="https://hackmd.io/@peienwu/rkCDKEcjd">這篇文章</a></p><p><strong>3. 線段樹</strong><br>時間複雜度：<font color="#f00">預處理 $O(n)$、詢問$O(logn)$</font><br>首先是預處理建立線段樹，線段樹上約有$2n$個節點，因此空間複雜度是$O(n)$，也就表示預處理是$O(n)$，之後便可$O(logn)$查詢每一筆詢問。以下是各種操作複雜度：</p><ul><li><strong>初始建構</strong>：所有節點恰會建構一次，每個節點 $O(1)$，配合節點樹可得為 $O(𝑛)$</li><li><strong>單點修改</strong>：該點的所有祖先節點都會被修改到，其他都不會被修改到，$𝑂(logn)$</li><li><strong>區間查詢</strong>：每筆詢問最多詢問到深度為 $O(logn)$ 的節點。在一次詢問中，每一層不會有超過2個節點被詢問，總複雜度為$𝑂(log𝑛)$<br><br></li></ul><p><strong>4. 稀疏表(Sparse Table)</strong><br>時間複雜度：<font color="#f00">預處理 $O(nlogn)$、詢問$O(1)$</font><br>參考 <a target="_blank" rel="noopener" href="https://hackmd.io/@peienwu/H1W1Y18Gt">這篇文章</a></p>
+          </div></p>
+<p>這一題就是基礎的要有支援區間查詢、單點修改的線段樹，也是最簡單的一種！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 1e9</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> seg[<span class="number">4</span> * N],arr[N],n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(r-l==<span class="number">1</span>)&#123;</span><br><span class="line">        seg[cur] = arr[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> m = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(l,m,<span class="number">2</span>*cur);</span><br><span class="line">    <span class="built_in">build</span>(m,r,<span class="number">2</span>*cur+<span class="number">1</span>);</span><br><span class="line">    seg[cur] = <span class="built_in">min</span>(seg[<span class="number">2</span>*cur],seg[<span class="number">2</span>*cur+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//單點修改</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ind,<span class="keyword">int</span> val)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(r-l==<span class="number">1</span> &amp;&amp; l==ind)&#123;</span><br><span class="line">        seg[cur]=val;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(ind&lt;mid)<span class="built_in">modify</span>(cur*<span class="number">2</span>,l,mid,ind,val);</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">modify</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ind,val);</span><br><span class="line">    seg[cur] = <span class="built_in">min</span>(seg[<span class="number">2</span>*cur],seg[<span class="number">2</span>*cur+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間詢問</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l || ql&gt;=r || qr&lt;=l)<span class="keyword">return</span> INF;</span><br><span class="line">    <span class="keyword">if</span>(ql&lt;=l &amp;&amp; qr&gt;=r)&#123;</span><br><span class="line">        <span class="keyword">return</span> seg[cur];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(cur*<span class="number">2</span>,l,mid,ql,qr),<span class="built_in">query</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ql,qr));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;m&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,n+<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(m--)&#123;</span><br><span class="line">        <span class="keyword">int</span> p;cin&gt;&gt;p;</span><br><span class="line">        <span class="keyword">if</span>(p==<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">            <span class="built_in">modify</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x+<span class="number">1</span>,y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(p==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">            <span class="keyword">int</span> ans = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x+<span class="number">1</span>,y+<span class="number">2</span>);</span><br><span class="line">            cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最大連續和？"><a href="#最大連續和？" class="headerlink" title="最大連續和？"></a>最大連續和？</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/249/">題目連結</a><br>這題題結果我是WA在INF太大可能會溢位的問題，把INF調整成 $5\times 10^{14}$ 是差不多的</p>
+<p>這一題要維護區間最大連續和，跟dp的最大連續和差了「區間」兩字，整個實作的方式跟複雜度就不一樣了。DP的作法如果直接套用在這一題的話，複雜度約為：$O(QN)$，絕對會炸裂，因此只能用線段樹維護這個東西。</p>
+<div class="note primary">
+            <p><strong>區間最大連續和</strong><br>在分治法的單元有提到分治法最重要的是假定左右兩側（對應過來就是兩子樹）是維護好的，也就是符合定義，要想的是要如何處理橫跨左右子樹的情況。<br>要如何知道橫跨中間的最大值呢？這時候我們可以維護4個數值，來更新每一個線段樹上的節點的數值。</p><ol><li><strong>總和(sum)</strong><br>$cur.sum = left.sum+right.sum$</li><li><strong>最大前綴和(lmax)</strong><br>$cur.lmax = max(left.lmax,left.sum+right.lmax)$</li><li><strong>最大後綴和(rmax)</strong><br>$cur.rmax = max(right.rmax,right.sum+left.rmax)$</li><li><strong>區間最大連續和(tmax)</strong><br>$cur.tmax = max(left.tmax,right.tmax,left.rmax+right.lmax)$</li></ol>
+          </div>
+<p>維護最大後綴跟最大前綴和（首跟末有被取到的情況），就可以$O(1)$ 維護每一個節點的區間最大連續和，複雜度：詢問$O(logn)$，因此總時間$O(Qlogn)$就可以AC了!</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 500000000000000</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> arr[N],n,m;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> sum;    <span class="comment">//區間總和</span></span><br><span class="line">    <span class="keyword">int</span> lmax;   <span class="comment">//最大前綴和</span></span><br><span class="line">    <span class="keyword">int</span> rmax;   <span class="comment">//最大後綴和</span></span><br><span class="line">    <span class="keyword">int</span> tmax;   <span class="comment">//區間連續最大和</span></span><br><span class="line">&#125;seg[N&lt;&lt;<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//求當下的區間連續最大和</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(Node &amp;cur,Node &amp;left,Node &amp;right)</span></span>&#123;</span><br><span class="line">    cur.sum = left.sum+right.sum;</span><br><span class="line">    cur.lmax = <span class="built_in">max</span>(left.lmax,left.sum+right.lmax);</span><br><span class="line">    cur.rmax = <span class="built_in">max</span>(right.rmax,right.sum+left.rmax);</span><br><span class="line">    cur.tmax = <span class="built_in">max</span>(<span class="built_in">max</span>(left.tmax,right.tmax),left.rmax+right.lmax);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//建立線段樹：[l,r)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(r-l==<span class="number">1</span>)&#123;</span><br><span class="line">        seg[cur] = &#123;arr[l],arr[l],arr[l],arr[l]&#125;;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(l,mid,<span class="number">2</span>*cur);</span><br><span class="line">    <span class="built_in">build</span>(mid,r,<span class="number">2</span>*cur+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">modify</span>(seg[cur],seg[<span class="number">2</span>*cur],seg[<span class="number">2</span>*cur+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間詢問：[l,r)</span></span><br><span class="line"><span class="function">Node <span class="title">query</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l || ql&gt;=r || qr&lt;=l)<span class="keyword">return</span> &#123;-INF,-INF,-INF,-INF&#125;;</span><br><span class="line">    <span class="keyword">if</span>(ql&lt;=l &amp;&amp; qr&gt;=r)<span class="keyword">return</span> seg[cur];</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">auto</span> left = <span class="built_in">query</span>(<span class="number">2</span>*cur,l,mid,ql,qr);</span><br><span class="line">    <span class="keyword">auto</span> right = <span class="built_in">query</span>(<span class="number">2</span>*cur+<span class="number">1</span>,mid,r,ql,qr);</span><br><span class="line">    Node temp;</span><br><span class="line">    <span class="built_in">modify</span>(temp,left,right);</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,n+<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(m--)&#123;</span><br><span class="line">        <span class="keyword">int</span> l,r;cin&gt;&gt;l&gt;&gt;r;</span><br><span class="line">        <span class="keyword">auto</span> ans = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,l,r+<span class="number">1</span>);</span><br><span class="line">        cout&lt;&lt;<span class="built_in">max</span>(ans.tmax,(<span class="keyword">long</span> <span class="keyword">long</span>)<span class="number">0</span>)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="d799區間求和"><a href="#d799區間求和" class="headerlink" title="d799區間求和"></a>d799區間求和</h3><p><a target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=d799">題目連結</a><br>這一題要求兩個操作，區間加值跟區間查詢，這時候就必須用到<strong>懶標(lazy tags)</strong> 輔助求和。</p>
+<blockquote>
+<p>範例測資：<br>10<br>1 2 3 4 5 6 7 8 9 10<br>3<br>2 2 4<br>1 3 6 3<br>2 2 4</p>
+</blockquote>
+<p><img src="https://i.imgur.com/MJMDQE9.jpg" alt=""><br>左邊是整棵線段樹，右邊則是懶標，可以看到3要往下推，但學長的程式碼中並沒有執行這個步驟，這樣會導致query的時候發生錯誤。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 500005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span>            <span class="comment">//線段樹每一個節點</span></span><br><span class="line">    <span class="keyword">int</span> val=<span class="number">0</span>,tag=<span class="number">0</span>,sz; <span class="comment">//val原本的值、tag懶標、sz區間大小</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rv</span><span class="params">()</span></span>&#123;           <span class="comment">//回傳實際節點的值</span></span><br><span class="line">        <span class="keyword">return</span> val+tag*sz;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;seg[<span class="number">4</span>*N];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> arr[N],n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> cur)</span></span>&#123;    <span class="comment">//建立線段樹</span></span><br><span class="line">    seg[cur].sz = r-l;              <span class="comment">//更新節點的大小</span></span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l)<span class="keyword">return</span>;                 <span class="comment">//空區間回傳</span></span><br><span class="line">    <span class="keyword">if</span>(r-l==<span class="number">1</span>)&#123;                     <span class="comment">//設定當前節點的值</span></span><br><span class="line">        seg[cur].val = arr[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> m = (l+r)/<span class="number">2</span>;                <span class="comment">//分別遞迴建立左右子樹</span></span><br><span class="line">    <span class="built_in">build</span>(l,m,<span class="number">2</span>*cur);</span><br><span class="line">    <span class="built_in">build</span>(m,r,<span class="number">2</span>*cur+<span class="number">1</span>);</span><br><span class="line">    seg[cur].val = seg[<span class="number">2</span>*cur].val+seg[<span class="number">2</span>*cur+<span class="number">1</span>].val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把id的懶標在query的時候往下推</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    seg[<span class="number">2</span>*id].tag += seg[id].tag;   <span class="comment">//左子樹懶標更新</span></span><br><span class="line">    seg[<span class="number">2</span>*id+<span class="number">1</span>].tag += seg[id].tag; <span class="comment">//右子樹懶標更新</span></span><br><span class="line">    seg[id].val = seg[id].<span class="built_in">rv</span>();     <span class="comment">//更新實際值</span></span><br><span class="line">    seg[id].tag = <span class="number">0</span>;                <span class="comment">//往下推完之後設定為預設</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間修改</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr,<span class="keyword">int</span> val)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (r&lt;=l||ql&gt;=r||qr&lt;=l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (ql&lt;=l &amp;&amp; qr&gt;=r) &#123;</span><br><span class="line">        seg[cur].tag += val;               <span class="comment">//將被完整包含的區間的懶標加上修改值</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">modify</span>(cur*<span class="number">2</span>,l,mid,ql,qr,val);          <span class="comment">//修改左右子樹</span></span><br><span class="line">    <span class="built_in">modify</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ql,qr,val);        <span class="comment">//遞迴完拉上來的過程中把上面的數值更新成有懶標</span></span><br><span class="line">    seg[cur].val = seg[<span class="number">2</span>*cur].<span class="built_in">rv</span>()+seg[<span class="number">2</span>*cur+<span class="number">1</span>].<span class="built_in">rv</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間詢問</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l || ql&gt;=r || qr&lt;=l)<span class="keyword">return</span> <span class="number">0</span>;         <span class="comment">//空集合直接回傳</span></span><br><span class="line">    <span class="keyword">if</span>(ql&lt;=l &amp;&amp; qr&gt;=r)<span class="keyword">return</span> seg[cur].<span class="built_in">rv</span>();     <span class="comment">//包含在要詢問的範圍中，回傳實際值</span></span><br><span class="line">    <span class="built_in">push</span>(cur);                                  <span class="comment">//將懶標在遞迴下去的過程中下推</span></span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;                          <span class="comment">//遞迴查詢左右子樹</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">query</span>(cur*<span class="number">2</span>,l,mid,ql,qr)+<span class="built_in">query</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ql,qr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,n+<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    cin&gt;&gt;m;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(m--)&#123;</span><br><span class="line">        <span class="keyword">int</span> p;cin&gt;&gt;p;</span><br><span class="line">        <span class="keyword">if</span>(p==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y,k;cin&gt;&gt;x&gt;&gt;y&gt;&gt;k;</span><br><span class="line">            <span class="built_in">modify</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x,y+<span class="number">1</span>,k);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(p==<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">            <span class="keyword">int</span> ans = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x,y+<span class="number">1</span>);</span><br><span class="line">            cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RMQ˙改"><a href="#RMQ˙改" class="headerlink" title="RMQ˙改"></a>RMQ˙改</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/367/">題目連結</a><br>這一題是Range Maximum Query搭配區間加值，如果直接套用前面RMQ或是區間和的模板就輕鬆許多。這一題主要跟前面題目的不同在於它的sz要維護成1，有別於求區間和要乘上區間大小，每一個值不需要乘上區間大小，因此設成0。</p>
+<p>這題第二筆測資明顯就是要卡暴力解法。<br><img src="https://i.imgur.com/tC2Wucw.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">1e14</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span>            <span class="comment">//線段樹每一個節點</span></span><br><span class="line">    <span class="keyword">int</span> val=<span class="number">0</span>,tag=<span class="number">0</span>,sz=<span class="number">0</span>; <span class="comment">//val原本的值、tag懶標、sz區間大小</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rv</span><span class="params">()</span></span>&#123;           <span class="comment">//回傳實際節點的值</span></span><br><span class="line">        <span class="keyword">return</span> val+tag*sz;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;seg[<span class="number">4</span>*N];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> arr[N],n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> cur)</span></span>&#123;    <span class="comment">//建立線段樹</span></span><br><span class="line">    seg[cur].sz = <span class="number">1</span>;                <span class="comment">//更新節點的大小</span></span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l)<span class="keyword">return</span>;                 <span class="comment">//空區間回傳</span></span><br><span class="line">    <span class="keyword">if</span>(r-l==<span class="number">1</span>)&#123;                     <span class="comment">//設定當前節點的值</span></span><br><span class="line">        seg[cur].val = arr[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> m = (l+r)/<span class="number">2</span>;                <span class="comment">//分別遞迴建立左右子樹</span></span><br><span class="line">    <span class="built_in">build</span>(l,m,<span class="number">2</span>*cur);</span><br><span class="line">    <span class="built_in">build</span>(m,r,<span class="number">2</span>*cur+<span class="number">1</span>);</span><br><span class="line">    seg[cur].val = <span class="built_in">max</span>(seg[<span class="number">2</span>*cur].val,seg[<span class="number">2</span>*cur+<span class="number">1</span>].val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把id的懶標在query的時候往下推</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    seg[<span class="number">2</span>*id].tag += seg[id].tag;   <span class="comment">//左子樹懶標更新</span></span><br><span class="line">    seg[<span class="number">2</span>*id+<span class="number">1</span>].tag += seg[id].tag; <span class="comment">//右子樹懶標更新</span></span><br><span class="line">    seg[id].val = seg[id].<span class="built_in">rv</span>();     <span class="comment">//更新實際值</span></span><br><span class="line">    seg[id].tag = <span class="number">0</span>;                <span class="comment">//往下推完之後設定為預設</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間修改</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr,<span class="keyword">int</span> val)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (r&lt;=l||ql&gt;=r||qr&lt;=l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (ql&lt;=l &amp;&amp; qr&gt;=r) &#123;</span><br><span class="line">        seg[cur].tag += val;               <span class="comment">//將被完整包含的區間的懶標加上修改值</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">modify</span>(cur*<span class="number">2</span>,l,mid,ql,qr,val);          <span class="comment">//修改左右子樹</span></span><br><span class="line">    <span class="built_in">modify</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ql,qr,val);        <span class="comment">//遞迴完拉上來的過程中把上面的數值更新成有懶標</span></span><br><span class="line">    seg[cur].val = <span class="built_in">max</span>(seg[<span class="number">2</span>*cur].<span class="built_in">rv</span>(),seg[<span class="number">2</span>*cur+<span class="number">1</span>].<span class="built_in">rv</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//區間詢問</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r&lt;=l || ql&gt;=r || qr&lt;=l)<span class="keyword">return</span> -INF;      <span class="comment">//空集合直接回傳</span></span><br><span class="line">    <span class="keyword">if</span>(ql&lt;=l &amp;&amp; qr&gt;=r)<span class="keyword">return</span> seg[cur].<span class="built_in">rv</span>();     <span class="comment">//包含在要詢問的範圍中，回傳實際值</span></span><br><span class="line">    <span class="built_in">push</span>(cur);                                  <span class="comment">//將懶標在遞迴下去的過程中下推</span></span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;                          <span class="comment">//遞迴查詢左右子樹</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(<span class="built_in">query</span>(cur*<span class="number">2</span>,l,mid,ql,qr),<span class="built_in">query</span>(cur*<span class="number">2</span>+<span class="number">1</span>,mid,r,ql,qr));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;arr[i];</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,n+<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(m--)&#123;</span><br><span class="line">        <span class="keyword">int</span> p;cin&gt;&gt;p;</span><br><span class="line">        <span class="keyword">if</span>(p==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y,k;cin&gt;&gt;x&gt;&gt;y&gt;&gt;k;</span><br><span class="line">            <span class="built_in">modify</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x,y+<span class="number">1</span>,k);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(p==<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">            <span class="keyword">int</span> ans = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">1</span>,n+<span class="number">1</span>,x,y+<span class="number">1</span>);</span><br><span class="line">            cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1224-矩形覆蓋面積計算"><a href="#1224-矩形覆蓋面積計算" class="headerlink" title="1224 . 矩形覆蓋面積計算"></a>1224 . 矩形覆蓋面積計算</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1224">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/261541">Submission2:AC</a></p>
+<blockquote>
+<p>題意：給你平面上n個矩形，請求出它們覆蓋的總表面積。</p>
+</blockquote>
+<p>這一題所使用的技巧是<font color="#f00">掃描線</font>以及<font color="#f00">線段樹</font>，下圖中的水平藍色線即為掃描線，由y=0開始往上掃描，當遇到了矩形的邊，利用線段樹查詢區間內當前的矩形寬度，乘上兩掃描線的高度差即為面積。當然，掃描線也可以使用垂直方向的線段由左而右的掃描，實作細節是一樣的。</p>
+<p><img src="https://i.imgur.com/pAsHmXd.jpg" alt=""></p>
+<h4 id="線段樹維護"><a href="#線段樹維護" class="headerlink" title="線段樹維護"></a>線段樹維護</h4><h5 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h5><p>我們可以定義線段樹$seg[cur]$為區間$[l,r]$中有被<strong>矩形覆蓋的大小</strong>有多大，也就是圖中當前掃描線對應到的區域的寬度。這樣子維護有一個問題，當我們直接用$seg[cur]$儲存答案，我們在修改的時候沒有辦法確切知道這段區間被覆蓋的情況。</p>
+<p>下圖為一種模擬的情況，每一個區間的數字代表著非0的數字個數，也就是它的寬度。今天我們要對區間$[4,6]$加減值，將區間拆成$[4,4]$跟$[5,6]$，這時候區間$[3,4]$的數值是1，我們卻不知道到底是3還是4是有被覆蓋到的，必須要遞迴下去到葉節點才能得到完整的覆蓋情況，這時候每一次加減值的複雜就會提升到$O(n)$，因此不能以這種方式維護。</p>
+<p><img src="https://i.imgur.com/DOeuFyx.png" alt=""></p>
+<h5 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h5><p>有別於第一種方法對$seg[id]$進行維護，我們可以多開一個區間 $tag$ 來紀錄被矩形覆蓋的情況。下圖有3個矩形，其中的數字代表每一塊區域被覆蓋的情況，這邊使用了$tag$來紀錄（他是附在區間上的，不會像圖中一樣的方式呈現）。tag的數值為非負整數，紀錄當前區間有多少矩形覆蓋在上面，用$tag$來輔助維護$seg[id]$可以在$O(logn)$的時間進行修改與查詢。</p>
+<p><img src="https://i.imgur.com/xGuEmB4.jpg" alt=""></p>
+<p>以下程式碼是是 $tag$ 的轉移，當大的區間的tag值不為0，代表有一個矩形曾完整覆蓋這個區間，這時候可以直接回傳區間大小，否則即回傳左右節點的$sed[left],seg[right]$的數值。</p>
+<p>這邊定義$seg[id]$為：「考慮 id 的子孫們（不含 id 本身）的所有 tag 值，假設這些子孫只有被tag值作用過，共有多少非0的數字」。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">seg[cur].val = (seg[<span class="number">2</span>*cur].tag?mid-l:seg[<span class="number">2</span>*cur].val)</span><br><span class="line">              +(seg[<span class="number">2</span>*cur+<span class="number">1</span>].tag?r-mid:seg[<span class="number">2</span>*cur+<span class="number">1</span>].val);</span><br></pre></td></tr></table></figure>
+<h4 id="實作方法"><a href="#實作方法" class="headerlink" title="實作方法"></a>實作方法</h4><h5 id="矩形維護"><a href="#矩形維護" class="headerlink" title="矩形維護"></a>矩形維護</h5><p>首先是維護矩形的方法。我們一個矩形總共要維護四個東西：矩形左界x1、矩形右界x2、矩形上下界的y座標（分上下兩條），這兩條邊是下界或是上界val。為什麼要水平方向要分兩條討論？是因為下界代表進入，當掃描線掃到這一條邊的時候表示我們要新增區間 $[x1,x2)$ 進入線段樹；反之如果掃到了上界，則表示離開這個矩形，在線段樹中扣掉區間 $[x1,x2)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span>    <span class="comment">//每一個矩陣分成上下兩條邊</span></span><br><span class="line">    <span class="keyword">int</span> x1;     <span class="comment">//矩形左界x1</span></span><br><span class="line">    <span class="keyword">int</span> x2;     <span class="comment">//矩形右界x2</span></span><br><span class="line">    <span class="keyword">int</span> y;      <span class="comment">//矩形y座標（分上下兩邊）</span></span><br><span class="line">    <span class="keyword">int</span> val;    <span class="comment">//val = ±1(進入代表1、離開代表-1)</span></span><br><span class="line">    </span><br><span class="line">&#125;arr[<span class="number">2</span>*N];</span><br></pre></td></tr></table></figure>
+<p>上下界我們利用val維護，當 $val=1$ 時表示是矩形的下界； $val=-1$ 則是矩形上界，這兩個搭配在一起剛好就可以用線段樹區間加值的方式進行操作！總共有 $n$ 個矩形，因此我們要掃描線總共掃描 $2n$ 條線段。</p>
+<h5 id="線段樹"><a href="#線段樹" class="headerlink" title="線段樹"></a>線段樹</h5><p>一樣對值域（這題是1000000）的4倍開了線段樹，同時維護一個非負整數 $tag$ 表示區間被覆蓋的情況。當每一次修改完成之後，我們可以直接取用根節點 $seg[1]$ 的數值表示寬度（非0的個數）！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//seg[i]表示i的左右兩子樹的區間非0的個數</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span>    <span class="comment">//建立線段樹</span></span><br><span class="line">    <span class="keyword">int</span> val;    <span class="comment">//維護非0個數</span></span><br><span class="line">    <span class="keyword">int</span> tag;    <span class="comment">//使用tag紀錄區間被覆蓋次數</span></span><br><span class="line">&#125;seg[<span class="number">4</span>*M];</span><br></pre></td></tr></table></figure>
+<p>接下來就是在程式執行的過程中將 $2n$ 條邊依照y座標進行排序 $O(nlogn)$，接著依序使用掃描線搭配線段樹的修改，計算矩形的面積。最後就是輸出加起來的答案。</p>
+<div class="note info">
+            <p><strong>Debug 小錯誤</strong><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/261512">Submission1:WA</a><br>可以看到有一筆測資過不了，95分QQQ</p><p><img src="https://i.imgur.com/1UNrejV.png" alt=""></p><p>後來debug之後發現到，因為我是對每一個矩形先輸入下界之後才是上界，當我在排序的過程中，上界有可能有機會跑到下界之前，造成 $tag$ 被扣到負的情況，但在定義中可以清楚知道 $tag$ 是非負整數造成錯誤。因此只要把排序的過程改成 stable_sort() 即可！</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">stable_sort</span>(arr,arr+(n&lt;&lt;<span class="number">1</span>),cmp);</span><br></pre></td></tr></table></figure>
+          </div>
+<p>最後終於是程式碼的部分，以下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 1000001</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lld long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span>    <span class="comment">//每一個矩陣分成上下兩條邊</span></span><br><span class="line">    <span class="keyword">int</span> x1;     <span class="comment">//矩形左界x1</span></span><br><span class="line">    <span class="keyword">int</span> x2;     <span class="comment">//矩形右界x2</span></span><br><span class="line">    <span class="keyword">int</span> y;      <span class="comment">//矩形y座標（分上下兩邊）</span></span><br><span class="line">    <span class="keyword">int</span> val;    <span class="comment">//val = ±1(進入代表1、離開代表-1)</span></span><br><span class="line">    </span><br><span class="line">&#125;arr[<span class="number">2</span>*N];</span><br><span class="line"></span><br><span class="line"><span class="comment">//seg[i]表示i的左右兩子樹的區間非0的個數</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span>    <span class="comment">//建立線段樹</span></span><br><span class="line">    <span class="keyword">int</span> val;    <span class="comment">//維護非0個數</span></span><br><span class="line">    <span class="keyword">int</span> tag;    <span class="comment">//使用tag紀錄區間被覆蓋次數</span></span><br><span class="line">    </span><br><span class="line">&#125;seg[<span class="number">4</span>*M];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Node a, Node b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.y&lt;b.y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//對區間[ql,qr)進行加值val</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> cur,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> ql,<span class="keyword">int</span> qr,<span class="keyword">int</span> val)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r &lt;= l || ql &gt;= r || qr &lt;= l)<span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(ql &lt;= l &amp;&amp; qr &gt;= r)&#123;</span><br><span class="line">        seg[cur].tag += val;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">modify</span>(<span class="number">2</span>*cur,l,mid,ql,qr,val);</span><br><span class="line">    <span class="built_in">modify</span>(<span class="number">2</span>*cur+<span class="number">1</span>,mid,r,ql,qr,val);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//左右節點如有tag表示被完全覆蓋，直接加上區間大小，否則加上seg[左右子樹]</span></span><br><span class="line">    seg[cur].val = (seg[<span class="number">2</span>*cur].tag?mid-l:seg[<span class="number">2</span>*cur].val)</span><br><span class="line">                  +(seg[<span class="number">2</span>*cur+<span class="number">1</span>].tag?r-mid:seg[<span class="number">2</span>*cur+<span class="number">1</span>].val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    <span class="built_in">memset</span>(arr,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(arr));</span><br><span class="line">    <span class="built_in">memset</span>(seg,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(seg));</span><br><span class="line">    </span><br><span class="line">    cin&gt;&gt;n;                                   <span class="comment">//依序輸入左右下上：x1,x2,y1,y2</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;(n&lt;&lt;<span class="number">1</span>);i+=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> x1,x2,y1,y2;cin&gt;&gt;x1&gt;&gt;x2&gt;&gt;y1&gt;&gt;y2;</span><br><span class="line">        arr[i] = (Node)&#123;x1,x2,y1,<span class="number">1</span>&#125;;          <span class="comment">//插入矩形下邊，帶入val = 1</span></span><br><span class="line">        arr[i+<span class="number">1</span>] = (Node)&#123;x1,x2,y2,<span class="number">-1</span>&#125;;       <span class="comment">//上邊要val = -1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">stable_sort</span>(arr,arr+(n&lt;&lt;<span class="number">1</span>),cmp);          <span class="comment">//依照y座標由小到大排序</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> y0 = <span class="number">0</span>,val = <span class="number">0</span>;                       <span class="comment">//有下而上的枚舉所有水平邊</span></span><br><span class="line">    lld ans = <span class="number">0LL</span>;                            <span class="comment">//上一條y的座標，計算高，val為矩形結合起來的寬</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;(n&lt;&lt;<span class="number">1</span>);i++)&#123;                <span class="comment">//枚舉2n條y的邊</span></span><br><span class="line">        ans += (lld)(arr[i].y-y0)*val;        <span class="comment">//計算面積（寬*高）</span></span><br><span class="line">        <span class="built_in">modify</span>(<span class="number">1</span>,<span class="number">0</span>,M,arr[i].x1,arr[i].x2,arr[i].val);</span><br><span class="line">        y0 = arr[i].y;</span><br><span class="line">        val = seg[<span class="number">1</span>].val;                     <span class="comment">//修改後（下一輪）的矩陣寬度</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%9A%91%E5%81%87%E7%AD%86%E8%A8%98/" rel="tag"># 2021暑假筆記</a>
+              <a href="/tags/2020%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD/" rel="tag"># 2020資訊之芽</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/seg1/" rel="prev" title="線段樹（Segment Tree）">
+      <i class="fa fa-chevron-left"></i> 線段樹（Segment Tree）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/path1/" rel="next" title="最短路徑（Shortest Path Problem）">
+      最短路徑（Shortest Path Problem） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E7%9B%AE%E9%8C%84"><span class="nav-number">1.</span> <span class="nav-text">題目目錄</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RMQ%E7%B7%B4%E7%BF%92"><span class="nav-number">1.1.</span> <span class="nav-text">RMQ練習</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E9%80%A3%E7%BA%8C%E5%92%8C%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">最大連續和？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d799%E5%8D%80%E9%96%93%E6%B1%82%E5%92%8C"><span class="nav-number">1.3.</span> <span class="nav-text">d799區間求和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMQ%CB%99%E6%94%B9"><span class="nav-number">1.4.</span> <span class="nav-text">RMQ˙改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1224-%E7%9F%A9%E5%BD%A2%E8%A6%86%E8%93%8B%E9%9D%A2%E7%A9%8D%E8%A8%88%E7%AE%97"><span class="nav-number">1.5.</span> <span class="nav-text">1224 . 矩形覆蓋面積計算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B7%9A%E6%AE%B5%E6%A8%B9%E7%B6%AD%E8%AD%B7"><span class="nav-number">1.5.1.</span> <span class="nav-text">線段樹維護</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">1.5.2.</span> <span class="nav-text">實作方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9F%A9%E5%BD%A2%E7%B6%AD%E8%AD%B7"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">矩形維護</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B7%9A%E6%AE%B5%E6%A8%B9"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">線段樹</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

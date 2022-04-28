@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="題目目錄 NEOJ 266 溫力的故事 NEOJ 265 欸迪的字串 NEOJ 267 自動完成系統 NEOJ 264 欸迪的字串 ZJ d518: 文字抄寫 II TIOJ 1306 字串中的字串 TIOJ 1321 好多回文 ndromePali ZJ d978: 最长回文字串 TIOJ 1725 Massacre at Camp Happy TIOJ 1497 喝醉的宿主 The drunk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字串演算法例題 (String)">
+<meta property="og:url" content="https://peienwu.com/string2/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="題目目錄 NEOJ 266 溫力的故事 NEOJ 265 欸迪的字串 NEOJ 267 自動完成系統 NEOJ 264 欸迪的字串 ZJ d518: 文字抄寫 II TIOJ 1306 字串中的字串 TIOJ 1321 好多回文 ndromePali ZJ d978: 最长回文字串 TIOJ 1725 Massacre at Camp Happy TIOJ 1497 喝醉的宿主 The drunk">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/a7CPjyi.png">
+<meta property="og:image" content="https://i.imgur.com/i8Gx5Yo.png">
+<meta property="og:image" content="https://i.imgur.com/5Ir8Hjt.png">
+<meta property="og:image" content="https://i.imgur.com/tQph2uA.png">
+<meta property="og:image" content="https://i.imgur.com/1wcKazZ.png">
+<meta property="og:image" content="https://i.imgur.com/i4WSvw8.png">
+<meta property="article:published_time" content="2021-09-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-25T04:19:43.547Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="演算法">
+<meta property="article:tag" content="字串">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/a7CPjyi.png">
+
+<link rel="canonical" href="https://peienwu.com/string2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>字串演算法例題 (String) | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/string2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字串演算法例題 (String)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-09-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-05T00:00:00+08:00">2021-09-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E5%AD%97%E4%B8%B2%E6%BC%94%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">字串演算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/string2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/string2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>20k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>18 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="題目目錄"><a href="#題目目錄" class="headerlink" title="題目目錄"></a>題目目錄</h2><ul>
+<li>NEOJ 266 溫力的故事</li>
+<li>NEOJ 265 欸迪的字串</li>
+<li>NEOJ 267 自動完成系統</li>
+<li>NEOJ 264 欸迪的字串</li>
+<li>ZJ d518: 文字抄寫 II</li>
+<li>TIOJ 1306 字串中的字串</li>
+<li>TIOJ 1321 好多回文 ndromePali</li>
+<li>ZJ d978: 最长回文字串</li>
+<li>TIOJ 1725 Massacre at Camp Happy</li>
+<li>TIOJ 1497 喝醉的宿主 The drunk host</li>
+<li>TIOJ 1515 Problem E. 似曾相識<span id="more"></span>
+</li>
+</ul>
+<h3 id="NEOJ-266-溫力的故事"><a href="#NEOJ-266-溫力的故事" class="headerlink" title="NEOJ 266 溫力的故事"></a>NEOJ 266 溫力的故事</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/266/">題目連結</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/179031/">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給你n個字串m筆詢問一個字串，對每一筆詢問輸出詢問在n個字串中出現的次數。</p>
+</blockquote>
+<p>這一題在<strong>隨機算法</strong>做過，今天用字典樹Trie做一次。在隨機算法中，透過Rolling Hash的公式，對每一個字串生成一個值，利用這個值查詢出現的次數。如果我們用Trie的話，則是建立一棵指標樹，透過走法這一棵字典樹得知詢問字串出現的次數！</p>
+<h4 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2000</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Trie</span>&#123;</span>        <span class="comment">//利用指標建立一棵樹</span></span><br><span class="line">    Trie* c[<span class="number">26</span>];    <span class="comment">//對應a-z每一條邊</span></span><br><span class="line">    <span class="keyword">int</span> cnt;        <span class="comment">//字串出現次數</span></span><br><span class="line">    <span class="built_in">Trie</span>(): <span class="built_in">cnt</span>(<span class="number">0</span>)&#123; <span class="comment">//初始設定</span></span><br><span class="line">        <span class="built_in">memset</span>(c,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(c));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Trie* root = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ch</span><span class="params">(<span class="keyword">char</span> temp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> temp-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">char</span> *s)</span></span>&#123;</span><br><span class="line">    Trie *ptr = root;           <span class="comment">//從根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])     <span class="comment">//如果樹上無此字元則new</span></span><br><span class="line">            ptr-&gt;c[<span class="built_in">ch</span>(*s)] = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];   <span class="comment">//繼續造訪Trie</span></span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    ptr-&gt;cnt += <span class="number">1</span>;              <span class="comment">//字串出現次數(字串對應唯一葉節點)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">char</span> *s)</span></span>&#123;              <span class="comment">//查找字串s</span></span><br><span class="line">    Trie *ptr = root;           <span class="comment">//根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;                  <span class="comment">//無此字串，回傳次數0</span></span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];</span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ptr-&gt;cnt;            <span class="comment">//回傳字串出現次數</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">char</span> s[<span class="number">105</span>];cin&gt;&gt;s;</span><br><span class="line">        <span class="built_in">insert</span>(s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,m<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">char</span> s[<span class="number">105</span>];cin&gt;&gt;s;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">find</span>(s)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="NEOJ-265-欸迪的字串"><a href="#NEOJ-265-欸迪的字串" class="headerlink" title="NEOJ 265 欸迪的字串"></a>NEOJ 265 欸迪的字串</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/265/">題目連結</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/179036/">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給你字串S和字串T，求出S在T中出現的位置</p>
+</blockquote>
+<p>這一題在<strong>隨機演算法</strong>也有出現過，當時是用Rolling Hash的方式透過扣掉Hash的方法比對字串是否相同（推一下公式就知道）。現在要用的是<strong>KMP演算法</strong>，很複雜不好想。</p>
+<p>比較一下隨機跟KMP的時間，下方為KMP，上方則是隨機算法，兩者時間差了將近1倍，雖然兩者都可以在O(|T|)時間內進行匹配，但是建立Rolling Hash的常數是比較大的！<br><img src="https://i.imgur.com/a7CPjyi.png" alt=""></p>
+<h4 id="程式碼-1"><a href="#程式碼-1" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 500005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">KMP_match</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *F,<span class="keyword">char</span> *T)</span></span>&#123;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; ans;            <span class="comment">//回傳匹配相同地方</span></span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">-1</span>;                 <span class="comment">//紀錄短字串有多少被匹配</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;T[i];i++)&#123;      <span class="comment">//每一迴圈都讓T[i]被匹配到</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=T[i])</span><br><span class="line">            p = F[p];           <span class="comment">//使T[i]一定可以被匹配到</span></span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == T[i])</span><br><span class="line">            p += <span class="number">1</span>;             <span class="comment">//T的第i個與S的p+1可以匹配</span></span><br><span class="line">        <span class="keyword">if</span>(!S[p+<span class="number">1</span>])&#123;            <span class="comment">//S[p]已經匹配完成</span></span><br><span class="line">            ans.<span class="built_in">push_back</span>(i-p); <span class="comment">//回推匹配開頭</span></span><br><span class="line">            p = F[p];           <span class="comment">//繼續下一輪匹配</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//O(|S|)要配對的字串以及Fail Function</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KMP_build</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *F)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = F[<span class="number">0</span>] = <span class="number">-1</span>;              <span class="comment">//初始設定為-1</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;          <span class="comment">//1到接下來字元</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=S[i])</span><br><span class="line">            p = F[p];               <span class="comment">//無法繼續配對，尋找更短字串</span></span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == S[i])          <span class="comment">//配對成功(如都沒有一樣的就-1)</span></span><br><span class="line">            p += <span class="number">1</span>;</span><br><span class="line">        F[i] = p;                   <span class="comment">//設定F[i]</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    <span class="keyword">char</span> S[N],T[N];     <span class="comment">//詢問短字串、長在串</span></span><br><span class="line">    <span class="keyword">int</span> F[N];           <span class="comment">//失敗函數</span></span><br><span class="line">    cin&gt;&gt;S&gt;&gt;T;</span><br><span class="line">    <span class="built_in">KMP_build</span>(S,F);</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; ans = <span class="built_in">KMP_match</span>(S,F,T);</span><br><span class="line">    <span class="keyword">if</span>(ans.<span class="built_in">size</span>()&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        cout&lt;&lt;ans[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,ans.<span class="built_in">size</span>()<span class="number">-1</span>)cout&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ans[i];</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="NEOJ-267-自動完成系統"><a href="#NEOJ-267-自動完成系統" class="headerlink" title="NEOJ 267 自動完成系統"></a>NEOJ 267 自動完成系統</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/267/">題目連結</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/179148/">Submission</a></p>
+<blockquote>
+<p>題目敘述<br><a target="_blank" rel="noopener" href="https://www.facebook.com/codingcompetitions/hacker-cup/2015/round-1/problems/B">點這裡</a>有FB Hacker Cup的原題連結，簡單來說就是想像手機的自動填入系統，每加入一個字串會記錄到資料庫中，當資料庫裡面沒有相同前綴的字串時就輸出前綴長度。</p>
+</blockquote>
+<p>用字典樹Trie插入每一個字串，插入過程中返回從頭到開始new新的節點之間經過的節點樹，代表需要輸入多少個字元才能觸發自動完成系統。這一題是基礎的Trie應用。</p>
+<h4 id="程式碼-2"><a href="#程式碼-2" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t,n;</span><br><span class="line"><span class="keyword">char</span> S[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ch</span><span class="params">(<span class="keyword">char</span> a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Trie</span>&#123;</span></span><br><span class="line">    Trie* c[<span class="number">26</span>];</span><br><span class="line">    <span class="built_in">Trie</span>()&#123;</span><br><span class="line">        <span class="built_in">memset</span>(c,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(c));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Trie *root = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(<span class="keyword">char</span> *S)</span></span>&#123;</span><br><span class="line">    Trie *ptr = root;</span><br><span class="line">    <span class="keyword">int</span> step = <span class="number">0</span>,f = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(*S)&#123;</span><br><span class="line">        <span class="keyword">if</span>(f)step++;</span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*S)])&#123;</span><br><span class="line">            ptr-&gt;c[<span class="built_in">ch</span>(*S)] = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line">            f = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*S)];</span><br><span class="line">        S++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> step;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(Trie *s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s-&gt;c[i])&#123;</span><br><span class="line">            <span class="built_in">clear</span>(s-&gt;c[i]);</span><br><span class="line">            <span class="keyword">delete</span> s-&gt;c[i];</span><br><span class="line">            s-&gt;c[i] = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        cin&gt;&gt;n;</span><br><span class="line">        <span class="keyword">int</span> step = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">            cin&gt;&gt;S;</span><br><span class="line">            step +=<span class="built_in">insert</span>(S);</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Case #&quot;</span>&lt;&lt;cnt&lt;&lt;<span class="string">&quot;: &quot;</span>&lt;&lt;step&lt;&lt;endl;</span><br><span class="line">        <span class="built_in">clear</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="NEOJ-264-欸迪的字串"><a href="#NEOJ-264-欸迪的字串" class="headerlink" title="NEOJ 264 欸迪的字串"></a>NEOJ 264 欸迪的字串</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/264/">題目連結</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/179060/">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給你字串S，求一個最短字串T的長度，滿足經由複製若干次後接起來會是字串S。</p>
+</blockquote>
+<p>這一題在一開始看到感覺好難，不過在慢慢理解 Z_Algorithm 之後，在講義中發現到這個問題也可以用這個演算法來解決！因為Z函數是滿足從i開始的最長前綴，因此當 $i$ 為 字串長度 $n$ 的因數的時候，只要 $i+Z[i+1]=n$ 成立，就必定可以用 $S[1:i]$ 組成字串 $S$ 。實作上要注意字串是0-base，i+1就相等於字串第i個位置，處理上要特別注意！</p>
+<h4 id="程式碼-3"><a href="#程式碼-3" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 500005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Z_algo</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *Z)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>,r = <span class="number">0</span>;</span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;</span><br><span class="line">        Z[i] = <span class="built_in">max</span>(<span class="number">0</span>,<span class="built_in">min</span>(Z[i-l],r-i));</span><br><span class="line">        <span class="keyword">while</span>(S[Z[i]]&amp;&amp;S[Z[i]] == S[i+Z[i]])&#123;</span><br><span class="line">            l = i;r = i+Z[i];</span><br><span class="line">            Z[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    <span class="keyword">char</span> s[N];cin&gt;&gt;s;</span><br><span class="line">    <span class="keyword">int</span> Z[N],n = <span class="built_in">strlen</span>(s),ans = n;</span><br><span class="line">    <span class="built_in">Z_algo</span>(s,Z);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n%i==<span class="number">0</span> &amp;&amp; i+Z[i]==n)&#123;</span><br><span class="line">            ans = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ZJ-d518-文字抄寫-II"><a href="#ZJ-d518-文字抄寫-II" class="headerlink" title="ZJ d518: 文字抄寫 II"></a>ZJ d518: 文字抄寫 II</h3><p><a target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=d518">題目連結</a></p>
+<blockquote>
+<p>題目敘述<br>若這個字串之前已經出現過，則輸出的出現號碼，若沒有則輸出它將被編寫的號碼.</p>
+</blockquote>
+<p>裸題Trie，不過要注意每一次要重置，將所有的實體Delete掉。</p>
+<h4 id="程式碼-4"><a href="#程式碼-4" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 110</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0),cout.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Trie</span>&#123;</span></span><br><span class="line">    Trie* c[<span class="number">26</span>];</span><br><span class="line">    <span class="keyword">int</span> ind;</span><br><span class="line">    <span class="built_in">Trie</span>(): <span class="built_in">ind</span>(<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(c,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(c));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Trie* root = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ch</span><span class="params">(<span class="keyword">char</span> temp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> temp-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(Trie *cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(cur-&gt;c[i])&#123;</span><br><span class="line">            <span class="built_in">clear</span>(cur-&gt;c[i]);</span><br><span class="line">            <span class="keyword">delete</span>[] cur-&gt;c[i];</span><br><span class="line">            cur-&gt;c[i] = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">char</span> *s,<span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">    Trie *ptr = root;           <span class="comment">//從根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])     <span class="comment">//如果樹上無此字元則new</span></span><br><span class="line">            ptr-&gt;c[<span class="built_in">ch</span>(*s)] = <span class="keyword">new</span> <span class="built_in">Trie</span>();</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];   <span class="comment">//繼續造訪Trie</span></span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    ptr-&gt;ind = num;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">char</span> *s)</span></span>&#123;              <span class="comment">//查找字串s</span></span><br><span class="line">    Trie *ptr = root;           <span class="comment">//根節點尋找</span></span><br><span class="line">    <span class="keyword">while</span>(*s)&#123;                  <span class="comment">//無此字串，回傳次數0</span></span><br><span class="line">        <span class="keyword">if</span>(!ptr-&gt;c[<span class="built_in">ch</span>(*s)])<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        ptr = ptr-&gt;c[<span class="built_in">ch</span>(*s)];</span><br><span class="line">        s += <span class="number">1</span>;                 <span class="comment">//字串下一個字元</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ptr-&gt;ind;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n)!=EOF)&#123;</span><br><span class="line">        <span class="keyword">int</span> ans,cur_id = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">            <span class="keyword">char</span> s[N];<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,s);</span><br><span class="line">            ans = <span class="built_in">find</span>(s);</span><br><span class="line">            <span class="keyword">if</span>(ans == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;New! %d\n&quot;</span>,cur_id);</span><br><span class="line">                <span class="built_in">insert</span>(s,cur_id);</span><br><span class="line">                cur_id += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;Old! %d\n&quot;</span>,ans);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">clear</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-1306-字串中的字串"><a href="#TIOJ-1306-字串中的字串" class="headerlink" title="TIOJ 1306 字串中的字串"></a>TIOJ 1306 字串中的字串</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1306">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/263572">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>裸字串匹配。對於每個詢問輸出 $S$ 在 $T$ 中出現過幾次。</p>
+</blockquote>
+<p>裸KMP字串匹配，統計出現次數。可以嘗試不要看資料自己寫一次，會更了解KMP算法！</p>
+<h4 id="程式碼-5"><a href="#程式碼-5" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 10005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t,n,F[N];;</span><br><span class="line"><span class="keyword">char</span> T[N],S[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KMP_match</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">char</span> *T,<span class="keyword">int</span> *F)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">-1</span>,ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;T[i];i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=T[i])</span><br><span class="line">            p = F[p];</span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == T[i])</span><br><span class="line">            p += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(!S[p+<span class="number">1</span>])&#123;</span><br><span class="line">            ans += <span class="number">1</span>;</span><br><span class="line">            p = F[p];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KMP_build</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">int</span> *F)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = F[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;S[i];i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">-1</span> &amp;&amp; S[p+<span class="number">1</span>]!=S[i])</span><br><span class="line">            p = F[p];</span><br><span class="line">        <span class="keyword">if</span>(S[p+<span class="number">1</span>] == S[i])</span><br><span class="line">            p += <span class="number">1</span>;</span><br><span class="line">        F[i] = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(n--)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(F,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(F));</span><br><span class="line">        cin&gt;&gt;S;</span><br><span class="line">        <span class="built_in">KMP_build</span>(S,F);</span><br><span class="line">        cout&lt;&lt;<span class="built_in">KMP_match</span>(S,T,F)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        cin&gt;&gt;T&gt;&gt;n;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-1321-好多回文-ndromePali"><a href="#TIOJ-1321-好多回文-ndromePali" class="headerlink" title="TIOJ 1321 好多回文 ndromePali"></a>TIOJ 1321 好多回文 ndromePali</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1321">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/263962">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給一個長度 ≤ $10^6$ 的字串 A，問有幾種把該字串的某前綴搬到最後面的方法，使得最後的字串為回文。<br>(提示:可以用類似 Z 函數的概念計算出以某字元為中心的最長回文長度。)</p>
+</blockquote>
+<p>這一題搞得我快掛了QQQ。為什麼呢？看看以下照片就知道了：</p>
+<p><img src="https://i.imgur.com/i8Gx5Yo.png" alt=""></p>
+<p>根據上面的「提示」，要用類似Z函數的概念把以某點為中心的最長回文算出來。一個Naive裸的作法，把用 $O(n)$ 枚舉每一個點為分割點，把分割點前面的子字串接到後面，用 $O(n)$ 的時間看是否為一回文字串。如此一來時間複雜度為 $O(n^2)$ ，對這一題來說顯然是不可行的，因為字串長度達到 $10^6$！</p>
+<p>當我們用Manacher’s Algorithm $O(n)$ 的時間每一個字元的最大回文之後，就可以枚舉每一個可以作為分割點的地方，檢查回文的狀況。討論分割點在前半部分的情況下，也就是把短的（長度小於一半）前綴搬到後面的狀況。當分割的索引值為 $i$ ，必須保證 $s[0:i]$ 跟 $s[i:2i]$ 對稱，移到字串尾巴才能成為回文。除此之外，也必須滿足 $Z[mid+i] = mid-i$ 的情況，以就是剩下不是分割點兩側的字串必須是回文，把前綴接到後面之後才能對稱！</p>
+<p>實作上很多細節，我DEBUG超久最後才想到不能枚舉所有字元，會出事（就像上面的三色WA），只要枚舉以 $’.’$ 為分割點的情況（分割在字元上就不行），還有很多細節，WA很多次才會知道XD</p>
+<h4 id="程式碼-6"><a href="#程式碼-6" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,Z[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">bool</span> ans[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">char</span> S[<span class="number">2</span>*N],T[N];</span><br><span class="line"><span class="comment">//T原字串、S插入點字串</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Longest</span><span class="params">()</span></span>&#123;</span><br><span class="line">    n = <span class="built_in">strlen</span>(T);m = <span class="number">2</span>*n+<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">memset</span>(S,<span class="string">&#x27;.&#x27;</span>,m);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)S[<span class="number">2</span>*i+<span class="number">1</span>] = T[i];</span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>,r = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;m;i++)&#123;</span><br><span class="line">        Z[i] = <span class="built_in">max</span>(<span class="built_in">min</span>(Z[<span class="number">2</span>*l-i],r-i),<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">while</span>(i-Z[i]&gt;=<span class="number">0</span> &amp;&amp; i+Z[i] &lt; m &amp;&amp; S[i+Z[i]]==S[i-Z[i]])&#123;</span><br><span class="line">            l = i;r = i+Z[i];</span><br><span class="line">            Z[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;T;</span><br><span class="line">    <span class="built_in">Longest</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)Z[i]--;</span><br><span class="line">    <span class="built_in">memset</span>(ans,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(ans));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> mid = (m<span class="number">-1</span>)/<span class="number">2</span>,i;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(Z[mid] == mid)ans[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;mid;i+=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Z[i] == i &amp;&amp; Z[mid+i] == mid-i)&#123;</span><br><span class="line">            ans[(i/<span class="number">2</span>)] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(;i&lt;m;i+=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Z[i] == m-i<span class="number">-1</span> &amp;&amp; Z[i-mid] == i-mid)&#123;</span><br><span class="line">            ans[(i/<span class="number">2</span>)] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)<span class="keyword">if</span>(ans[i])sum++;</span><br><span class="line">    <span class="keyword">if</span>(sum == <span class="number">0</span>)cout&lt;&lt;<span class="string">&quot;none&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        cout&lt;&lt;sum&lt;&lt;<span class="string">&quot;:&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)<span class="keyword">if</span>(ans[i])cout&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;i;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ZJ-d978-最长回文字串"><a href="#ZJ-d978-最长回文字串" class="headerlink" title="ZJ d978: 最长回文字串"></a>ZJ d978: 最长回文字串</h3><p><a target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=d978">題目連結</a></p>
+<blockquote>
+<p>題目敘述<br>題目即題意，給你一個字串，求出最長的回文字串長度為何？</p>
+</blockquote>
+<p>一題LPS的裸題，用Manacher’s Algorithm可以將時間複雜度做到 $O(n)$！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 500005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,Z[<span class="number">2</span>*N],t;</span><br><span class="line"><span class="keyword">bool</span> ans[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">char</span> S[<span class="number">2</span>*N],T[N];</span><br><span class="line"><span class="comment">//T原字串、S插入點字串</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Longest</span><span class="params">()</span></span>&#123;</span><br><span class="line">    n = <span class="built_in">strlen</span>(T);m = <span class="number">2</span>*n+<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">memset</span>(S,<span class="string">&#x27;.&#x27;</span>,m);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)S[<span class="number">2</span>*i+<span class="number">1</span>] = T[i];</span><br><span class="line">    Z[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>,r = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;m;i++)&#123;</span><br><span class="line">        Z[i] = <span class="built_in">max</span>(<span class="built_in">min</span>(Z[<span class="number">2</span>*l-i],r-i),<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">while</span>(i-Z[i]&gt;=<span class="number">0</span> &amp;&amp; i+Z[i] &lt; m &amp;&amp; S[i+Z[i]]==S[i-Z[i]])&#123;</span><br><span class="line">            l = i;r = i+Z[i];</span><br><span class="line">            Z[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        cin&gt;&gt;T;</span><br><span class="line">        <span class="built_in">Longest</span>();</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> z = (Z[i]<span class="number">-1</span>);</span><br><span class="line">            ans = <span class="built_in">max</span>(ans,z);</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-1725-Massacre-at-Camp-Happy"><a href="#TIOJ-1725-Massacre-at-Camp-Happy" class="headerlink" title="TIOJ 1725 Massacre at Camp Happy"></a>TIOJ 1725 Massacre at Camp Happy</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1725">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/264017">Submission</a></p>
+<blockquote>
+<p>題目敘述：<br>定義字串 A 和 B「k-幾乎相同」代表把字串 A 的前 k 字元搬到最後面時，與 B 恰有一個字元相異。給你兩個長度 ≤ $10^6$ 的字串 A 和 B，求所有使 A 和 B「k-幾乎相同」成立的 k 值。</p>
+</blockquote>
+<p>這一題好特別，一樣要用 $O(n)$ 的時間求出答案，對於每一個操作將前k個字元搬到後面，只能用 $O(1)$ 算出來到底符不符合一字元相異的條件。<br>以兩個相等長度的字串 $A,B$ 為例，長度為 $l$，假設 $A=aabba,B = aacba$，兩者相差一個字元的情況下，必定會滿足$l = LCP(A,B)+LCP(rev(A),rev(B))+1$，其中rev函數表示reverse。</p>
+<p>我們要做的就是在 $O(1)$ 的時間內求出LCP，因為題目的字串 $A$ 要求不同的起始位置，因此我們假設一個非常特別的字串 $B@AA$ ，其中@為任意沒出現過的字元。只要計算這一個字串的Z函數，就表示了 $A$ 和 $B$ 的最長共同前綴，需要兩個A的原因是因為模擬不同的k-位移下情形。</p>
+<p><img src="https://i.imgur.com/5Ir8Hjt.png" alt=""></p>
+<div class="note success">
+            <p><strong>實作小細節</strong><br>程式碼的第42行可以試著推推看逆序之後的尾巴的索引值為何。我是利用列出幾個數字之後推出來的，不過應該可以寫成比較嚴謹的數學證明！</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Z1[n+<span class="number">1</span>+i]+Z2[<span class="number">2</span>*n-i+<span class="number">1</span>]+<span class="number">1</span> == n</span><br></pre></td></tr></table></figure>
+          </div>
+<h4 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h4><p>$O(n)$ 建立z函數，$O(n)$ 枚舉每一個起始點，總時間為 $O(n)$。</p>
+<h4 id="程式碼-7"><a href="#程式碼-7" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,Z1[<span class="number">3</span>*N],Z2[<span class="number">3</span>*N];</span><br><span class="line"><span class="keyword">char</span> A[<span class="number">3</span>*N],B[<span class="number">3</span>*N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Z_algo</span><span class="params">(<span class="keyword">int</span> *z,<span class="keyword">char</span> *S)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l = <span class="number">0</span>,r = <span class="number">0</span>;</span><br><span class="line">    z[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;m;i++)&#123;</span><br><span class="line">        z[i] = <span class="built_in">max</span>(<span class="built_in">min</span>(z[i-l],r-i),<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span>(S[i+z[i]] &amp;&amp; S[z[i]] == S[i+z[i]])&#123;</span><br><span class="line">            l = i;r = i+z[i];</span><br><span class="line">            z[i]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;A&gt;&gt;B;</span><br><span class="line">    m = <span class="number">3</span>*n+<span class="number">1</span>;</span><br><span class="line">    B[n] = <span class="string">&#x27;@&#x27;</span>;</span><br><span class="line">    <span class="comment">//正常序列求Z value</span></span><br><span class="line">    <span class="built_in">rep</span>(i,n+<span class="number">1</span>,<span class="number">2</span>*n)B[i] = A[i-n<span class="number">-1</span>];</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">2</span>*n+<span class="number">1</span>,<span class="number">3</span>*n)B[i] = A[i<span class="number">-2</span>*n<span class="number">-1</span>];</span><br><span class="line">    <span class="built_in">Z_algo</span>(Z1,B);</span><br><span class="line">    <span class="comment">//逆序求Z value</span></span><br><span class="line">    <span class="built_in">reverse</span>(B,B+n);<span class="built_in">reverse</span>(B+n+<span class="number">1</span>,B+m);</span><br><span class="line">    <span class="built_in">Z_algo</span>(Z2,B);</span><br><span class="line">    </span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Z1[n+<span class="number">1</span>+i]+Z2[<span class="number">2</span>*n-i+<span class="number">1</span>]+<span class="number">1</span> == n)vec.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(vec.<span class="built_in">size</span>())&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;TAK&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i:vec)cout&lt;&lt;i&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;NIE&quot;</span>&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//[0,n-1][n,n][n+1,2n][2n+1,3n]</span></span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-1497-喝醉的宿主-The-drunk-host"><a href="#TIOJ-1497-喝醉的宿主-The-drunk-host" class="headerlink" title="TIOJ 1497 喝醉的宿主 The drunk host"></a>TIOJ 1497 喝醉的宿主 The drunk host</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1497">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/264189">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>裸後綴數組。</p>
+</blockquote>
+<p>後綴數組我看了好久（大概有4天吧），一直對著它發呆，不知道它的精髓到底在哪裡。。剛好又遇到開學，不能整天快樂寫題XD</p>
+<h4 id="倍增優化"><a href="#倍增優化" class="headerlink" title="倍增優化"></a>倍增優化</h4><p>對著螢幕發呆的日子終於結束了，直到我看了<a target="_blank" rel="noopener" href="https://oi-wiki.org/string/sa/">這一篇</a>（雖然說我前幾天也有看但看不懂，可能是消化的天數不夠多吧），尤其是裡面的一張圖，深刻說明了倍增的精髓。</p>
+<p>後綴數組求法就不多解釋（上面有），放幾個實作上的小細節。</p>
+<div class="note primary">
+            <p><strong>實作小細節</strong><br>我們要求進行 $O(\log n)$ 層的倍增，可以使用C++內建的log10()再用ceil去處理，但顯然有點慢，如果套用以下函數，它會回傳數字二進位之後最大的1前面總共有多少個0（前綴0的數量），與32相減（32是long long的關係）就是我們要的log的次數。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> lg = __builtin_clz(n)</span><br></pre></td></tr></table></figure><p>另外一個小小細節，就是在字串的後半部分，如果跟前面一樣倍增一個比較大的數字，有可能會超出範圍，這時候初始值就很重要了！初始設定rk[n] = -1，導致任何只要超出範圍的都會取到這個-1，表示只要後面沒有字串、如果前面都相同但長度比較長的字串比起來，較短的會排在比較前面的位置！</p>
+          </div>
+<p>這個算法是 $O(n\log^2 n)$，TIOJ這一題可以過，不過到<a target="_blank" rel="noopener" href="https://www.spoj.com/problems/SARRAY/">SPOJ</a>就會被卡TLE</p>
+<blockquote>
+<p>$O(n^2 log(n))$ is expected to score about 20-30. (Naive sorting all suffixes)<br>$O(n log^2(n))$ is expected to score about 40. (OK for most programming contest problems)<br>$O(n log n)$ is expected to score about 60-70. (Use counting sort for small alphabet size)<br>$O(n)$ without tweaks is expected to score about 80-90.<br>$O(n)$ with tweaks is expected to score 100. (This is meant for fun only :)</p>
+</blockquote>
+<p>越後面就越毒瘤XD</p>
+<blockquote>
+<p>test 1 - AC (score=0.000000, sig=0, time=0.009123, mem=5372)<br>test 2 - AC (score=0.000000, sig=0, time=0.006427, mem=5508)<br>test 3 - AC (score=0.000000, sig=0, time=0.014975, mem=5468)<br>test 4 - AC (score=0.000000, sig=0, time=0.031332, mem=5536)<br>test 5 - AC (score=0.000000, sig=0, time=0.026948, mem=5456)<br>test 6 - AC (score=0.000000, sig=0, time=0.023113, mem=5396)<br>test 7 - TLE (score=0.000000, sig=0, time=0.210000, mem=7340)<br>test 8 - TLE (score=0.000000, sig=0, time=0.210000, mem=7152)<br>test 9 - AC (score=0.000000, sig=0, time=0.170094, mem=7284)<br>test 10 - AC (score=0.000000, sig=0, time=0.140098, mem=7340)</p>
+</blockquote>
+<h4 id="程式碼-8"><a href="#程式碼-8" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> all(x) x.begin(),x.end()</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,sa[N];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pt</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y,id;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>==(pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x==b.x &amp;&amp; y==b.y)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//第一位、第二位比較以及後綴編號</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(pt a,pt b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.x != b.x)<span class="keyword">return</span> a.x &lt; b.x;</span><br><span class="line">    <span class="keyword">return</span> a.y &lt; b.y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">suffix_array</span><span class="params">(string S)</span></span>&#123;</span><br><span class="line">    n = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> lg = <span class="number">32</span>-__builtin_clz(n);</span><br><span class="line">    <span class="comment">//回傳第一個1之前0的個數（二進位）</span></span><br><span class="line">    <span class="function">vector&lt;pt&gt; <span class="title">cur</span><span class="params">(n,&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n+<span class="number">1</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cur[i] = &#123;S[i],<span class="number">0</span>,i&#125;;</span><br><span class="line">    <span class="built_in">rep</span>(p,<span class="number">0</span>,lg)&#123;</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">1</span> &lt;&lt; p;         <span class="comment">//現在倍增的大小</span></span><br><span class="line">        <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">        rk[cur[<span class="number">0</span>].id] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">            rk[cur[i].id] = (cur[i<span class="number">-1</span>]==cur[i] ? rk[cur[i<span class="number">-1</span>].id]:i);</span><br><span class="line">            <span class="comment">//設定rk，與前一個相同則設定跟前一個一樣</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">            cur[i] = &#123;rk[i],rk[<span class="built_in">min</span>(n,i+k)],i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)sa[i] = cur[i].id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    string S;<span class="built_in">getline</span>(cin,S);</span><br><span class="line">    <span class="built_in">suffix_array</span>(S);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cout&lt;&lt;sa[i]&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Radix-Sort-優化"><a href="#Radix-Sort-優化" class="headerlink" title="Radix Sort 優化"></a>Radix Sort 優化</h4><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/264407">Submission</a></p>
+<p>比較一下 $O(n\log^2 n)$ 以及 $O(n\log n)$ 的時間，兩者花了近兩倍的時間差距。看了一下這一題的TopCoder，竟然可以做到十位數毫秒！如果要繼續優化成線性 $O(n)$ 的複雜度，就會使用到 DC3 的演算法，雖然好像很複雜不實用QQ</p>
+<p><img src="https://i.imgur.com/tQph2uA.png" alt=""></p>
+<p><img src="https://i.imgur.com/1wcKazZ.png" alt=""></p>
+<p><img src="https://i.imgur.com/i4WSvw8.png" alt=""></p>
+<p>使用 $O(n\log^2n)$ 的算法會TLE第八、九筆測資，不過使用基數排序就可以AC了！</p>
+<blockquote>
+<p>test 1 - AC (score=0.000000, sig=0, time=0.006565, mem=6048)<br>test 2 - AC (score=0.000000, sig=0, time=0.006594, mem=6300)<br>test 3 - AC (score=0.000000, sig=0, time=0.012431, mem=7860)<br>test 4 - AC (score=0.000000, sig=0, time=0.012267, mem=7208)<br>test 5 - AC (score=0.000000, sig=0, time=0.011158, mem=6804)<br>test 6 - AC (score=0.000000, sig=0, time=0.012057, mem=7892)<br>test 7 - AC (score=0.000000, sig=0, time=0.140876, mem=17720)<br>test 8 - AC (score=0.000000, sig=0, time=0.077631, mem=21952)<br>test 9 - AC (score=0.000000, sig=0, time=0.074905, mem=21340)<br>test 10 - AC (score=0.000000, sig=0, time=0.076732, mem=30160)</p>
+</blockquote>
+<h4 id="程式碼-9"><a href="#程式碼-9" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> all(x) x.begin(),x.end()</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,sa[N];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pt</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y,id;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>==(pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x==b.x &amp;&amp; y==b.y)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//第一位、第二位比較以及後綴編號</span></span><br><span class="line">vector&lt;pt&gt; temp,box[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    temp.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)box[i].<span class="built_in">clear</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(pt a,pt b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.x == b.x)<span class="keyword">return</span> a.y &lt; b.y;</span><br><span class="line">    <span class="keyword">return</span> a.x &lt; b.x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">raddix_sort</span><span class="params">(vector&lt;pt&gt; &amp;cur)</span></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(cur[i].y == <span class="number">-1</span>)temp.<span class="built_in">push_back</span>(cur[i]);</span><br><span class="line">        <span class="keyword">else</span> box[cur[i].y].<span class="built_in">push_back</span>(cur[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : box[i])temp.<span class="built_in">push_back</span>(j);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)box[i].<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        box[temp[i].x].<span class="built_in">push_back</span>(temp[i]);</span><br><span class="line">    cur.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : box[i])cur.<span class="built_in">push_back</span>(j);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">suffix_array</span><span class="params">(string S)</span></span>&#123;</span><br><span class="line">    n = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> lg = <span class="number">32</span>-__builtin_clz(n);<span class="comment">//回傳第一個1之前0的個數（二進位）</span></span><br><span class="line">    <span class="function">vector&lt;pt&gt; <span class="title">cur</span><span class="params">(n,&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n+<span class="number">1</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>) cur[i] = &#123;S[i],<span class="number">0</span>,i&#125;;</span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">    rk[cur[<span class="number">0</span>].id] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)</span><br><span class="line">        rk[cur[i].id] = (cur[i]==cur[i<span class="number">-1</span>])?rk[cur[i<span class="number">-1</span>].id]:i;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cur[i] = &#123;rk[i],<span class="number">0</span>,i&#125;;</span><br><span class="line">    <span class="built_in">rep</span>(p,<span class="number">0</span>,lg)&#123;                <span class="comment">//進行O(lgn)次</span></span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">1</span> &lt;&lt; p;         <span class="comment">//現在倍增的大小</span></span><br><span class="line">        <span class="built_in">raddix_sort</span>(cur);</span><br><span class="line">        rk[cur[<span class="number">0</span>].id] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)            <span class="comment">//設定rk，與前一個相同則設定跟前一個一樣</span></span><br><span class="line">            rk[cur[i].id] = (cur[i<span class="number">-1</span>]==cur[i] ? rk[cur[i<span class="number">-1</span>].id]:i);</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)            <span class="comment">//倍增pair的second</span></span><br><span class="line">            cur[i] = &#123;rk[i],rk[<span class="built_in">min</span>(n,i+k)],i&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">raddix_sort</span>(cur);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)sa[i] = cur[i].id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    string S;<span class="built_in">getline</span>(cin,S);</span><br><span class="line">    <span class="built_in">suffix_array</span>(S);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cout&lt;&lt;sa[i]&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-1515-Problem-E-似曾相識"><a href="#TIOJ-1515-Problem-E-似曾相識" class="headerlink" title="TIOJ 1515 Problem E. 似曾相識"></a>TIOJ 1515 Problem E. 似曾相識</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1515">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/264483">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>裸後綴數組 LCP。</p>
+</blockquote>
+<p>這題我想好久，一直想不通轉移的條件以及k-1的原因，不過最後還是想通了！這一題只要把 $lcp$ 求出來之後，找最大值就是題目要求的答案。</p>
+<h4 id="程式碼-10"><a href="#程式碼-10" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 200005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> all(x) x.begin(),x.end()</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,sa[N];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pt</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y,id;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>==(pt b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x==b.x &amp;&amp; y==b.y)<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//第一位、第二位比較以及後綴編號</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(pt a,pt b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.x != b.x)<span class="keyword">return</span> a.x &lt; b.x;</span><br><span class="line">    <span class="keyword">return</span> a.y &lt; b.y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">suffix_array</span><span class="params">(string S)</span></span>&#123;</span><br><span class="line">    n = S.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> lg = <span class="number">32</span>-__builtin_clz(n);</span><br><span class="line">    <span class="comment">//回傳第一個1之前0的個數（二進位）</span></span><br><span class="line">    <span class="function">vector&lt;pt&gt; <span class="title">cur</span><span class="params">(n,&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n+<span class="number">1</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)cur[i] = &#123;S[i],<span class="number">0</span>,i&#125;;</span><br><span class="line">    <span class="built_in">rep</span>(p,<span class="number">0</span>,lg)&#123;</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">1</span> &lt;&lt; p;         <span class="comment">//現在倍增的大小</span></span><br><span class="line">        <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">        rk[cur[<span class="number">0</span>].id] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n<span class="number">-1</span>)</span><br><span class="line">            rk[cur[i].id] = (cur[i<span class="number">-1</span>]==cur[i] ? rk[cur[i<span class="number">-1</span>].id]:i);</span><br><span class="line">            <span class="comment">//設定rk，與前一個相同則設定跟前一個一樣</span></span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">            cur[i] = &#123;rk[i],rk[<span class="built_in">min</span>(n,i+k)],i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">all</span>(cur),cmp);</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)sa[i] = cur[i].id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">LCP</span><span class="params">(string s)</span></span>&#123;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rk</span><span class="params">(n,<span class="number">0</span>)</span>,<span class="title">lcp</span><span class="params">(n,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)rk[sa[i]] = i;      <span class="comment">//利用sa反函數得到rk</span></span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(k)k--;</span><br><span class="line">        <span class="keyword">if</span>(rk[i] == n<span class="number">-1</span>)<span class="keyword">continue</span>;   <span class="comment">//rk[n-1]未定義</span></span><br><span class="line">        <span class="keyword">int</span> j = sa[rk[i]+<span class="number">1</span>];        <span class="comment">//下一名後綴從何開始</span></span><br><span class="line">        <span class="keyword">while</span>(i+k&lt;n &amp;&amp; j+k&lt;n &amp;&amp; s[i+k] == s[j+k])k++;</span><br><span class="line">        lcp[rk[i]] = k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lcp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n;cin.<span class="built_in">ignore</span>();</span><br><span class="line">    string S;<span class="built_in">getline</span>(cin,S);</span><br><span class="line">    <span class="built_in">suffix_array</span>(S);</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; lcp = <span class="built_in">LCP</span>(S);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)ans = <span class="built_in">max</span>(lcp[i],ans);</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><p>字串演算法跟最短路徑、計算幾何比起來，數學推導成分就多了很多，有許多的遞迴概念，例如失敗函數以及z函數的概念，也有很多是要理解在不同條件下做什麼事，以及其他優化處理。最初的是字典樹Trie，就是一些資料結構的運用；接下來的KMP、Z Algorithm以及LPS就很吃觀念，追蹤整個程式的過程。最後是後綴數組，在這邊卡了超久，遲遲無法理解倍增的概念、以及LCP的作法。可能這就是頓悟吧，每天看了同篇解說很久之後，總有一天會突然頓悟，想到演算法的精髓！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%BC%94%E7%AE%97%E6%B3%95/" rel="tag"># 演算法</a>
+              <a href="/tags/%E5%AD%97%E4%B8%B2/" rel="tag"># 字串</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/string1/" rel="prev" title="字串演算法 (String)">
+      <i class="fa fa-chevron-left"></i> 字串演算法 (String)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/apcs2109/" rel="next" title="APCS題解：2021年9月">
+      APCS題解：2021年9月 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E7%9B%AE%E9%8C%84"><span class="nav-number">1.</span> <span class="nav-text">題目目錄</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NEOJ-266-%E6%BA%AB%E5%8A%9B%E7%9A%84%E6%95%85%E4%BA%8B"><span class="nav-number">1.1.</span> <span class="nav-text">NEOJ 266 溫力的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.1.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEOJ-265-%E6%AC%B8%E8%BF%AA%E7%9A%84%E5%AD%97%E4%B8%B2"><span class="nav-number">1.2.</span> <span class="nav-text">NEOJ 265 欸迪的字串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEOJ-267-%E8%87%AA%E5%8B%95%E5%AE%8C%E6%88%90%E7%B3%BB%E7%B5%B1"><span class="nav-number">1.3.</span> <span class="nav-text">NEOJ 267 自動完成系統</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEOJ-264-%E6%AC%B8%E8%BF%AA%E7%9A%84%E5%AD%97%E4%B8%B2"><span class="nav-number">1.4.</span> <span class="nav-text">NEOJ 264 欸迪的字串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZJ-d518-%E6%96%87%E5%AD%97%E6%8A%84%E5%AF%AB-II"><span class="nav-number">1.5.</span> <span class="nav-text">ZJ d518: 文字抄寫 II</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-1306-%E5%AD%97%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%AD%97%E4%B8%B2"><span class="nav-number">1.6.</span> <span class="nav-text">TIOJ 1306 字串中的字串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-1321-%E5%A5%BD%E5%A4%9A%E5%9B%9E%E6%96%87-ndromePali"><span class="nav-number">1.7.</span> <span class="nav-text">TIOJ 1321 好多回文 ndromePali</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-6"><span class="nav-number">1.7.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZJ-d978-%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%97%E4%B8%B2"><span class="nav-number">1.8.</span> <span class="nav-text">ZJ d978: 最长回文字串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-1725-Massacre-at-Camp-Happy"><span class="nav-number">1.9.</span> <span class="nav-text">TIOJ 1725 Massacre at Camp Happy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="nav-number">1.9.1.</span> <span class="nav-text">時間複雜度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-7"><span class="nav-number">1.9.2.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-1497-%E5%96%9D%E9%86%89%E7%9A%84%E5%AE%BF%E4%B8%BB-The-drunk-host"><span class="nav-number">1.10.</span> <span class="nav-text">TIOJ 1497 喝醉的宿主 The drunk host</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%8D%E5%A2%9E%E5%84%AA%E5%8C%96"><span class="nav-number">1.10.1.</span> <span class="nav-text">倍增優化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-8"><span class="nav-number">1.10.2.</span> <span class="nav-text">程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Radix-Sort-%E5%84%AA%E5%8C%96"><span class="nav-number">1.10.3.</span> <span class="nav-text">Radix Sort 優化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-9"><span class="nav-number">1.10.4.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-1515-Problem-E-%E4%BC%BC%E6%9B%BE%E7%9B%B8%E8%AD%98"><span class="nav-number">1.11.</span> <span class="nav-text">TIOJ 1515 Problem E. 似曾相識</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC-10"><span class="nav-number">1.11.1.</span> <span class="nav-text">程式碼</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%83%E5%BE%97"><span class="nav-number">2.</span> <span class="nav-text">心得</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

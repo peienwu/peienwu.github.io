@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="簡介上週補習班開始教「平面方程式」，有一題範例感覺特別的酷，題目如下：  空間坐標系中，有一平面鏡E，一雷射光線經過點$A(1,-1,2)$射向鏡面E上的點$B(0,1,0)$，反射又經過點$C(4,-3,2)$，試求平面E的方程式為何？  解法大概就是利用菱形對角線平分的概念求出平面方程式！由這一題延伸，我想看看當改變已知平面的各項參數時，反射光的向量會有怎麼樣的變化，於是就嘗試用VPython">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三維空間中的反射定律模擬">
+<meta property="og:url" content="https://peienwu.com/reflection/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="簡介上週補習班開始教「平面方程式」，有一題範例感覺特別的酷，題目如下：  空間坐標系中，有一平面鏡E，一雷射光線經過點$A(1,-1,2)$射向鏡面E上的點$B(0,1,0)$，反射又經過點$C(4,-3,2)$，試求平面E的方程式為何？  解法大概就是利用菱形對角線平分的概念求出平面方程式！由這一題延伸，我想看看當改變已知平面的各項參數時，反射光的向量會有怎麼樣的變化，於是就嘗試用VPython">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/CLng02c.png">
+<meta property="og:image" content="https://i.imgur.com/Qt5Ktgo.png">
+<meta property="og:image" content="https://i.imgur.com/mub19sF.png">
+<meta property="og:image" content="https://i.imgur.com/pL9itZU.png">
+<meta property="og:image" content="https://i.imgur.com/Aysupto.png">
+<meta property="og:image" content="https://i.imgur.com/BrP36SB.gif">
+<meta property="article:published_time" content="2022-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-27T03:28:32.907Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="VPYTHON">
+<meta property="article:tag" content="模擬">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/CLng02c.png">
+
+<link rel="canonical" href="https://peienwu.com/reflection/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>三維空間中的反射定律模擬 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/reflection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          三維空間中的反射定律模擬
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-13T00:00:00+08:00">2022-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E6%A8%A1%E6%93%AC/" itemprop="url" rel="index"><span itemprop="name">程式模擬</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/reflection/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/reflection/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>3 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>上週補習班開始教「平面方程式」，有一題範例感覺特別的酷，題目如下：</p>
+<blockquote>
+<p>空間坐標系中，有一平面鏡E，一雷射光線經過點$A(1,-1,2)$射向鏡面E上的點$B(0,1,0)$，反射又經過點$C(4,-3,2)$，試求平面E的方程式為何？</p>
+</blockquote>
+<p>解法大概就是利用菱形對角線平分的概念求出平面方程式！由這一題延伸，我想看看當改變已知平面的各項參數時，反射光的向量會有怎麼樣的變化，於是就嘗試用VPython模擬出來！</p>
+<span id="more"></span>
+<p><img src="https://i.imgur.com/CLng02c.png" alt=""></p>
+<p><img src="https://i.imgur.com/Qt5Ktgo.png" alt=""></p>
+<h2 id="反射定律及數學"><a href="#反射定律及數學" class="headerlink" title="反射定律及數學"></a>反射定律及數學</h2><p>平面的情況很好理解，入射角等於反射角，但當來到三維時，除了角度一樣之外，這三個向量還必須在同一個平面上：</p>
+<p><img src="https://i.imgur.com/mub19sF.png" width="400"></p>
+<p>原題我們是利用已知的$\overrightarrow{BA},\overrightarrow{BC}$，利用菱形邊長相等且平分夾角的性質，將長度調整成一樣之後相加即可求出平面的法向量，進一步求得反射的平面：</p>
+<p><img src="https://i.imgur.com/pL9itZU.png" alt=""></p>
+<p>要利用$\overrightarrow{BA}$以及平面方程式逆推反射光向量，在確認法向量的方向向量之後，將平面法向量的長度設為$|\vec{n}| = 2\overline{AB}\cos\theta$，由$\vec n = \overrightarrow{BA}+\overrightarrow{BC}$即可推得與$\overrightarrow{BA}$長度相同的$\overrightarrow{BC}$！</p>
+<p><img src="https://i.imgur.com/Aysupto.png" alt=""></p>
+<p>綜合以上，令反射平面方程式為$ax+by+cz = 0$，$\vec n = (a,b,c)$，入射角為$\theta$，則：</p>
+<script type="math/tex; mode=display">\begin{split}\overrightarrow{BC} &= \frac{2|\overrightarrow{BA}|\cos\theta}{|\vec n|}\vec n - \overrightarrow{BA}
+\\&=\frac{2|\overrightarrow{BA}|(\vec n\cdot\overrightarrow{BA})}{|\vec n|^2\,\overrightarrow{BA}}\vec n - \overrightarrow{BA}\end{split}</script><h2 id="模擬及程式碼"><a href="#模擬及程式碼" class="headerlink" title="模擬及程式碼"></a>模擬及程式碼</h2><h3 id="使用說明"><a href="#使用說明" class="headerlink" title="使用說明"></a>使用說明</h3><p><a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/%E4%BA%8C%E5%B9%B4%E7%B4%9ATEST/program/mirrorreflectionsimulation">模擬連結</a><br>他會要求輸入發射源的$x,y,z$座標，完成後可以利用鍵盤’A,S’鍵調整平面$ax+by+cz=0$上$a$的大小（A變大、S變小），$b$則是’B,N’鍵、$c$是’C,V’鍵。</p>
+<p><img src="https://i.imgur.com/BrP36SB.gif" alt=""></p>
+<p>利用以上的公式，我們建立各個物件、包含各個座標軸、反射平面以及入射反射光。模擬中兩個黃色的箭頭代表入射光及反射光的向量，灰色箭頭則是平面的法向量。</p>
+<h3 id="計算"><a href="#計算" class="headerlink" title="計算"></a>計算</h3><p>計算夾角用到內積算夾角的餘弦$\cos\theta = \frac{\vec a\cdot\vec b}{|\vec a||\vec b|}$，算內積函式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dt</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    <span class="keyword">return</span> a.x*b.x+a.y*b.y+a.z*b.z</span><br></pre></td></tr></table></figure>
+<p>接著就是計算$|\vec n|$的長度sz，對$\vec n$取單位向量後乘上長度，並設為平面的法向量，將$\vec n$與入射光向量相減得到反射光向量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sz = <span class="number">2</span> * mag(ball.pos) * dt(plane.up,ball.pos) / (mag(plane.up)*mag(ball.pos))</span><br><span class="line">n = norm(plane.up) * sz</span><br><span class="line"></span><br><span class="line">plane.up = vec(a,b,c)</span><br><span class="line">normal.axis = n</span><br><span class="line"></span><br><span class="line">arr_out.axis = n - ball.pos</span><br></pre></td></tr></table></figure>
+<h3 id="完整程式碼"><a href="#完整程式碼" class="headerlink" title="完整程式碼"></a>完整程式碼</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">GlowScript <span class="number">3.2</span> VPython</span><br><span class="line"></span><br><span class="line">x = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;x = &quot;</span>))</span><br><span class="line">y = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;y = &quot;</span>))</span><br><span class="line">z = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;z = &quot;</span>))</span><br><span class="line"></span><br><span class="line">a = <span class="number">0</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">c = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">scene = canvas(width=<span class="number">1000</span>, height=<span class="number">500</span>,center = vector(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>),<span class="built_in">range</span> = <span class="built_in">max</span>(x,<span class="built_in">max</span>(y,z))+<span class="number">10</span>) <span class="comment">#設定畫面</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dt</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    <span class="keyword">return</span> a.x*b.x+a.y*b.y+a.z*b.z</span><br><span class="line"></span><br><span class="line">plane = box(pos=vector(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>),length=<span class="number">20</span>, height=<span class="number">0.1</span>, width=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">arrx = arrow(pos=vector(-<span class="number">10</span>,<span class="number">0</span>,-<span class="number">5</span>), axis=vector(<span class="number">20</span>,<span class="number">0</span>,<span class="number">0</span>), shaftwidth=<span class="number">0.1</span>, color=color.red)</span><br><span class="line">arry = arrow(pos=vector(-<span class="number">10</span>,<span class="number">0</span>,-<span class="number">5</span>), axis=vector(<span class="number">0</span>,<span class="number">20</span>,<span class="number">0</span>), shaftwidth=<span class="number">0.1</span>, color=color.blue)</span><br><span class="line">arrz = arrow(pos=vector(-<span class="number">10</span>,<span class="number">0</span>,-<span class="number">5</span>), axis=vector(<span class="number">0</span>,<span class="number">0</span>,<span class="number">20</span>), shaftwidth=<span class="number">0.1</span>, color=color.green)</span><br><span class="line"></span><br><span class="line">ball = sphere(pos=vector(x,y,z),radius=<span class="number">0.5</span>,color = color.red)</span><br><span class="line"></span><br><span class="line">arr_in = arrow(pos=ball.pos, axis=plane.pos-ball.pos, shaftwidth=<span class="number">0.5</span>, color=color.yellow)</span><br><span class="line">arr_out = arrow(pos=vec(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), axis=vector(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), shaftwidth=<span class="number">0.5</span>, color=color.yellow)</span><br><span class="line">normal = arrow(pos=vec(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), shaftwidth=<span class="number">0.1</span>, color=color.white)</span><br><span class="line"></span><br><span class="line">label_a = label(pos=vec(<span class="built_in">max</span>(x,<span class="built_in">max</span>(y,z))+<span class="number">10</span>,<span class="number">10</span>,<span class="number">0</span>), box = <span class="number">0</span> ,height = <span class="number">20</span>, color = color.green)</span><br><span class="line">label_b = label(pos=vec(<span class="built_in">max</span>(x,<span class="built_in">max</span>(y,z))+<span class="number">10</span>,<span class="number">5</span>,<span class="number">0</span>), box = <span class="number">0</span> ,height = <span class="number">20</span>, color = color.green)</span><br><span class="line">label_c = label(pos=vec(<span class="built_in">max</span>(x,<span class="built_in">max</span>(y,z))+<span class="number">10</span>,<span class="number">0</span>,<span class="number">0</span>), box = <span class="number">0</span> ,height = <span class="number">20</span>, color = color.green)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    rate(<span class="number">10</span>)</span><br><span class="line">    label_a.text = <span class="string">&#x27;&#123;&#125;&#123;:.1f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;a = &#x27;</span>,a)</span><br><span class="line">    label_b.text = <span class="string">&#x27;&#123;&#125;&#123;:.1f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;b = &#x27;</span>,b)</span><br><span class="line">    label_c.text = <span class="string">&#x27;&#123;&#125;&#123;:.1f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;c = &#x27;</span>,c)</span><br><span class="line">    </span><br><span class="line">    ev = scene.waitfor(<span class="string">&#x27;click keydown&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;A&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;a&#x27;</span>:a += <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;B&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;b&#x27;</span>:b += <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;C&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;c&#x27;</span>:c += <span class="number">0.1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;S&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;s&#x27;</span>:a -= <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;N&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;n&#x27;</span>:b -= <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">if</span> ev.key == <span class="string">&#x27;V&#x27;</span><span class="keyword">or</span> ev.key == <span class="string">&#x27;v&#x27;</span>:c -= <span class="number">0.1</span></span><br><span class="line">    </span><br><span class="line">    sz = <span class="number">2</span> * mag(ball.pos) * dt(plane.up,ball.pos) / (mag(plane.up)*mag(ball.pos))</span><br><span class="line">    n = norm(plane.up) * sz</span><br><span class="line">    </span><br><span class="line">    plane.up = vec(a,b,c)</span><br><span class="line">    normal.axis = n</span><br><span class="line">    </span><br><span class="line">    arr_out.axis = n - ball.pos</span><br></pre></td></tr></table></figure>
+<h2 id="延伸內容"><a href="#延伸內容" class="headerlink" title="延伸內容"></a>延伸內容</h2><p>既然有反射勢必有折射定律的模擬，牽扯到不同介質的折射率以及角度的計算$n_1\sin\theta_1 = n_2\sin\theta_2$，之後可以嘗試寫一個模擬試試！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/VPYTHON/" rel="tag"># VPYTHON</a>
+              <a href="/tags/%E6%A8%A1%E6%93%AC/" rel="tag"># 模擬</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/manim/" rel="prev" title="Manim學習筆記">
+      <i class="fa fa-chevron-left"></i> Manim學習筆記
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/gravity2/" rel="next" title="橢圓軌道上行星到太陽平均距離">
+      橢圓軌道上行星到太陽平均距離 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">簡介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%AE%9A%E5%BE%8B%E5%8F%8A%E6%95%B8%E5%AD%B8"><span class="nav-number">2.</span> <span class="nav-text">反射定律及數學</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%93%AC%E5%8F%8A%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.</span> <span class="nav-text">模擬及程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AA%AA%E6%98%8E"><span class="nav-number">3.1.</span> <span class="nav-text">使用說明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%88%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">計算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.3.</span> <span class="nav-text">完整程式碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E4%BC%B8%E5%85%A7%E5%AE%B9"><span class="nav-number">4.</span> <span class="nav-text">延伸內容</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

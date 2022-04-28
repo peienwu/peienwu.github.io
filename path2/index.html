@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="題目目錄 可魚果運輸問題 百慕達三角洲 江神與他的小火車 貨物運送計劃 E.漢米頓的麻煩 旅遊規劃問題 Codeforces 543B: Destroying Roads">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最短路徑例題（Shortest Path Problem）">
+<meta property="og:url" content="https://peienwu.com/path2/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="題目目錄 可魚果運輸問題 百慕達三角洲 江神與他的小火車 貨物運送計劃 E.漢米頓的麻煩 旅遊規劃問題 Codeforces 543B: Destroying Roads">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/vdtJWR2.png">
+<meta property="og:image" content="https://i.imgur.com/fsorAoE.png">
+<meta property="og:image" content="https://i.imgur.com/9ZaisdZ.png">
+<meta property="og:image" content="https://i.imgur.com/9JldAha.png">
+<meta property="og:image" content="https://i.imgur.com/BYojGwm.jpg">
+<meta property="og:image" content="https://i.imgur.com/wnXKbI8.png">
+<meta property="og:image" content="https://i.imgur.com/f96GUmd.jpg">
+<meta property="og:image" content="https://i.imgur.com/Uocw0hc.png">
+<meta property="og:image" content="https://i.imgur.com/BSNWgh8.png">
+<meta property="og:image" content="https://i.imgur.com/QfbfF82.png">
+<meta property="og:image" content="https://i.imgur.com/tjq8oe7.png">
+<meta property="article:published_time" content="2021-08-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-27T05:07:55.834Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="2021暑期筆記">
+<meta property="article:tag" content="2020資訊之芽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/vdtJWR2.png">
+
+<link rel="canonical" href="https://peienwu.com/path2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>最短路徑例題（Shortest Path Problem） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/path2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最短路徑例題（Shortest Path Problem）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-08-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-16T00:00:00+08:00">2021-08-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91/" itemprop="url" rel="index"><span itemprop="name">最短路徑</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/path2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/path2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>20 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="題目目錄"><a href="#題目目錄" class="headerlink" title="題目目錄"></a>題目目錄</h2><ul>
+<li>可魚果運輸問題</li>
+<li>百慕達三角洲</li>
+<li>江神與他的小火車</li>
+<li>貨物運送計劃</li>
+<li>E.漢米頓的麻煩</li>
+<li>旅遊規劃問題</li>
+<li>Codeforces 543B: Destroying Roads<span id="more"></span>
+</li>
+</ul>
+<h3 id="可魚果運輸問題"><a href="#可魚果運輸問題" class="headerlink" title="可魚果運輸問題"></a>可魚果運輸問題</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/391/">題目連結</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/178079/">Dijkstra’s Algorithm</a><br><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/178078/">SPFA</a><br>這一題的來源是NPSC2013的題目，題目大意如下：</p>
+<blockquote>
+<p>有n個城市m個運輸方案，每個方案 $P_i$ 會從一個固定的起始城市 $A_i$ 運送東西到另一個固定的終點城市 $B_i$，每運輸一件物品，就必須付 $C_i$ 價錢。若用方案 $P_i$ 運輸了超過 $D_i$ 件物品，多出來的部份每件物品收 $C_i’$ 元。共要運輸 $f$ 物品。<br>求起點 $s$ 到終點 $e$ 的最短路徑。</p>
+</blockquote>
+<p>當運輸總量超過 $D_i$ 件物品，表示可以使用更小的邊權重去計算接下來的費用。這時候我們可以了解到一個性質，如果我把全部的物品全部集中在一條路徑運送，因為送的越多，相對的在費用上就可能產生優惠，比分散多條路徑的運送花費來的小。因為總共要運送 $f$ 件物品，因此會將邊的權重設定為當 $f$ 件物品都經過這一條邊時，所要花費的價格。</p>
+<p>有了邊以及價格之後，便可開始進行最短路徑的演算法。因為題目範圍 $N≤100$ ，因此用Dijkstra’s 或是 SPFA 都可以做（Bellman-Ford就先不要XD）。</p>
+<h4 id="Dijkstra’s-Algorithm"><a href="#Dijkstra’s-Algorithm" class="headerlink" title="Dijkstra’s Algorithm"></a>Dijkstra’s Algorithm</h4><p>這篇有<a target="_blank" rel="noopener" href="http://www-m3.ma.tum.de/foswiki/pub/MN0506/WebHome/dijkstra.pdf">一篇論文</a>是Dijkstra在針對最短路徑寫的論文（也就是以他名字命名的演算法論文），這篇只有三頁耶！<br>以下是「演算法導論」這本書中演算法的虛擬碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DIJKSTRA(G, w, s)</span><br><span class="line">  1  INITIALIZE-SINGLE-SOURCE(G, s)</span><br><span class="line">  2    S &lt;- Ø</span><br><span class="line">  3    Q &lt;- V[G]</span><br><span class="line">  4    while Q ≠ Ø</span><br><span class="line">  5        do u &lt;- EXTRACT-MIN(Q)</span><br><span class="line">  6            S &lt;- S ∪ &#123;u&#125;</span><br><span class="line">  7            for each vertex v ∈ Adj[u]</span><br><span class="line">  8                do RELAX(u,v,w)</span><br></pre></td></tr></table></figure>
+<p>其中集合 $S$ 在程式碼中代表的是visit，而集合 $Q$ 因為要操作取出最小元素的動作，因此會用priority_queue實現，以heap來進行 $O(\log n)$ 的插入以及取出。</p>
+<p>這裡面使用$visit$判斷是否在集合 $S$ 中，但我們可以發現，如果在priority_queue中有兩個點的存在，第一個點處理完被加入集合 $S$ 中之後，第二次再次被拿出來進行處理時就不會有任何相鄰的點再一次被處理，這是因為第一次與第二次更新所使用的 $dis[cur]$ 是一樣的。因此，當一個點已經在visit中（也就是在集合 $s$ 中），我們可以直接換下一個點去執行（不過如果忘了visit也是沒差啦）。</p>
+<div class="note default">
+            <p><strong>複雜度分析</strong></p><p>以下分析一下演算法時間複雜度，總共有兩個時間複雜度，取決於使用何種資料結構來實作。</p><p><strong>1. 時間複雜度 $O(V^2+E)$</strong><br>首先是每一個點執行 $V$ 次對每一個相鄰的點進行更新，每一輪執行 $O(V)$ 尋找目前距離 $dis$ 最小的點。總共有 $E$ 條邊需要更新，因此最後要把 $E$ 再加上去。這樣總複雜度就會 $V\times O(V)+O(E) = O(V^2+E)$。此實作方式一般在稠密的圖中會有比較好的表現。<br><br></p><p><strong>2. 時間複雜度 $O((V+E)\log V)$</strong><br>這一題在 $O(n)$ 爆搜尋找改用heap去優化，因此複雜度就會是一樣執行V 輪利用 $O(logV)$ 找到距離 $dis$ 最小的點，同時將更新後的點放進heap中，我們知道放入heap的複雜度也是 $O(\log n)$，因此複雜度就會變成 $O(V\log V)+O(E\log V) = O((V+E)\log V)$。此實作方式一般在稀疏的圖中會有比較好的表現，從 $V$ 與 $E$ 的大小估計可以大致發現。</p>
+          </div>
+<p>以下是程式法的實作，最需要注意的地方是pair的first跟second儲存的東西。在存圖時會使用（點,權重）搭配vector；而在priority_queue中，因為要對權重進行比較，因此會用（權重,點），需要特別注意別搞混了!</p>
+<div class="note success">
+            <p><strong>Priority_Queue實作細節</strong></p><p>預設的priority_queue會pop出目前heap中最大的元素（預設是less&lt;&gt;函數），如果要實作一個min heap 的話要使用greater&lt;&gt;函數，同時第二個傳進函數的參數要用一個vector！</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">priority_queue &lt;Type, vector&lt;Type&gt;, ComparisonType &gt; min_heap;</span><br><span class="line">priority_queue &lt;pii,vector&lt;pii&gt;,greater&lt;pii&gt;&gt; pq;   </span><br></pre></td></tr></table></figure>
+          </div>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 105</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    vector&lt;pii&gt; edge[N];                <span class="comment">//存圖</span></span><br><span class="line">    <span class="keyword">int</span> n,m,s,e,f;cin&gt;&gt;n&gt;&gt;m&gt;&gt;s&gt;&gt;e&gt;&gt;f;</span><br><span class="line">    <span class="keyword">int</span> dis[N];<span class="built_in">fill</span>(dis,dis+N,<span class="number">1e16</span>);</span><br><span class="line">    <span class="keyword">bool</span> visit[N];                     <span class="comment">//城市數n、方案數m、s起、e終、f箱數</span></span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,c,d,e;cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;e;</span><br><span class="line">        <span class="comment">//一條由a連到b的邊，權重c，流量超過d，則改權重c</span></span><br><span class="line">        <span class="keyword">int</span> val = (f&gt;d?c*d+e*(f-d):c*f);</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(&#123;b,val&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//Dijkstra</span></span><br><span class="line">    priority_queue&lt;pii,vector&lt;pii&gt;,greater&lt;pii&gt;&gt; pq;    <span class="comment">//(距離,點)</span></span><br><span class="line">    pq.<span class="built_in">push</span>(&#123;<span class="number">0</span>,s&#125;);</span><br><span class="line">    dis[s] = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = pq.<span class="built_in">top</span>().second;</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(visit[cur])<span class="keyword">continue</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i:edge[cur])&#123;</span><br><span class="line">            <span class="keyword">int</span> next = i.first,weight = i.second;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(dis[cur]+weight&lt;dis[next])&#123;</span><br><span class="line">                dis[next] = dis[cur]+weight;</span><br><span class="line">                pq.<span class="built_in">push</span>(&#123;dis[next],next&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        visit[cur] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;dis[e]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> t;cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Shortest-Path-Faster-Algorithm-SPFA"><a href="#Shortest-Path-Faster-Algorithm-SPFA" class="headerlink" title="Shortest Path Faster Algorithm(SPFA)"></a>Shortest Path Faster Algorithm(SPFA)</h4><p>這是一個使用queue最佳化的Bellman-Ford演算法，基本的使用方式跟BFS幾乎相同，在Bellman-Ford對邊進行更有效率的鬆弛(relaxation)。<br>以下一樣是「演算法導論」中Bellman-Ford的虛擬碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">BELLMAN-FORD(G,w,s)</span><br><span class="line">  1    INITIALIZE-SINGLE-SOURCE(G,s)</span><br><span class="line">  2    for i &lt;- 1 to |V[G]|-1</span><br><span class="line">  3        do for each edge (u,v)∈ E[G]</span><br><span class="line">  4            do RELAX(u,v,w)</span><br><span class="line">  5    for each edge (u,v)∈ E[G]</span><br><span class="line">  6        do if d[v] &gt; d[u]+w(u,v)</span><br><span class="line">  7            then return FALSE</span><br><span class="line">  8    return TRUE</span><br></pre></td></tr></table></figure>
+<p>以下是SPFA的虛擬碼，如果節點有被實際鬆弛過，且節點不在queue中（同樣元素在queue中出現兩次沒有意義，因為只要確保有在queue中等會會被更新到就好，到它的最短距離不會被改變），便將此節點推入queue中。裡面存的是帶進行鬆弛的節點們，也就是被剛剛更新過的節點。我們可以利用$visit[ ]$來 $O(1)$ 判斷節點是否有在queue中！</p>
+<p>有進行判斷是否在queue中的（比較省空間一點）：<br><img src="https://i.imgur.com/vdtJWR2.png" alt=""><br>沒有進行判斷的，有被更新過就塞進去：<br><img src="https://i.imgur.com/fsorAoE.png" alt=""></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Shortest-Path-Faster-Algorithm(G, s)</span><br><span class="line">  1    for each vertex v ≠ s in V(G)</span><br><span class="line">  2        d(v) := ∞</span><br><span class="line">  3    d(s) := 0</span><br><span class="line">  4    offer s into Q</span><br><span class="line">  5    while Q is not empty</span><br><span class="line">  6        u := poll Q</span><br><span class="line">  7        for each edge (u, v) in E(G)</span><br><span class="line">  8            if d(u) + w(u, v) &lt; d(v) then</span><br><span class="line">  9                d(v) := d(u) + w(u, v)</span><br><span class="line"> 10                if v is not in Q then</span><br><span class="line"> 11                    offer v into Q</span><br></pre></td></tr></table></figure>
+<p>SPFA有一個問題，他可以被出題目的人設計測資去卡這種算法，使時間複雜度變成糟糕的$O(V^2)$，因此一般來說會實作Dijkstra而非SPFA！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 105</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    vector&lt;pii&gt; edge[N];                <span class="comment">//存圖</span></span><br><span class="line">    <span class="keyword">int</span> n,m,s,e,f;cin&gt;&gt;n&gt;&gt;m&gt;&gt;s&gt;&gt;e&gt;&gt;f;</span><br><span class="line">    <span class="keyword">int</span> dis[N];<span class="built_in">fill</span>(dis,dis+N,<span class="number">1e16</span>);</span><br><span class="line">    <span class="keyword">bool</span> visit[N];                     <span class="comment">//城市數n、方案數m、s起、e終、f箱數</span></span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,c,d,e;cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;e;</span><br><span class="line">        <span class="comment">//一條由a連到b的邊，權重c，流量超過d，則改權重c</span></span><br><span class="line">        <span class="keyword">int</span> val = (f&gt;d?c*d+e*(f-d):c*f);</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(&#123;b,val&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//SPFA</span></span><br><span class="line">    </span><br><span class="line">    queue&lt;<span class="keyword">int</span>&gt; que;</span><br><span class="line">    que.<span class="built_in">push</span>(s);</span><br><span class="line">    dis[s] = <span class="number">0</span>;</span><br><span class="line">    visit[s] = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        visit[cur] = <span class="number">0</span>;                <span class="comment">//pop出來將狀態改成不在queue中</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i:edge[cur])&#123;</span><br><span class="line">            <span class="keyword">int</span> next = i.first,weight = i.second;</span><br><span class="line">            <span class="keyword">if</span>(dis[next] &gt; dis[cur]+weight)&#123;</span><br><span class="line">                dis[next] = dis[cur]+weight;</span><br><span class="line">                <span class="keyword">if</span>(!visit[next])que.<span class="built_in">push</span>(next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;dis[e]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> t;cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="百慕達三角洲"><a href="#百慕達三角洲" class="headerlink" title="百慕達三角洲"></a>百慕達三角洲</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/393/">題目連結</a></p>
+<blockquote>
+<p>題目大意：<br>給定一張長n寬m的矩形圖，由”#”和”.”組成，給定起點$(x_1,y_1)$以及終點$(x_2,y_2)$，必須最小化經過”.”的次數，求最少需幾過幾次。</p>
+</blockquote>
+<p>當下看到這一個題目的想法，就是跟處理一般的圖論題目一樣，將邊用vector儲存起來，將經過”.”的權重設為很大的一個數字，這樣用Dijkstra做一次最短路徑就可以找出經過”.”最小化的次數了！</p>
+<p>以下是MLE的<a target="_blank" rel="noopener" href="https://neoj.sprout.tw/challenge/178136/">Submission</a><br><img src="https://i.imgur.com/9ZaisdZ.png" alt=""><br>吃了開心的MLE，如果當成一般的圖在處理，不管是在 $dis$ 開long long的處裡，或是開了一個vector陣列儲存邊，都非常的消耗空間。因此，我詢問了一下電神這一題的想法，他說我的想法用Dijkstra是正確的，不過在設定邊權的部分可以直接用0跟1代替，而且可以用queue去輔助實作BFS（要說它也可以是Dijkstra的另一種比較簡單的版本）。</p>
+<p><img src="https://i.imgur.com/9JldAha.png" alt=""></p>
+<p>這題也就是所謂<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/0-1-bfs-shortest-path-binary-graph/">0-1 BFS (Shortest Path in a Binary Weight Graph)</a>，或是<a target="_blank" rel="noopener" href="https://codeforces.com/blog/entry/22276">這裡0-1 BFS</a>，想法可以說是Dijkstra跟BFS的綜合（其實它跟SPFA也很相似）。以下是實作步驟：</p>
+<ol>
+<li>建立雙向的佇列(deque)，等等要存放被relax過的點，初始放入起點</li>
+<li>每一次從deque前方pop出一點，對那一點相鄰的所有點進行鬆弛</li>
+<li>如果被鬆弛時的邊權重為0，將點push dequeue的前方</li>
+<li>否則當鬆弛時的邊權重為1，將點push dequeue的後方</li>
+<li>重複執行2-4步驟直到deque為空</li>
+</ol>
+<p>當我們一直利用deque最前端的元素進行鬆弛，因為我們將邊權為0的元素放入最前端，用距離最小的那些點進行鬆弛，每一個點最多會被鬆弛一次，因此總時間複雜度為$O(V+E)$，比起用Dijktra直接做$O((V+E)\log V)$快了許多（此演算法之所以正確是因為其中一邊的權重是0，不管0接到誰他的權重也都是0，有點像「從最小層逐漸擴展」的概念）！</p>
+<div class="note success">
+            <p>小問題（出處<a target="_blank" rel="noopener" href="https://codeforces.com/blog/entry/22276">這裡</a>）</p><ol><li>Can we apply the same trick if our edge weights can only be 0 and x (x &gt;= 0) ?</li><li>Can we apply the same trick if our edge weights are x and x+1 (x &gt;= 0) ?</li><li>Can we apply the same trick if our edge weights are x and y (x,y &gt;= 0) ?</li></ol><p>解答YES,NO,NO</p>
+          </div>
+<p>這題之所以可行是因為有一邊的權重是0，當點皆以權重為0串再一起時，他會是最短的，使用最短去更新接下來的點，因此第一題是正確的！但第二題與第三題是錯誤的，考慮以下點與邊的情況：</p>
+<p><img src="https://i.imgur.com/BYojGwm.jpg" alt=""></p>
+<p>當我依照01BFS的方法不斷去用x更新其他的點，更新完之後會發現點1到點3的最短路徑應該是x+1，到時候又要再重新Relax一次，複雜度會爆炸喔（比SPFA可能還慘，因為當點三利用兩個x更新完之後，用它來做跟3所有相鄰的點，做完卻發現$(1,3)$有更短的距離，又必須重新全部更新一次！）總結來說，他只是用於只有兩種邊的情況，且其中一邊必須為0。</p>
+<p><img src="https://i.imgur.com/wnXKbI8.png" alt=""></p>
+<div class="note info">
+            <p><strong>比較一下記憶體用量</strong><br>最主要還是時間複雜度的比較，不過既然空間已經爆了，時間也沒法比了QQ</p><p><strong>MLE</strong></p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N2 4000005</span></span><br><span class="line"><span class="keyword">int</span> n,m,q,predecessor[N2],dis[N2];</span><br><span class="line"><span class="keyword">bool</span> visit[N2],maze[N2];</span><br><span class="line">vector&lt;pii&gt;edge[N2];</span><br></pre></td></tr></table></figure><p><strong>AC</strong></p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2003</span></span><br><span class="line"><span class="keyword">int</span> n,m,dis[N][N];</span><br><span class="line"><span class="keyword">bool</span> visit[N][N],maze[N][N];</span><br></pre></td></tr></table></figure>
+          </div>
+<p>以下是使用deque實作01BFS的AC code：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2003</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,dis[N][N];</span><br><span class="line"><span class="keyword">int</span> dx[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;,dy[<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">bool</span> visit[N][N],maze[N][N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">char</span> temp;cin&gt;&gt;temp;</span><br><span class="line">            <span class="keyword">if</span>(temp==<span class="string">&#x27;.&#x27;</span>)maze[i][j] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> maze[i][j] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    deque&lt;pii&gt;deq;</span><br><span class="line">    <span class="keyword">int</span> s1,s2,e1,e2;cin&gt;&gt;s1&gt;&gt;s2&gt;&gt;e1&gt;&gt;e2;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    dis[s1][s2] = <span class="number">0</span>;</span><br><span class="line">    deq.<span class="built_in">push_back</span>(&#123;s1,s2&#125;);</span><br><span class="line">    <span class="keyword">while</span>(!deq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> x = deq.<span class="built_in">front</span>().first,y = deq.<span class="built_in">front</span>().second;</span><br><span class="line">        deq.<span class="built_in">pop_front</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> nx = x+dx[i],ny = y+dy[i];</span><br><span class="line">            <span class="keyword">if</span>(nx&lt;<span class="number">1</span>||nx&gt;n||ny&lt;<span class="number">1</span>||ny&gt;m)<span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(dis[nx][ny] &gt; dis[x][y]+maze[nx][ny])&#123;</span><br><span class="line">                dis[nx][ny] = dis[x][y]+maze[nx][ny];</span><br><span class="line">                <span class="keyword">if</span>(maze[nx][ny]==<span class="number">0</span>)deq.<span class="built_in">push_front</span>(&#123;nx,ny&#125;);</span><br><span class="line">                <span class="keyword">else</span> deq.<span class="built_in">push_back</span>(&#123;nx,ny&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;dis[e1][e2]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    <span class="keyword">int</span> t;t = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="江神與他的小火車"><a href="#江神與他的小火車" class="headerlink" title="江神與他的小火車"></a>江神與他的小火車</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/431/">題目連結</a></p>
+<blockquote>
+<p>題目大意<br>已知有N個點以及M條邊，總共有Q筆詢問，每筆詢問有$\delta(a,b)$，表示新增一條由 $a$ 指向 $b$ 的邊（其權重為1），對每一筆詢問輸出從點 $1$ 到點 $N$ 的最短距離。</p>
+</blockquote>
+<p><img src="https://i.imgur.com/f96GUmd.jpg" alt=""></p>
+<p>我們知道如果有用新加進來的邊 $\delta(a,b)$，則路徑可以被拆解成 $\delta(1,a)+\delta(a,b)+\delta(b,n)$。其中，我們可以用Dijkstra 一次尋找1到任何點的最短距離，那要如何處理路徑 $\delta(b,n)$ 呢？這就是<strong>單一目的最短距離問題</strong>，我們可以將所有的邊逆序，將終點做一次Dijkstra尋找最短路，這時候我們就可以用 $O(1)$ 的時間回答每一筆詢問，總時間複雜度：預處理$O((V+E)\log V)$，詢問 $O(Q)$。</p>
+<div class="note info">
+            <p><strong>測資小問題</strong><br>有一筆測資如下，藍線是給定的路徑與權重，紅色是新加入的邊，如果按照上面 $\delta(1,a)+\delta(a,b)+\delta(b,n)$ 我們可以計算出從起點到終點的最短距離為：$2+1+4 = 7$，很明顯兩點之間的最短距離是 $5$ ，但因為原本作法會經過一條$\delta (B,C)$ 的重邊，造成算出來的距離是比較大的！這時候我們只要對最短路徑長度取min即可，也就是說在這種情況加入這一條邊並不會影響最短路徑的長度！</p><blockquote><p>測資（1,2,3分別對應A,B,C）：<br>6 5 1<br>1 2 1<br>2 3 1<br>3 4 1<br>4 5 1<br>5 6 1<br>3 2</p></blockquote><p><img src="https://i.imgur.com/Uocw0hc.png" alt=""></p>
+          </div>
+<p>接下來是程式碼，之後如果遇到最短路徑的題目，一般來說會避免使用SPFA（除非有負邊），為了要避免最糟的時間複雜度，因此會使用Dijkstra來處理最短路徑問題！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 200005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,q;</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line">vector&lt;pii&gt; edge[<span class="number">2</span>][N];</span><br><span class="line"><span class="comment">//edge[0]-&gt;normal,edge[1]-&gt;opposite</span></span><br><span class="line"></span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">Dijkstra</span><span class="params">(<span class="keyword">int</span> start,<span class="keyword">int</span> end,<span class="keyword">bool</span> is_nor)</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">dis</span><span class="params">(n+<span class="number">2</span>,<span class="number">1e16</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    priority_queue&lt;pii,vector&lt;pii&gt;,greater&lt;pii&gt;&gt; pq;</span><br><span class="line">    </span><br><span class="line">    dis[start] = <span class="number">0</span>;</span><br><span class="line">    pq.<span class="built_in">push</span>(&#123;<span class="number">0</span>,start&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = pq.<span class="built_in">top</span>().second;</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(visit[cur])<span class="keyword">continue</span>;</span><br><span class="line">        </span><br><span class="line">        visit[cur] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : edge[is_nor][cur])&#123;</span><br><span class="line">            <span class="keyword">int</span> next = i.first,weight = i.second;</span><br><span class="line">            <span class="keyword">if</span>(dis[next] &gt; dis[cur] + weight)&#123;</span><br><span class="line">                dis[next] = dis[cur] + weight;</span><br><span class="line">                pq.<span class="built_in">push</span>(&#123;dis[next],next&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dis;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m&gt;&gt;q;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,w;cin&gt;&gt;a&gt;&gt;b&gt;&gt;w;</span><br><span class="line">        edge[<span class="number">0</span>][a].<span class="built_in">push_back</span>(&#123;b,w&#125;);</span><br><span class="line">        edge[<span class="number">1</span>][b].<span class="built_in">push_back</span>(&#123;a,w&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; normal,opposite;</span><br><span class="line">    normal = <span class="built_in">Dijkstra</span>(<span class="number">1</span>,n,<span class="number">0</span>);</span><br><span class="line">    opposite = <span class="built_in">Dijkstra</span>(n,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(q--)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">min</span>(normal[a]+opposite[b]+<span class="number">1</span>,normal[n])&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    <span class="keyword">int</span> t;t = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="貨物運送計劃"><a href="#貨物運送計劃" class="headerlink" title="貨物運送計劃"></a>貨物運送計劃</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1641">題目連結</a></p>
+<blockquote>
+<p>題目敘述<br>給定N個點M條邊，第i條邊有方邊率$C_i$，假設目前運送貨物重量p經過此邊，代表經過邊i會需要多增加 $p\times C_i$ 的重量。給定起點、終點，求到達終點時最少的貨物重量為多少。</p>
+</blockquote>
+<p>換種說法，題目要求的是每經過一條邊，就要乘上某一個數，要求到終點最小的重量。下圖是題目範例測資：<br><img src="https://i.imgur.com/BSNWgh8.png" alt=""></p>
+<p>$\delta(1,2)\to\delta(2,3)$，所付出的代價是$(1\times (1+1))\times (2+1)=6$。如果是$\delta(1,3)$ 的話直接$1\times (4+1)=5$，可以觀察到，遇到邊就需要將原本的數字乘上$C_i+1$。</p>
+<p>我們可以透過將邊權取 $\log$ 之後，就可以利用Dijkstra進行最短路徑的計算，因為取 $\log$ 後的加減運算等同於原本的乘法運算，只要最後把算出來的答案次方即可！</p>
+<p>這一題的輸出要求科學記號（為了要避免浮點數誤差），以下程式碼來達成（要求小數點後兩位，同時次方部分要求整數3位）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%.2fe+%03lld\n&quot;</span>,<span class="built_in">pow</span>(<span class="number">10</span>,ans),x);</span><br></pre></td></tr></table></figure>
+<p>程式碼的部分，透過$edge$存完所有的取完 $\log$ 之後的邊，進行Dijkstra，輸出最短路徑（以科學記號表示）即可！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 10005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pid pair<span class="meta-string">&lt;int,double&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdi pair<span class="meta-string">&lt;double,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,s,t;</span><br><span class="line"><span class="keyword">double</span> dis[N];</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line">vector&lt;pid&gt; edge[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld %lld %lld&quot;</span>,&amp;n,&amp;m,&amp;s,&amp;t);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;<span class="keyword">double</span> c;<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld %lf&quot;</span>,&amp;a,&amp;b,&amp;c);</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(&#123;b,(<span class="keyword">double</span>)<span class="built_in">log10</span>(c+<span class="number">1</span>)&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">fill</span>(dis,dis+n+<span class="number">2</span>,<span class="number">1e16</span>);</span><br><span class="line">    </span><br><span class="line">    priority_queue&lt;pdi,vector&lt;pdi&gt;,greater&lt;pdi&gt;&gt; pq;</span><br><span class="line">    dis[s] = <span class="number">0.0</span>;</span><br><span class="line">    pq.<span class="built_in">push</span>(&#123;<span class="number">0</span>,s&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = pq.<span class="built_in">top</span>().second;</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(visit[cur])<span class="keyword">continue</span>;</span><br><span class="line">        visit[cur] = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i:edge[cur])&#123;</span><br><span class="line">            <span class="keyword">int</span> next = i.first;</span><br><span class="line">            <span class="keyword">double</span> w = i.second;</span><br><span class="line">            <span class="keyword">if</span>(dis[next] &gt; dis[cur]+w)&#123;</span><br><span class="line">                dis[next] = dis[cur]+w;</span><br><span class="line">                pq.<span class="built_in">push</span>(&#123;dis[next],next&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">double</span> ans = dis[t];</span><br><span class="line">    <span class="keyword">int</span> x = <span class="built_in">floor</span>(ans);</span><br><span class="line">    ans-=x;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%.2fe+%03lld\n&quot;</span>,<span class="built_in">pow</span>(<span class="number">10</span>,ans),x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;t = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="E-漢米頓的麻煩"><a href="#E-漢米頓的麻煩" class="headerlink" title="E.漢米頓的麻煩"></a>E.漢米頓的麻煩</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1096">題目連結</a></p>
+<p>他題目時不時提到漢米頓，是多愛漢米頓XDD（這一題跟漢米頓根本沒關係）</p>
+<blockquote>
+<p>題目大意<br>在一張n(n≤100)個點的圖中，尋找路徑長度最短的環</p>
+</blockquote>
+<p>那就用<strong>Floyd-Warshall</strong>找最小的環就好！</p>
+<div class="note info">
+            <p><strong>Floyd-Warshall</strong><br>這就是dp的作法，用 $O(N^3)$ 的時間進行轉移，就能得到全點對的最短路徑。這邊有一個重要的轉移順序，也就是中點-起點-終點進行轉移，如果把dp展開就會發現中點必須在最外層進行轉移：</p><blockquote><p>定義 $dp[k][i][j]$ 為點 $i$ 走到點 $j$ ，只能經過前k個點的最短路徑，則轉移式變成：</p><script type="math/tex; mode=display">d[k+1][i][j] = min(d[k][i][j], d[k][i][k+1]+d[k][k+1][j])</script></blockquote><p>每一個k+1都是由k轉移而來，仰賴k的點的配對，因此必須最先轉移中點k的部分！（不過順序顛倒也不會怎樣啦，上面「課程內容」的地方有寫到）</p>
+          </div>
+<p>同樣這一份code也可以判斷有沒有負環，只要ans小於0的話代表有負環（有的話距離是不能用的喔，因為Floyd-Warshall不能處理負環，但負邊是可以處理的）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 101</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pid pair<span class="meta-string">&lt;int,double&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdi pair<span class="meta-string">&lt;double,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,dp[N][N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(dp,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> temp;cin&gt;&gt;temp;</span><br><span class="line">            <span class="keyword">if</span>(temp!=<span class="number">0</span>)dp[i][j] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;n;k++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">                dp[i][j] = <span class="built_in">min</span>(dp[i][j],dp[i][k]+dp[k][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = INT_MAX;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,dp[i][i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans == INT_MAX)cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(cin&gt;&gt;n &amp;&amp; n!=<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="旅遊規劃問題"><a href="#旅遊規劃問題" class="headerlink" title="旅遊規劃問題"></a>旅遊規劃問題</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1028">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/262198">Submission</a><br>這一題 $n≤13$ 大概就是位元dp來完成（狀態壓縮），定義 $dp[i][j]$ 為現在在點i上，拜訪過點集j的最短距離（j中不包含點i）。這裡使用到了同層轉移的技巧，也就是利用j中的點，對相同狀態下不在i中的點進行更新。</p>
+<p>點集j中在狀態i下為起點，用Dijkstra對不在i中的其他點進行更新，最後的答案即為$dp[s][S-(1&lt;&lt;s)]$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 14</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line">vector&lt;pii&gt; edge[N];</span><br><span class="line"><span class="keyword">int</span> dis[N],dp[N][<span class="number">1</span>&lt;&lt;N],pre[N][<span class="number">1</span>&lt;&lt;N];</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line"><span class="comment">//定義dp[i][j]為現在在點i，拜訪過點集合j（i不在點集j中）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,m)&#123;                                 <span class="comment">//讀入m條邊</span></span><br><span class="line">        <span class="keyword">int</span> a,b,w;cin&gt;&gt;a&gt;&gt;b&gt;&gt;w;</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(&#123;b,w&#125;);</span><br><span class="line">        edge[b].<span class="built_in">push_back</span>(&#123;a,w&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> S = <span class="number">0</span>,start = <span class="number">-1</span>;cin&gt;&gt;m;                <span class="comment">//S為待拜訪的所有點集合</span></span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,m)&#123;</span><br><span class="line">        <span class="keyword">int</span> temp;cin&gt;&gt;temp;</span><br><span class="line">        S = S|(<span class="number">1</span>&lt;&lt;temp);</span><br><span class="line">        <span class="keyword">if</span>(start == <span class="number">-1</span>)start = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n)<span class="built_in">rep</span>(j,<span class="number">0</span>,(<span class="number">1</span>&lt;&lt;n))dp[i][j] = INF;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,n)dp[i][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;(<span class="number">1</span>&lt;&lt;n);i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == (S &amp; i))&#123;                       <span class="comment">//在集合i中的點在S一定要有</span></span><br><span class="line">            priority_queue&lt;pii,vector&lt;pii&gt;,greater&lt;pii&gt;&gt; pq;</span><br><span class="line">            <span class="built_in">fill</span>(dis,dis+n,INF);                <span class="comment">//將dis初始為無限大，做Dijkstra</span></span><br><span class="line">            <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i&amp;(<span class="number">1</span>&lt;&lt;j))&#123;                   <span class="comment">//從有在i中的點向不在的點做Dijkstra</span></span><br><span class="line">                    dis[j] = dp[j][i^(<span class="number">1</span>&lt;&lt;j)];   <span class="comment">//目前在j，經過拜訪了點集i（不包含點j）</span></span><br><span class="line">                    pq.<span class="built_in">push</span>(&#123;dis[j],j&#125;);        <span class="comment">//利用在i中的點對其他點進行更新</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">                <span class="keyword">int</span> cur = pq.<span class="built_in">top</span>().second;</span><br><span class="line">                pq.<span class="built_in">pop</span>();</span><br><span class="line">                visit[cur] = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">auto</span> k : edge[cur])&#123;</span><br><span class="line">                    <span class="keyword">int</span> v = k.first,w = k.second;</span><br><span class="line">                    <span class="keyword">if</span>(i&amp;(<span class="number">1</span>&lt;&lt;v))<span class="keyword">continue</span>;</span><br><span class="line">                    <span class="keyword">if</span>(dis[v] &gt; dis[cur]+w)&#123;</span><br><span class="line">                        dis[v] = dis[cur] + w;</span><br><span class="line">                        pre[v][i] = cur;        <span class="comment">//紀錄點v在狀態i下由cur轉移</span></span><br><span class="line">                        pq.<span class="built_in">push</span>(&#123;dis[v],v&#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span>(dis[v] == dis[cur]+w &amp;&amp; pre[v][i] &gt; cur)&#123;</span><br><span class="line">                        pre[v][i] = cur;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;               <span class="comment">//對於不在點集i中的點進行更新</span></span><br><span class="line">                <span class="keyword">if</span>(i &amp; (<span class="number">1</span> &lt;&lt; j))<span class="keyword">continue</span>;</span><br><span class="line">                dp[j][i] = dis[j];              <span class="comment">//同層狀態轉移，更新dp[j][i]</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Minimum travel distance: &quot;</span>&lt;&lt;dp[start][S^(start)]&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Travel route:&quot;</span>;</span><br><span class="line">    <span class="keyword">int</span> cur = start;S = S^(<span class="number">1</span>&lt;&lt;start);</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;cur;</span><br><span class="line">        <span class="keyword">if</span>(!S)<span class="keyword">break</span>;</span><br><span class="line">        cur = pre[cur][S];</span><br><span class="line">        <span class="keyword">if</span>(S&amp;(<span class="number">1</span>&lt;&lt;cur))S = (S^(<span class="number">1</span>&lt;&lt;cur));         <span class="comment">//經過的點不一定是指定的觀光點</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Codeforces-543B-Destroying-Roads"><a href="#Codeforces-543B-Destroying-Roads" class="headerlink" title="Codeforces 543B: Destroying Roads"></a>Codeforces 543B: Destroying Roads</h3><p><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/543/B">題目連結</a><br><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/submission/543/125743532">Submission</a></p>
+<blockquote>
+<p>題目大意<br>給定N個點M條無向邊，每一邊權重都是1，以及兩筆資料，由三個數$(x,y,w)$ 構成，代表起點為x、終點為x、要在w距離內從起點走到終點。試問最多可以拔掉幾條邊同時滿足以上兩個資料所描述的特性？</p>
+</blockquote>
+<p>這一題蠻有趣的，首先他的邊權重都是1，因此我們可以直接用BFS尋找最短路徑，並且點第一次拜訪到時的就是該點的最短距離（BFS一層一層擴展）。</p>
+<div class="note primary">
+            <p><strong>第一個想法：錯誤想法</strong><br>我先將兩個起點與終點的最短路徑都找出來，把將過的邊都標上不能移除，將其他的邊全部拔掉。</p><p><strong>問題點：</strong><br>固然找到的是最短路徑，但不代表可以最大化拔除邊的數量。因為題目要求兩點只要符合最短距離 $w$ 即可，因此每一個配對其實不用符合是最短路徑的情況（如下圖）！目標是在題目要求的限度內最大化重複的邊，使能夠被拔除的邊最大化！</p><p><img src="https://i.imgur.com/QfbfF82.png" alt=""></p><p>上圖紅色線段是$\delta(1,7)$的最短路徑、褐色是線段$\delta(3,6)$的最短路徑、黑色線段是皆以最短路徑之下可以被拔除的邊。但是如果將路徑$\delta(3,6)$換成是$(3,2)\to(2,4)\to(4,5)\to(5,6)$，被拔除的邊可以增過為三條。</p>
+          </div>
+<p>這一題最重要的關鍵就是以$O(V^2)$枚舉所有點對（距離長度可以直接換算成邊的數量），可以先用$O(V(V+E)$的時間對每一個點用進行BFS，如此一來總複雜度即為$O(V^2+VE)$，所幸題目給定總共的邊數不會超過3000條，因此是可以在時間限制內完成枚舉。</p>
+<div class="note primary">
+            <p>枚舉路徑 $\delta(i,j)$ 為共同邊的時候，必須考慮起點與終點的方向，同時考慮從 $i\to j$ 以及從 $j\to i$ 兩個方向。以下圖為例，當枚舉都使用相同的起點以及終點，會讓下圖的 $(3,4)$ 被重複計算！</p><p><img src="https://i.imgur.com/tjq8oe7.png" alt=""></p>
+          </div>
+<p>以下是AC程式碼：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 3005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pid pair<span class="meta-string">&lt;int,double&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdi pair<span class="meta-string">&lt;double,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,s1,e1,w1,s2,e2,w2,dis[N][N];</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(b);</span><br><span class="line">        edge[b].<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    cin&gt;&gt;s1&gt;&gt;e1&gt;&gt;w1&gt;&gt;s2&gt;&gt;e2&gt;&gt;w2;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">        queue&lt;<span class="keyword">int</span>&gt;que;</span><br><span class="line">        que.<span class="built_in">push</span>(i);</span><br><span class="line">        visit[i] = <span class="number">1</span>;</span><br><span class="line">        dis[i][i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="keyword">int</span> cur = que.<span class="built_in">front</span>();</span><br><span class="line">            que.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> j:edge[cur])&#123;</span><br><span class="line">                <span class="keyword">if</span>(visit[j])<span class="keyword">continue</span>;</span><br><span class="line">                dis[i][j] = dis[i][cur]+<span class="number">1</span>;</span><br><span class="line">                visit[j] = <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(dis[s1][e1]&gt;w1||dis[s2][e2]&gt;w2)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = dis[s1][e1]+dis[s2][e2];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//O(n^2)枚舉所有共同邊</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(dis[s1][i]+dis[i][j]+dis[j][e1]&lt;=w1&amp;&amp;dis[s2][i]+dis[i][j]+dis[j][e2]&lt;=w2)</span><br><span class="line">                ans = <span class="built_in">min</span>(ans,dis[s1][i]+dis[i][j]+dis[j][e1]+dis[s2][i]+dis[j][e2]);</span><br><span class="line">            <span class="keyword">if</span>(dis[s1][i]+dis[i][j]+dis[j][e1]&lt;=w1&amp;&amp;dis[e2][i]+dis[i][j]+dis[j][s2]&lt;=w2)</span><br><span class="line">                ans=<span class="built_in">min</span>(ans,dis[s1][i]+dis[i][j]+dis[j][e1]+dis[e2][i]+dis[j][s2]);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;m-ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-2180-勇者冒險-Adventure"><a href="#TIOJ-2180-勇者冒險-Adventure" class="headerlink" title="TIOJ 2180 勇者冒險 (Adventure)"></a>TIOJ 2180 勇者冒險 (Adventure)</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/2180">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/262669">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給定一個地圖共 $R\times C$ 行，接著會有 $M$ 行每一行都有一個座標和等級，代表經過這個座標需要多少等級才能通過。問從特定起點到終點所需要的最低的等級為多少。</p>
+</blockquote>
+<p>這題蠻特別的，他用到了Dijkstra中每一次都找最小的去更新，同時因為要求的是路徑上最大的等級為何，因此也用到了類似BFS的手法去擴展每一個座標。</p>
+<p>因為題目保證至少會有一條路徑通往起點與終點，同時我們每一次從queue拿出來的都是目前等級最低的點，因此如果碰到終點就可以確定這一條路線一定是需要等級最小的一條路徑！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rrep(i,l,r) for(int i=l;i&lt;r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,row,col,mp[N][N],dis[N][N];</span><br><span class="line"><span class="keyword">int</span> s1,s2,e1,e2;</span><br><span class="line"><span class="keyword">int</span> dx[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;,dy[<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">bool</span> visit[N][N];</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span> ,pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; pp;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//Dijkstra</span></span><br><span class="line">    priority_queue&lt;pp,vector&lt;pp&gt;,greater&lt;pp&gt;&gt; pq;</span><br><span class="line">    dis[s1][s2] = <span class="number">0</span>;</span><br><span class="line">    pq.<span class="built_in">push</span>(&#123;<span class="number">0</span>,&#123;s1,s2&#125;&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> rr = pq.<span class="built_in">top</span>().y.x,cc = pq.<span class="built_in">top</span>().y.y;</span><br><span class="line"><span class="comment">//        cout&lt;&lt;rr&lt;&lt;&quot; &quot;&lt;&lt;cc&lt;&lt;&quot;  &quot;&lt;&lt;dis[rr][cc]&lt;&lt;endl;</span></span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> nx = rr+dx[i],ny = cc+dy[i];</span><br><span class="line">            <span class="keyword">if</span>(nx&lt;<span class="number">0</span>||ny&lt;<span class="number">0</span>||nx&gt;=row||ny&gt;=col)<span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span>(nx == e1 &amp;&amp; ny == e2)&#123;</span><br><span class="line">                cout&lt;&lt;dis[rr][cc]&lt;&lt;endl;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(mp[nx][ny] == <span class="number">-1</span>)<span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span>(visit[nx][ny])<span class="keyword">continue</span>;</span><br><span class="line">            dis[nx][ny] = <span class="built_in">max</span>(dis[rr][cc],mp[nx][ny]);</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;dis[nx][ny],&#123;nx,ny&#125;&#125;);</span><br><span class="line">            visit[nx][ny] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;row&gt;&gt;col;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="built_in">memset</span>(mp,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(mp));</span><br><span class="line">    cin&gt;&gt;s1&gt;&gt;s2&gt;&gt;e1&gt;&gt;e2;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">while</span>(n--)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,c;cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        mp[a][b] = c;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Dijkstra</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最小花費的航空之旅"><a href="#最小花費的航空之旅" class="headerlink" title="最小花費的航空之旅"></a>最小花費的航空之旅</h3><blockquote>
+<p>題目敘述：<br>給定很多種連接城市間的聯票，要求從起始站搭乘，可以在中途任意站下車，但下車以後就不能再次上車。輸入的第一行為一個正整數 n (1 ≤ n ≤ 20)，即聯票的種類數。以下 n 行每航為一個聯票的資訊，其中第一個整數為聯票的價格，然後是聯票上城市的數目。</p>
+<p>接下來為一個行程單的資訊，其中第一個正整數為行程單上的城市數目k（包括起始城市，2 ≤ k ≤ 10），以及這些城市的編號（按順序列出）。</p>
+<p>輸出最小花費和對應的方案的其中一組解。</p>
+</blockquote>
+<p>這一題是APCS Class的其中一題，難度頗高，因為他要找最短的路徑，同時增加了可以在任意站下車的條件。首先我們要維護每一個聯票的資訊，它的價值、起點、編號以及經過的城市。接著，我們考慮所有從起點出發的聯票，將每一種聯票上的每一個經過的城市都加入queue中。</p>
+<p>跟上一題一樣，當我們每一次都從cost最小的點下手，在轉移的過程中如果將所有的點都走訪一遍，則他的路徑必定是最短的，因為每一次的更新都是從花費最小的路徑去轉移。</p>
+<div class="note primary">
+            <p><strong>使用自定義比較函數放入Priority_queue中</strong></p><p>Priority_queue中的比較函數需要使用到struct或class包覆的比較函數，若要回傳cost的最小值，則必須以大於來寫（有點像預設是pop出最大值，使用的卻是less<int>的比較函數）</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(node a,node b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.cost &gt; b.cost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          </div>
+<p>以下是AC Code：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 105</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rrep(i,l,r) for(int i=l;i&lt;r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pif pair<span class="meta-string">&lt;int,float&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,k,visit[<span class="number">20</span>];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Ticket</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> id,cost;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; next_city;</span><br><span class="line">    <span class="comment">//陣列ticket[i]存以i為起點</span></span><br><span class="line">&#125;;</span><br><span class="line">vector&lt;Ticket&gt; ticket[<span class="number">30</span>];          <span class="comment">//ticket[i] 起點為i的聯票</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> cost,cur_pos,visit_pos;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; used_ticket;</span><br><span class="line">    <span class="comment">//cur_pos現在所在位置、visit_pos在行程單上位置</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(node a,node b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.cost &gt; b.cost;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//讓priority_queue可以pop出最小的cost的路徑</span></span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;node,vector&lt;node&gt;,cmp&gt; pq;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">int</span> cost,num,s;cin&gt;&gt;cost&gt;&gt;num&gt;&gt;s;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; temp;</span><br><span class="line">        <span class="built_in">rep</span>(j,<span class="number">1</span>,num<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> k;cin&gt;&gt;k;</span><br><span class="line">            temp.<span class="built_in">push_back</span>(k);</span><br><span class="line">        &#125;</span><br><span class="line">        ticket[s].<span class="built_in">push_back</span>(&#123;i,cost,temp&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    cin&gt;&gt;k;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,k)cin&gt;&gt;visit[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> i : ticket[visit[<span class="number">1</span>]])&#123;         <span class="comment">//行程第一個起點的聯票起點</span></span><br><span class="line">        <span class="keyword">int</span> p = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : i.next_city)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p &lt; k &amp;&amp; j == visit[p+<span class="number">1</span>])p++;</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;i.cost,j,p,&#123;i.id&#125;&#125;);</span><br><span class="line"><span class="comment">//            cout&lt;&lt;&quot;一開始聯票：&quot;&lt;&lt;i.id&lt;&lt;&quot; &quot;&lt;&lt;j&lt;&lt;endl;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node cur = pq.<span class="built_in">top</span>();</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(cur.visit_pos == k)&#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;Cost = &quot;</span>&lt;&lt;cur.cost&lt;&lt;<span class="string">&quot;, Tickets used: &quot;</span></span><br><span class="line">                &lt;&lt;cur.used_ticket[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;cur.used_ticket.<span class="built_in">size</span>();i++)</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;, &quot;</span>&lt;&lt;cur.used_ticket[i];</span><br><span class="line">            cout&lt;&lt;endl;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : ticket[cur.cur_pos])&#123;</span><br><span class="line">            <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">vec</span><span class="params">(cur.used_ticket)</span></span>;</span><br><span class="line">            vec.<span class="built_in">push_back</span>(i.id);                <span class="comment">//將現在使用的第i聯票推入</span></span><br><span class="line">            <span class="keyword">int</span> p = cur.visit_pos;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> j : i.next_city)&#123;</span><br><span class="line">                <span class="keyword">if</span>(p &lt; k &amp;&amp; j == visit[p+<span class="number">1</span>])p++;</span><br><span class="line">                pq.<span class="built_in">push</span>(&#123;cur.cost+i.cost,j,p,vec&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%9A%91%E6%9C%9F%E7%AD%86%E8%A8%98/" rel="tag"># 2021暑期筆記</a>
+              <a href="/tags/2020%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD/" rel="tag"># 2020資訊之芽</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/path1/" rel="prev" title="最短路徑（Shortest Path Problem）">
+      <i class="fa fa-chevron-left"></i> 最短路徑（Shortest Path Problem）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/geo1/" rel="next" title="計算幾何（Computational Geometry）">
+      計算幾何（Computational Geometry） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E7%9B%AE%E9%8C%84"><span class="nav-number">1.</span> <span class="nav-text">題目目錄</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%AD%9A%E6%9E%9C%E9%81%8B%E8%BC%B8%E5%95%8F%E9%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">可魚果運輸問題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dijkstra%E2%80%99s-Algorithm"><span class="nav-number">1.1.1.</span> <span class="nav-text">Dijkstra’s Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shortest-Path-Faster-Algorithm-SPFA"><span class="nav-number">1.1.2.</span> <span class="nav-text">Shortest Path Faster Algorithm(SPFA)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BE%E6%85%95%E9%81%94%E4%B8%89%E8%A7%92%E6%B4%B2"><span class="nav-number">1.2.</span> <span class="nav-text">百慕達三角洲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%9F%E7%A5%9E%E8%88%87%E4%BB%96%E7%9A%84%E5%B0%8F%E7%81%AB%E8%BB%8A"><span class="nav-number">1.3.</span> <span class="nav-text">江神與他的小火車</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B2%A8%E7%89%A9%E9%81%8B%E9%80%81%E8%A8%88%E5%8A%83"><span class="nav-number">1.4.</span> <span class="nav-text">貨物運送計劃</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-%E6%BC%A2%E7%B1%B3%E9%A0%93%E7%9A%84%E9%BA%BB%E7%85%A9"><span class="nav-number">1.5.</span> <span class="nav-text">E.漢米頓的麻煩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%85%E9%81%8A%E8%A6%8F%E5%8A%83%E5%95%8F%E9%A1%8C"><span class="nav-number">1.6.</span> <span class="nav-text">旅遊規劃問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Codeforces-543B-Destroying-Roads"><span class="nav-number">1.7.</span> <span class="nav-text">Codeforces 543B: Destroying Roads</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-2180-%E5%8B%87%E8%80%85%E5%86%92%E9%9A%AA-Adventure"><span class="nav-number">1.8.</span> <span class="nav-text">TIOJ 2180 勇者冒險 (Adventure)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E8%8A%B1%E8%B2%BB%E7%9A%84%E8%88%AA%E7%A9%BA%E4%B9%8B%E6%97%85"><span class="nav-number">1.9.</span> <span class="nav-text">最小花費的航空之旅</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">357k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:25</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
