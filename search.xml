@@ -374,7 +374,7 @@
   <entry>
     <title>使用Hexo搭配GitHub架設個人部落格</title>
     <url>/blog/</url>
-    <content><![CDATA[<p>暑假常常寫題，都幾乎紀錄在Hackmd上，如果能有屬於自己的部落格、用自己的網址，感覺超酷！來自己架設一個試試看！</p>
+    <content><![CDATA[<p>本網頁就是利用github page架設的部落格，使用Hexo搭配Next主題。<br>暑假常常寫題，都幾乎紀錄在Hackmd上，如果能有屬於自己的部落格、用自己的網址，感覺超酷！來自己架設一個試試看！</p>
 <h2 id="網域種類"><a href="#網域種類" class="headerlink" title="網域種類"></a>網域種類</h2><p>架設網站有好多種方法，有時候是看題解看到了很多的網站XD，上網查了資料以及很多人的部落格，發現寫coding部落格的人的網站大多分成以下四類：</p>
 <ol>
 <li><a href="https://www.blogger.com/">Blogger</a></li>
@@ -669,7 +669,8 @@
   <entry>
     <title>錯排問題（Derangements）</title>
     <url>/derangement/</url>
-    <content><![CDATA[<h2 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h2><p>錯排問題是組合數學中的問題之一。考慮一個有n個元素的排列，若一個排列中<strong>所有的元素都不在自己原來的位置上</strong>，那麼這樣的排列就稱為原排列的一個錯排。<br>$n$個元素的錯排數記為 $D_n$ 或 $!n$。 研究一個排列錯排個數的問題，叫做錯排問題或稱為更列問題。<br><span id="more"></span></p>
+    <content><![CDATA[<h2 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h2><p>錯排是組合數學中的問題之一。考慮一個有n個元素的排列，若一個排列中<strong>所有的元素都不在自己原來的位置上</strong>，那麼這樣的排列就稱為原排列的一個錯排。本文將從<strong>錯排公式</strong>的推導開始，近一步探究其性質及應用。</p>
+<p>$n$個元素的錯排數記為 $D_n$ 或 $!n$。 研究一個排列錯排個數的問題，叫做錯排問題或稱為更列問題。<br><span id="more"></span></p>
 <h2 id="規律與公式"><a href="#規律與公式" class="headerlink" title="規律與公式"></a>規律與公式</h2><h3 id="反面枚舉"><a href="#反面枚舉" class="headerlink" title="反面枚舉"></a>反面枚舉</h3><p>前幾項可以用取捨原理（或窮舉所有可能）求得：</p>
 <script type="math/tex; mode=display">\begin{align}D_1 &= 0 \\ D_2 &= 1\\D_3 &= 2 \\ D_4 &= 9\end{align}</script><div class="note default">
             <p><strong>三個元素的錯排，以下共兩種：</strong><br><img src="https://i.imgur.com/24cJS8t.png&gt; =500x" alt=""></p><p><strong>四個元素的錯排，以下共9種：</strong></p><blockquote><p>4123<br>3421<br>3142<br>4312<br>2413<br>2341<br>4321<br>3412<br>2143</p></blockquote>
@@ -1194,7 +1195,8 @@
   <entry>
     <title>三門問題（Monty Hall Problem）</title>
     <url>/monty-hall/</url>
-    <content><![CDATA[<h2 id="問題敘述"><a href="#問題敘述" class="headerlink" title="問題敘述"></a>問題敘述</h2><p><a href="https://highscope.ch.ntu.edu.tw/wordpress/?p=47158">資料來源</a><br><a href="https://www.youtube.com/watch?v=iBdjqtR2iK4">影片網址</a><br>在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：</p>
+    <content><![CDATA[<p><strong>三門問題</strong>，或<strong>蒙提霍爾問題</strong>是一個違反直覺的條件機率問題，本文將從不同角度切入，探討不同選擇的機率大小。</p>
+<h2 id="問題敘述"><a href="#問題敘述" class="headerlink" title="問題敘述"></a>問題敘述</h2><p><a href="https://highscope.ch.ntu.edu.tw/wordpress/?p=47158">資料來源</a><br><a href="https://www.youtube.com/watch?v=iBdjqtR2iK4">影片網址</a><br>在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：</p>
 <blockquote>
 <p>米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」</p>
 <p>班：  「一號門。」<br><span id="more"></span></p>
@@ -1294,7 +1296,7 @@
     <content><![CDATA[<blockquote>
 <p>題目敘述<br>給定二維平面上 $n$ 個點，每一點都有座標 $(x_i,y_i)$ ，求出最近的點對之歐幾里德距離為多少？<br>$dis(p_i,p_j) = \sqrt{(x_1-x_2)^2+(y_1-y_2)^2}$<br><span id="more"></span></p>
 </blockquote>
-<p>最近點對有好多種實作方式，從最差的暴力枚舉、稍微優化的掃描線演算法、到分治與隨機，有4種不同的時間複雜度。利用<a href="https://tioj.ck.tp.edu.tw/problems/1500">TIOJ 1500</a>這一題最近點對的裸題，來實測各種不同複雜度下所需要的執行時間。</p>
+<p><strong>平面最近點對</strong>有好多種實作方式，從最差的暴力枚舉、稍微優化的掃描線演算法、到分治與隨機，有4種不同的時間複雜度。利用<a href="https://tioj.ck.tp.edu.tw/problems/1500">TIOJ 1500</a>這一題最近點對的裸題，來實測各種不同複雜度下所需要的執行時間。</p>
 <h2 id="暴力枚舉"><a href="#暴力枚舉" class="headerlink" title="暴力枚舉"></a>暴力枚舉</h2><h3 id="時間複雜度：-O-N-2"><a href="#時間複雜度：-O-N-2" class="headerlink" title="時間複雜度：$O(N^2)$"></a>時間複雜度：$O(N^2)$</h3><p><a href="https://tioj.ck.tp.edu.tw/submissions/262968">Submission</a><br><strong>時間：TLE,10440</strong></p>
 <p><img src="https://i.imgur.com/DL0tBBb.png" alt=""></p>
 <p>暴力$O(n^2)$將所有點進行枚舉，因為值域是 $n≤50000$ ，平方枚舉會有TLE的問題。</p>
@@ -2754,7 +2756,7 @@ t_1 & t_2 & \cdots & t_{\phi(n)}
   <entry>
     <title>萬有引力與四星運動之探討</title>
     <url>/gravity1/</url>
-    <content><![CDATA[<p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
+    <content><![CDATA[<p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
 <p>模擬連結：<a href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/">點這裡</a></p>
 <h2 id="理論與數學"><a href="#理論與數學" class="headerlink" title="理論與數學"></a>理論與數學</h2><h3 id="萬有引力定律"><a href="#萬有引力定律" class="headerlink" title="萬有引力定律"></a>萬有引力定律</h3><p>牛頓於1687年提出：「<strong>任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。</strong>」</p>
 <p><img src="https://i.imgur.com/NsxdP20.png" alt=""></p>

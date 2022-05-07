@@ -28,18 +28,18 @@
     var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」 班：  「一號門。」">
+  <meta name="description" content="三門問題，或蒙提霍爾問題是一個違反直覺的條件機率問題，本文將從不同角度切入，探討不同選擇的機率大小。 問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門">
 <meta property="og:type" content="article">
 <meta property="og:title" content="三門問題（Monty Hall Problem）">
 <meta property="og:url" content="https://peienwu.com/monty-hall/index.html">
 <meta property="og:site_name" content="Peienwu 演算法筆記">
-<meta property="og:description" content="問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」 班：  「一號門。」">
+<meta property="og:description" content="三門問題，或蒙提霍爾問題是一個違反直覺的條件機率問題，本文將從不同角度切入，探討不同選擇的機率大小。 問題敘述資料來源影片網址在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：  米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/nfOcm7U.png">
 <meta property="og:image" content="https://i.imgur.com/SWsVaD1.png">
 <meta property="og:image" content="https://i.imgur.com/zWhUjZq.png">
 <meta property="article:published_time" content="2021-07-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-27T05:51:43.614Z">
+<meta property="article:modified_time" content="2022-05-07T03:46:11.143Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="2021暑期筆記">
@@ -301,7 +301,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="問題敘述"><a href="#問題敘述" class="headerlink" title="問題敘述"></a>問題敘述</h2><p><a target="_blank" rel="noopener" href="https://highscope.ch.ntu.edu.tw/wordpress/?p=47158">資料來源</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iBdjqtR2iK4">影片網址</a><br>在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：</p>
+        <p><strong>三門問題</strong>，或<strong>蒙提霍爾問題</strong>是一個違反直覺的條件機率問題，本文將從不同角度切入，探討不同選擇的機率大小。</p>
+<h2 id="問題敘述"><a href="#問題敘述" class="headerlink" title="問題敘述"></a>問題敘述</h2><p><a target="_blank" rel="noopener" href="https://highscope.ch.ntu.edu.tw/wordpress/?p=47158">資料來源</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=iBdjqtR2iK4">影片網址</a><br>在 2008 年上映的美國電影《決勝21點》中，劇中主角班 (Ben Campbell)在非線性代數的課堂上與授課教授米奇(Mickey Rosa) 有一段精彩的對話：</p>
 <blockquote>
 <p>米奇：「假設你正參加一個遊戲節目，你有機會從三扇不同的門裡選一扇，其中一扇門後面有一輛新車，另外兩扇門後面各有一頭山羊？你要選擇哪一扇門？」</p>
 <p>班：  「一號門。」<br><span id="more"></span></p>

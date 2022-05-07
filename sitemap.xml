@@ -2,6 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peienwu.com/gravity1/</loc>
+    
+    <lastmod>2022-05-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://peienwu.com/monty-hall/</loc>
+    
+    <lastmod>2022-05-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://peienwu.com/blog/</loc>
+    
+    <lastmod>2022-05-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://peienwu.com/pair/</loc>
+    
+    <lastmod>2022-05-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://peienwu.com/derangement/</loc>
+    
+    <lastmod>2022-05-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://peienwu.com/sprout9/</loc>
     
     <lastmod>2022-05-07</lastmod>
@@ -74,34 +119,7 @@
   </url>
   
   <url>
-    <loc>https://peienwu.com/monty-hall/</loc>
-    
-    <lastmod>2022-04-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://peienwu.com/birthday/</loc>
-    
-    <lastmod>2022-04-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/derangement/</loc>
-    
-    <lastmod>2022-04-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/pair/</loc>
     
     <lastmod>2022-04-27</lastmod>
     
@@ -356,24 +374,6 @@
     <loc>https://peienwu.com/manim/</loc>
     
     <lastmod>2022-04-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/blog/</loc>
-    
-    <lastmod>2022-04-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/gravity1/</loc>
-    
-    <lastmod>2022-04-22</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

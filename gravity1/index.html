@@ -28,12 +28,12 @@
     var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+  <meta name="description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="萬有引力與四星運動之探討">
 <meta property="og:url" content="https://peienwu.com/gravity1/index.html">
 <meta property="og:site_name" content="Peienwu 演算法筆記">
-<meta property="og:description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+<meta property="og:description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/NsxdP20.png">
 <meta property="og:image" content="https://i.imgur.com/mDnymhI.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://i.imgur.com/hHWFWIf.png">
 <meta property="og:image" content="https://i.imgur.com/dVP3ywW.png">
 <meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-22T14:58:35.369Z">
+<meta property="article:modified_time" content="2022-05-07T03:46:41.489Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="物理筆記">
@@ -322,7 +322,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星、三星、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
+        <p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
 <p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/">點這裡</a></p>
 <h2 id="理論與數學"><a href="#理論與數學" class="headerlink" title="理論與數學"></a>理論與數學</h2><h3 id="萬有引力定律"><a href="#萬有引力定律" class="headerlink" title="萬有引力定律"></a>萬有引力定律</h3><p>牛頓於1687年提出：「<strong>任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。</strong>」</p>
 <p><img src="https://i.imgur.com/NsxdP20.png" alt=""></p>
