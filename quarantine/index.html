@@ -32,30 +32,48 @@
     var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Hello world">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Peienwu 演算法筆記">
-<meta property="og:url" content="https://peienwu.com/index.html">
+  <meta name="description" content="最近推出了新的隔離政策，班上只要有人確診，他位置附近的九宮格內的人都必須被匡列。雖然這個隔離方式本來就怪怪的，不過我們還是可以針對被隔離的機率做一些小小的計算！ 為了計算方便，都是限制在正方形的座位排列下，對9人、16人、25人或36人的情況做討論，且每一個人確診機會是相同的。這篇文章總共分為三個部分，首先是在固定確診人數下，討論不同位置的隔離機率。接著是討論確診人數與全班都被隔離的機率關係。最後">
+<meta property="og:type" content="article">
+<meta property="og:title" content="九宮格匡列機率討論">
+<meta property="og:url" content="https://peienwu.com/quarantine/index.html">
 <meta property="og:site_name" content="Peienwu 演算法筆記">
-<meta property="og:description" content="Hello world">
+<meta property="og:description" content="最近推出了新的隔離政策，班上只要有人確診，他位置附近的九宮格內的人都必須被匡列。雖然這個隔離方式本來就怪怪的，不過我們還是可以針對被隔離的機率做一些小小的計算！ 為了計算方便，都是限制在正方形的座位排列下，對9人、16人、25人或36人的情況做討論，且每一個人確診機會是相同的。這篇文章總共分為三個部分，首先是在固定確診人數下，討論不同位置的隔離機率。接著是討論確診人數與全班都被隔離的機率關係。最後">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/TuOefyK.png">
+<meta property="og:image" content="https://i.imgur.com/vnG5WED.png">
+<meta property="og:image" content="https://i.imgur.com/1F2FJDF.png">
+<meta property="og:image" content="https://i.imgur.com/srZd1P9.png">
+<meta property="og:image" content="https://i.imgur.com/VoQKnsY.png">
+<meta property="og:image" content="https://i.imgur.com/AuOmOoD.png">
+<meta property="og:image" content="https://i.imgur.com/b8L415s.jpg">
+<meta property="og:image" content="https://i.imgur.com/j3RUS8Y.png">
+<meta property="og:image" content="https://i.imgur.com/otKc2S2.png">
+<meta property="og:image" content="https://i.imgur.com/gXmYxFU.png">
+<meta property="og:image" content="https://i.imgur.com/XwCxplm.png">
+<meta property="og:image" content="https://i.imgur.com/sXw6L99.png">
+<meta property="article:published_time" content="2022-05-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-20T14:46:40.880Z">
 <meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="機率">
+<meta property="article:tag" content="高二下筆記">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/TuOefyK.png">
 
-<link rel="canonical" href="https://peienwu.com/">
+<link rel="canonical" href="https://peienwu.com/quarantine/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-TW'
   };
 </script>
 
-  <title>Peienwu 演算法筆記</title>
+  <title>九宮格匡列機率討論 | Peienwu 演算法筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
     <script>
@@ -208,12 +226,13 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://peienwu.com/quarantine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -226,10 +245,9 @@
       <meta itemprop="name" content="Peienwu 演算法筆記">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/quarantine/" class="post-title-link" itemprop="url">九宮格匡列機率討論</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          九宮格匡列機率討論
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -251,6 +269,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
   <span class="post-meta-item">
     
@@ -289,467 +314,93 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>最近推出了新的隔離政策，班上只要有人確診，他位置附近的九宮格內的人都必須被匡列。雖然這個隔離方式本來就怪怪的，不過我們還是可以針對被隔離的機率做一些小小的計算！</p>
+        <p>最近推出了新的隔離政策，班上只要有人確診，他位置附近的九宮格內的人都必須被匡列。雖然這個隔離方式本來就怪怪的，不過我們還是可以針對被隔離的機率做一些小小的計算！</p>
 <p>為了計算方便，都是限制在正方形的座位排列下，對9人、16人、25人或36人的情況做討論，且每一個人確診機會是相同的。這篇文章總共分為三個部分，首先是在固定確診人數下，討論不同位置的隔離機率。接著是討論確診人數與全班都被隔離的機率關係。最後，要討論的是讓全班停課所需最少人數的期望值。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/quarantine/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://peienwu.com/gravity1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/worm.jpg">
-      <meta itemprop="name" content="peienwu">
-      <meta itemprop="description" content="Hello world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Peienwu 演算法筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/gravity1/" class="post-title-link" itemprop="url">萬有引力與四星運動之探討</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2022-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/gravity1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/gravity1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="文章字數">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">文章字數：</span>
-              <span>6.9k</span>
-            </span>
-            <span class="post-meta-item" title="所需閱讀時間">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>6 分鐘</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
-<p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/">點這裡</a></p>
-<h2 id="理論與數學"><a href="#理論與數學" class="headerlink" title="理論與數學"></a>理論與數學</h2><h3 id="萬有引力定律"><a href="#萬有引力定律" class="headerlink" title="萬有引力定律"></a>萬有引力定律</h3><p>牛頓於1687年提出：「<strong>任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。</strong>」</p>
-<p><img src="https://i.imgur.com/NsxdP20.png" alt=""></p>
-<script type="math/tex; mode=display">F = \frac{GMm}{r^2}</script>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/gravity1/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://peienwu.com/gravity2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/worm.jpg">
-      <meta itemprop="name" content="peienwu">
-      <meta itemprop="description" content="Hello world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Peienwu 演算法筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/gravity2/" class="post-title-link" itemprop="url">橢圓軌道上行星到太陽平均距離</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2022-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-21T00:00:00+08:00">2022-04-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/gravity2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/gravity2/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="文章字數">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">文章字數：</span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="所需閱讀時間">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>1 分鐘</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>克卜勒第三運動定律說明公轉週期的平方與行星到太陽的平均距離三次方成正比。若是行星以橢圓軌道繞行太陽，則行星到太陽的平均距離 $\overline d$ 會是近日點距 $r_1$ 加上遠日點距 $r_2$ 的平均，也就是橢圓的半長軸，讓我十分好奇該如何證明這件事！</p>
-<script type="math/tex; mode=display">\overline d = \frac{r_1+r_2}{2} = a</script><p>所要做的是就是將橢圓圓周上的每一點，到太陽的距離進行積分後取平均。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/gravity2/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://peienwu.com/reflection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/worm.jpg">
-      <meta itemprop="name" content="peienwu">
-      <meta itemprop="description" content="Hello world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Peienwu 演算法筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/reflection/" class="post-title-link" itemprop="url">三維空間中的反射定律模擬</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2022-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-13T00:00:00+08:00">2022-03-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E6%A8%A1%E6%93%AC/" itemprop="url" rel="index"><span itemprop="name">程式模擬</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/reflection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/reflection/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="文章字數">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">文章字數：</span>
-              <span>3.4k</span>
-            </span>
-            <span class="post-meta-item" title="所需閱讀時間">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>3 分鐘</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>上週補習班開始教「平面方程式」，有一題範例感覺特別的酷，題目如下：</p>
+<span id="more"></span>
+<h2 id="一、不同座位的隔離機率"><a href="#一、不同座位的隔離機率" class="headerlink" title="一、不同座位的隔離機率"></a>一、不同座位的隔離機率</h2><p><strong>問題描述</strong>：某班有36個同學，座位是6x6的方格排列，試問當班上有4個同學確診，不需要被隔離的機率有多少？</p>
+<h3 id="問題觀察與推導"><a href="#問題觀察與推導" class="headerlink" title="問題觀察與推導"></a>問題觀察與推導</h3><p>一開始看到題目可能會遇到一個大問題，在不同座位的確診者被隔離的人數也就不同。以下圖為例，坐在角落只需要匡列三個人，而坐在靠邊以及中間的人若確診則需要匡列五人以及八人，換句話說，做靠邊或角落的人比起中間的人越不容易被匡列隔離。接下來針對不同位置分別進行討論。</p>
+<p><img src="https://i.imgur.com/TuOefyK.png" alt=""></p>
+<h4 id="座位在角落情況"><a href="#座位在角落情況" class="headerlink" title="座位在角落情況"></a>座位在角落情況</h4><p>我們將坐在角落而<strong>不被匡列</strong>的機率設為$P_c$。此人被匡列的情況可以分為三種，也就是他周圍三個位置分別有一、二或三人確診，針對這三種情形我們可以列出以下算式：</p>
+<script type="math/tex; mode=display">P_c = 1 - \frac{C^3_1C^{32}_3+C^3_2C^{32}_2+C^3_3C^{32}_1}{C^{35}_4}\approx 0.6868</script><p>從他隔壁的3個位置取一到三個位置作為確診者，剩下的確診者從 $36-4=32$ 個位置任選其中幾個。</p>
+<h4 id="座位靠邊、中間情況"><a href="#座位靠邊、中間情況" class="headerlink" title="座位靠邊、中間情況"></a>座位靠邊、中間情況</h4><p>這兩種情況的機率$P_e,P_m$也可以用一樣的方式算出來，但其實有點麻煩因為有四種情況要列出來。偶然發現，其實用反面作法還蠻麻煩的，用正面做其實快很多！只要附近的位置數量扣掉，讓剩下的位置安排確診者，取一次C就完成了！</p>
+<script type="math/tex; mode=display">P_e = \frac{C^{30}_4}{C^{35}_4} \approx 0.5234</script><p>中間$P_m$的情況：</p>
+<script type="math/tex; mode=display">P_m = \frac{C^{27}_4}{C^{35}_4} \approx 0.3352</script><p>有了$P_c,P_e,P_m$之後，對於原題<strong>隨機位置</strong>下的機率，由於每一個位置出現的機率相等，便可透過各個位置的數量進行加權平均，得到隨機情況下的機率。</p>
+<script type="math/tex; mode=display">\begin{align}P &= \frac{1}{36}(4P_c+16P_e+16P_m)\\
+&\approx 0.4579\end{align}</script><h3 id="程式機率計算"><a href="#程式機率計算" class="headerlink" title="程式機率計算"></a>程式機率計算</h3><p><a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/280fbfccd5dfee912a055a2bd9b3149e">程式碼連結</a><br><a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/55274c0a04730b1723935f17a1a72081">模擬結果連結</a></p>
+<p>一開始在還沒有想出問題的解之前，想說先用程式暴力驗證看看機率為何。總共的組數是 $C^{36}_4 = 58905$ 種情況，透過枚舉每一種情況健康的人數，算出在一個人沒有確診情況下不被匡列隔離的機率。</p>
 <blockquote>
-<p>空間坐標系中，有一平面鏡E，一雷射光線經過點$A(1,-1,2)$射向鏡面E上的點$B(0,1,0)$，反射又經過點$C(4,-3,2)$，試求平面E的方程式為何？</p>
+<p>隨機坐不被匡機率：0.457898 ,次數：58905</p>
 </blockquote>
-<p>解法大概就是利用菱形對角線平分的概念求出平面方程式！由這一題延伸，我想看看當改變已知平面的各項參數時，反射光的向量會有怎麼樣的變化，於是就嘗試用VPython模擬出來！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/reflection/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+<p>看到這個結果可以大概推知，當班上有四個人確診，則班上的人其實有超過一半的機會要被隔離。這就讓我進一步思考到，班上座位有些跟周圍接觸到的人較多、有些較少，那這些是否會影響到被匡列的機率？由於每一個人確診的機會是一樣的，因此就把情況分為三種，分別是角落、靠邊以及中間，而相同情況下接觸的人數是一樣多的，隨便取一個位置進行觀察即可。</p>
+<p>由於要排除自己確診的情況，總共的組合數會是 $C^{35}_4 = 52360$，不被匡列的機率如下：</p>
+<blockquote>
+<p>坐角落不被匡機率：0.686784 ,次數：52360<br>坐靠邊不被匡機率：0.523396 ,次數：52360<br>坐中間不被匡機率：0.335180 ,次數：52360</p>
+</blockquote>
+<p><img src="https://i.imgur.com/vnG5WED.png" alt=""></p>
+<p>如上圖，分別挑位置是(1,1),(2,3),(2,4)的人進行觀察，不用匡列機率則是以健康人數（上圖H）除上非確診人數（上圖H+Q）。</p>
+<h2 id="二、確診人數與全班隔離機率"><a href="#二、確診人數與全班隔離機率" class="headerlink" title="二、確診人數與全班隔離機率"></a>二、確診人數與全班隔離機率</h2><p><a target="_blank" rel="noopener" href="https://github.com/peienwu/cp_code/blob/main/%E4%B9%9D%E5%AE%AE%E6%A0%BC%E9%9A%94%E9%9B%A2%E6%A9%9F%E7%8E%87/3pos.txt">3x3排列情況</a><br><a target="_blank" rel="noopener" href="https://github.com/peienwu/cp_code/blob/main/%E4%B9%9D%E5%AE%AE%E6%A0%BC%E9%9A%94%E9%9B%A2%E6%A9%9F%E7%8E%87/4pos.txt">4x4排列情況</a><br><a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/26a640b8562fec4324a3e6ea4b28a77b">程式碼連結</a></p>
+<p>轉換一下問題的面向，我們把確診者的數量當作其中一個變因，試著討論確診人數與全班隔離的機率關係。對於一個有$n$人的班級，總共的排列數為$2^n$，我們將全班都會被隔離的情況挑出來，統計其數量。</p>
+<h3 id="3x3排列情況"><a href="#3x3排列情況" class="headerlink" title="3x3排列情況"></a>3x3排列情況</h3><p>下圖橫坐標為確診人數，縱座標為對應的組數，灰色則是該確診人數的組合數。可以發現到，當人數增加，其全班隔離的組數呈現先增後減的趨勢，而對應到的全班被隔離的機率（紅與灰長度比）隨確診人數漸增。折線圖的部分則代表在相同確診人數下全班被隔離組數佔組合數的比例。</p>
+<p><img src="https://i.imgur.com/1F2FJDF.png" alt=""><br><img src="https://i.imgur.com/srZd1P9.png" alt=""></p>
+<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：4.88249人</p>
+<h3 id="4x4排列情況"><a href="#4x4排列情況" class="headerlink" title="4x4排列情況"></a>4x4排列情況</h3><p><img src="https://i.imgur.com/VoQKnsY.png" alt=""></p>
+<p><img src="https://i.imgur.com/AuOmOoD.png" alt=""></p>
+<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：8.5333人</p>
+<h3 id="5x5排列情況"><a href="#5x5排列情況" class="headerlink" title="5x5排列情況"></a>5x5排列情況</h3><p><img src="https://i.imgur.com/b8L415s.jpg" alt=""><br><img src="https://i.imgur.com/j3RUS8Y.png" alt=""></p>
+<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：13.1412人</p>
+<p>程式具體的實作細節是將每一種情況進行狀態壓縮，存在一個int裡面，然後對每一個bit進行枚舉。在人數為$n$人的情況下，複雜度為$2^n$。這樣的複雜度在枚舉36人的情況會需要10幾個小時才能跑完。嘗試使用dfs進行剪枝，減少實際判斷的次數，不過效果不盡理想，可能還是要針對複雜度的部分進行優化才行。</p>
+<h2 id="三、讓全班停課所需最少人數期望值"><a href="#三、讓全班停課所需最少人數期望值" class="headerlink" title="三、讓全班停課所需最少人數期望值"></a>三、讓全班停課所需最少人數期望值</h2><p><a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/5ead95bfcb358434efd029bd338507e7">程式碼連結</a></p>
+<p>第二部分是將所有可能造成全班被匡列的情況都找出來，但這並不是「讓全班停課所需最少人數的期望值」，因為它的前提被限制在所有人都全班都被匡列的前提之下，且會有很多情況是要被扣除掉的。要找出最少人數的期望值，我們將每一個位置的確診狀況進行遞迴，直到一種組合能以最少人數的情況下讓全班隔離。到了那種情況之後，接下來不管怎麼安排接下來的位置，也一定能讓全班被匡列。</p>
+<p><img src="https://i.imgur.com/otKc2S2.png" alt=""></p>
+<p>如上圖，我們要統計的就是每一個能讓全班被隔離的狀態x，所包含的確診人數。以下是統計最少確診人數對應到讓全班被隔離的組數。</p>
+<h3 id="3x3排列情況-1"><a href="#3x3排列情況-1" class="headerlink" title="3x3排列情況"></a>3x3排列情況</h3><p><img src="https://i.imgur.com/gXmYxFU.png" alt=""></p>
+<p>最少人數期望值：<strong>3.74667人</strong></p>
+<h3 id="4x4排列情況-1"><a href="#4x4排列情況-1" class="headerlink" title="4x4排列情況"></a>4x4排列情況</h3><p><img src="https://i.imgur.com/XwCxplm.png" alt=""></p>
+<p>最少人數期望值：<strong>7.17143人</strong></p>
+<h3 id="5x5排列情況-1"><a href="#5x5排列情況-1" class="headerlink" title="5x5排列情況"></a>5x5排列情況</h3><p><img src="https://i.imgur.com/sXw6L99.png" alt=""></p>
+<p>最少人數期望值：<strong>11.8351人</strong></p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>上面放的幾張長條圖以及折線圖都放在下方參考資料中，每一張都是高畫質(dpi=1000)！關於上面第二、三部分，其實原本是想要求「最少人數期望值」，畫出並且統計完第二部分的內容後，才發現結果比想像中的還要高（超過一半的人數），細究之後才發現兩者之間的區別。</p>
+<p>在程式方面，原本的$2^n$的枚舉複雜度實在有點高，想說可以利用遞迴進行剪枝，但實測下來速度並沒有快多少，必須要想辦法優化才能對更多人的情況進行枚舉。另外，延伸部分可以針對確診的順序進行討論，也就是讓每一個人依照不同的先後順序確診，並在確診的當天移除該被匡列的人，讓剩下的人進行下一輪模擬。</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://github.com/peienwu/cp_code/tree/main/%E4%B9%9D%E5%AE%AE%E6%A0%BC%E9%9A%94%E9%9B%A2%E6%A9%9F%E7%8E%87">圖片、程式碼檔案</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/peienwu">我的Github</a></p>
+
     </div>
     
     
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/%E6%A9%9F%E7%8E%87/" rel="tag"># 機率</a>
+              <a href="/tags/%E9%AB%98%E4%BA%8C%E4%B8%8B%E7%AD%86%E8%A8%98/" rel="tag"># 高二下筆記</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://peienwu.com/manim/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/worm.jpg">
-      <meta itemprop="name" content="peienwu">
-      <meta itemprop="description" content="Hello world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Peienwu 演算法筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/manim/" class="post-title-link" itemprop="url">Manim學習筆記</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2022-02-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-21T00:00:00+08:00">2022-02-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E6%A8%A1%E6%93%AC/" itemprop="url" rel="index"><span itemprop="name">程式模擬</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/manim/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/manim/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="文章字數">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">文章字數：</span>
-              <span>3.1k</span>
-            </span>
-            <span class="post-meta-item" title="所需閱讀時間">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>3 分鐘</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Manim安裝"><a href="#Manim安裝" class="headerlink" title="Manim安裝"></a>Manim安裝</h2><blockquote>
-<p>Manim is an animation engine for explanatory math videos.</p>
-</blockquote>
-<p>利用Manim可以生成許多數學類的動畫影片、以及製作一些動畫模擬！</p>
-<p>我是利用Mac安裝Manim，只要按照<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/installation/macos.html">這一篇</a>的說明一步步完成即可，不要上網找教學影片，因為很多都是過時的，在安裝上會出現一些問題。</p>
-<p>至於使用教學的部分，可以參考這一篇<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/index.html">官方使用手冊</a>。Manim總共有三種版本，建議使用Manim Community比較方便，資源比較多！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/manim/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/gravity1/" rel="prev" title="萬有引力與四星運動之探討">
+      <i class="fa fa-chevron-left"></i> 萬有引力與四星運動之探討
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-    
-    
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -807,6 +458,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%8D%E5%90%8C%E5%BA%A7%E4%BD%8D%E7%9A%84%E9%9A%94%E9%9B%A2%E6%A9%9F%E7%8E%87"><span class="nav-number">1.</span> <span class="nav-text">一、不同座位的隔離機率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E8%A7%80%E5%AF%9F%E8%88%87%E6%8E%A8%E5%B0%8E"><span class="nav-number">1.1.</span> <span class="nav-text">問題觀察與推導</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%A7%E4%BD%8D%E5%9C%A8%E8%A7%92%E8%90%BD%E6%83%85%E6%B3%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">座位在角落情況</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%A7%E4%BD%8D%E9%9D%A0%E9%82%8A%E3%80%81%E4%B8%AD%E9%96%93%E6%83%85%E6%B3%81"><span class="nav-number">1.1.2.</span> <span class="nav-text">座位靠邊、中間情況</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E6%A9%9F%E7%8E%87%E8%A8%88%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">程式機率計算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%A2%BA%E8%A8%BA%E4%BA%BA%E6%95%B8%E8%88%87%E5%85%A8%E7%8F%AD%E9%9A%94%E9%9B%A2%E6%A9%9F%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text">二、確診人數與全班隔離機率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3x3%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81"><span class="nav-number">2.1.</span> <span class="nav-text">3x3排列情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4x4%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81"><span class="nav-number">2.2.</span> <span class="nav-text">4x4排列情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5x5%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81"><span class="nav-number">2.3.</span> <span class="nav-text">5x5排列情況</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AE%93%E5%85%A8%E7%8F%AD%E5%81%9C%E8%AA%B2%E6%89%80%E9%9C%80%E6%9C%80%E5%B0%91%E4%BA%BA%E6%95%B8%E6%9C%9F%E6%9C%9B%E5%80%BC"><span class="nav-number">3.</span> <span class="nav-text">三、讓全班停課所需最少人數期望值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3x3%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81-1"><span class="nav-number">3.1.</span> <span class="nav-text">3x3排列情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4x4%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81-1"><span class="nav-number">3.2.</span> <span class="nav-text">4x4排列情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5x5%E6%8E%92%E5%88%97%E6%83%85%E6%B3%81-1"><span class="nav-number">3.3.</span> <span class="nav-text">5x5排列情況</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">4.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
