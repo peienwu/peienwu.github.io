@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+     
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上課內容並查集 Disjoint Set目標：快速判斷兩個元素是否同屬一個集合功能：詢問元素隸屬的集合、合併兩個集合，在圖論中，集合通常表示連通快，並查集可以查詢任兩點是否連通。在實作MST的時候，當我們要檢查兩個點連接成的邊是否會跟其他已經加入的邊形成環，就會使用並查集幫助我們判斷！複雜度：非常優秀，可以說是O(1)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資芽第十週：進階圖論（一）">
+<meta property="og:url" content="https://peienwu.com/sprout10/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="上課內容並查集 Disjoint Set目標：快速判斷兩個元素是否同屬一個集合功能：詢問元素隸屬的集合、合併兩個集合，在圖論中，集合通常表示連通快，並查集可以查詢任兩點是否連通。在實作MST的時候，當我們要檢查兩個點連接成的邊是否會跟其他已經加入的邊形成環，就會使用並查集幫助我們判斷！複雜度：非常優秀，可以說是O(1)">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/z5TnoRv.png">
+<meta property="og:image" content="https://i.imgur.com/k8FPb0U.png">
+<meta property="og:image" content="https://i.imgur.com/sDAXXKI.png">
+<meta property="og:image" content="https://i.imgur.com/ZFELWZq.png">
+<meta property="article:published_time" content="2021-05-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-14T11:04:01.350Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="資芽筆記">
+<meta property="article:tag" content="圖論">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/z5TnoRv.png">
+
+<link rel="canonical" href="https://peienwu.com/sprout10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>資芽第十週：進階圖論（一） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/sprout10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          資芽第十週：進階圖論（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-05-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-15T00:00:00+08:00">2021-05-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">資訊之芽筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/sprout10/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/sprout10/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>6.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>6 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="上課內容"><a href="#上課內容" class="headerlink" title="上課內容"></a>上課內容</h2><h3 id="並查集-Disjoint-Set"><a href="#並查集-Disjoint-Set" class="headerlink" title="並查集 Disjoint Set"></a>並查集 Disjoint Set</h3><p>目標：快速判斷兩個元素是否同屬一個集合<br>功能：詢問元素隸屬的集合、合併兩個集合，在圖論中，集合通常表示連通快，並查集可以查詢任兩點是否連通。在實作MST的時候，當我們要檢查兩個點連接成的邊是否會跟其他已經加入的邊形成環，就會使用並查集幫助我們判斷！<br>複雜度：非常優秀，可以說是O(1)<br><span id="more"></span><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100001</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,boss[N],num[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_boss</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;        <span class="comment">//使用路徑壓縮</span></span><br><span class="line">    <span class="keyword">if</span>(a==boss[a])<span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> boss[a] = <span class="built_in">find_boss</span>(boss[a]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;    <span class="comment">//啟發式合併</span></span><br><span class="line">    <span class="keyword">if</span>(num[a]&gt;=num[b])&#123;     <span class="comment">//較小的集合合併到較大的集合</span></span><br><span class="line">        num[a] += num[b];</span><br><span class="line">        boss[b] = a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        num[b] += num[a];</span><br><span class="line">        boss[a] = b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        boss[i] = i;</span><br><span class="line">        num[i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;                    <span class="comment">//要查詢兩個元素</span></span><br><span class="line">        a = <span class="built_in">find_boss</span>(a),b = <span class="built_in">find_boss</span>(b);    <span class="comment">//判斷是否同屬一個集合</span></span><br><span class="line">        <span class="keyword">if</span>(a!=b)&#123;                             <span class="comment">//老大不同屬不同集合</span></span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;不同集合&quot;</span>&lt;&lt;endl;</span><br><span class="line">            <span class="built_in">merge</span>(a, b);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;同集合&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cout&lt;&lt;boss[i]&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<div class="note success">
+            <p><strong>路徑壓縮</strong><br>在回傳過程中順便利用遞迴把所經過的boss指向最上面的boss，由左圖變成右圖，效率更高（實測其實差不多，可能logn已經夠小加上遞迴本來就比較慢）<br><img src="https://i.imgur.com/z5TnoRv.png" alt=""><br>用遞迴實現的特性實現，遞迴拉上來的時候順便更新boss[x]：<br><img src="https://i.imgur.com/k8FPb0U.png" alt=""></p><p>路徑壓縮搭配啟發式合併，複雜度：$O(α(N))$等同常數</p>
+          </div>
+<h2 id="上機作業"><a href="#上機作業" class="headerlink" title="上機作業"></a>上機作業</h2><h3 id="最小生成樹"><a href="#最小生成樹" class="headerlink" title="最小生成樹"></a>最小生成樹</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/734/">題目連結NEOJ</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/1211">題目連結TIOJ</a><br><a target="_blank" rel="noopener" href="https://reurl.cc/ze8Qr6">實作講義</a><br><a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~sprout/algo2021/ppt_pdf/week11/Minimum_spanning_tree.pdf">資芽講義</a></p>
+<p>這一題手刻最小生成樹，感覺蠻好的，都是利用一些性質來實作最小生成樹</p>
+<h4 id="性質一：樹"><a href="#性質一：樹" class="headerlink" title="性質一：樹"></a>性質一：樹</h4><p>最小生成圖一定會是一棵樹，不具備環，且一共有n-1條邊<br>如果這張圖不是樹，則必定有環，即代表可以再拔掉一條邊使權重和更小</p>
+<h4 id="性質二：Cycle-Property"><a href="#性質二：Cycle-Property" class="headerlink" title="性質二：Cycle Property"></a>性質二：Cycle Property</h4><p>C是圖上的一個環，e是C上權重最大一條邊，則e必不在MST一部分（證明：反證，假設e在MST，則加入另一邊比e權重更小形成環，此時把e拔掉可以形成更小的權重和，因此矛盾）</p>
+<h4 id="性質三：Cut-Property"><a href="#性質三：Cut-Property" class="headerlink" title="性質三：Cut Property"></a>性質三：Cut Property</h4><p>把圖上的點集分割成兩半，則cut上面的邊集合中最小權重的邊e會在MST裡面（證明：反證，假設e不在MST，則加入e會形成連接兩半節點的環，此時拔掉另一比e權重大的邊，會形成更小權重和，因此矛盾）</p>
+<p>利用性質二、性質三，就可以利用Kruskal演算法：利用到併查集的維護搭配路徑壓縮，可以快速判斷一個元素是否與另一個元素同屬一個集合（複雜度幾乎可以$O(1)$，更準確來說是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%98%BF%E5%85%8B%E6%9B%BC%E5%87%BD%E6%95%B8">$O(\alpha)$</a>），Kruskal總複雜度為 $O(ElogE)$<br>另外還有一種實作方式<strong>Prim’s algorithm</strong>，等等再看</p>
+<div class="note info">
+            <p><strong>實作步驟</strong></p><p><strong>1. 初始化設定：</strong> 設定好boss以及集合大小等參數</p><p><strong>2. 對所有的邊依照權重排序：</strong> 利用$O(m\log m)$的時間排序，將邊依照權重由小到大加入MST中</p><p><strong>3. 依序加入邊：</strong> 以下會有兩種情況，可以用並查集+路徑壓縮（優化）判斷是否會形成環</p><ul><li>Case 1: 如果加了這條邊形成環（查到有一樣的boss）<ul><li>那這條邊會是這個環上的最大邊</li><li>根據 Cycle property，<font color="#f00">這條邊不會是MST的一部分</font></li></ul></li><li>Case 2: 加了這條邊不會形成環<ul><li>那這條邊是條橋，連接左右兩棵樹</li><li>根據 Cut Property，因為這條邊是這個 cut 上最小的邊</li><li>所以<font color="#f00">這條邊會是 MST 的一部分</font></li></ul></li></ul><p><strong>4. 判斷是否合法：</strong> n個點所形成的樹會有n-1條邊，最小生成樹是一棵樹就必須滿足條件。</p>
+          </div>
+<h4 id="KRUSKAL’S-ALGORITHM"><a href="#KRUSKAL’S-ALGORITHM" class="headerlink" title="KRUSKAL’S ALGORITHM"></a>KRUSKAL’S ALGORITHM</h4><p><img src="https://i.imgur.com/sDAXXKI.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 200005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,num[N],boss[N];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y,w;</span><br><span class="line">&#125;edge[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Node a, Node b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.w &lt; b.w;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findboss</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;                    <span class="comment">//尋找集合的老大（代表整個集合）</span></span><br><span class="line">    <span class="keyword">if</span>(a==boss[a])<span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">return</span> boss[a]=<span class="built_in">findboss</span>(boss[a]);   <span class="comment">//遞迴搭配路徑壓縮</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        cin&gt;&gt;edge[i].x&gt;&gt;edge[i].y&gt;&gt;edge[i].w;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        num[i] = <span class="number">1</span>;</span><br><span class="line">        boss[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(edge,edge+m,cmp);                 <span class="comment">//依照權重大小放入MST</span></span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>,num_edge = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m &amp;&amp; num_edge&lt;n;i++)&#123;    <span class="comment">//樹必須滿足小於n-1條邊</span></span><br><span class="line">        <span class="keyword">int</span> a = <span class="built_in">findboss</span>(edge[i].x),b = <span class="built_in">findboss</span>(edge[i].y);</span><br><span class="line">        <span class="keyword">if</span>(a!=b)&#123;                          <span class="comment">//boss不同可以放入MST（加入不會形成環by Cut Property）</span></span><br><span class="line">            <span class="keyword">if</span>(num[a]&gt;=num[b])&#123;            <span class="comment">//執行啟發式合併</span></span><br><span class="line">                boss[b] = a;</span><br><span class="line">                num[a]+=num[b];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                boss[a] = b;</span><br><span class="line">                num[b]+=num[a];</span><br><span class="line">            &#125;</span><br><span class="line">            result+=edge[i].w;</span><br><span class="line">            num_edge++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;result&lt;&lt;endl;</span><br><span class="line">    <span class="comment">//這邊可以判斷num_edge==n-1有沒有成立，不過題目是輸入都可以形成MST</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Prim’s-Algorithm"><a href="#Prim’s-Algorithm" class="headerlink" title="Prim’s Algorithm"></a>Prim’s Algorithm</h3><p>是一種貪婪演算法，首先取任一點加入最小生成樹中，接著將連到的邊加入heap中，每一次取出heap中邊權重最小的邊，如果這一條邊連到的點尚未被走訪，則加入這一條邊為最小生成數。正確性證明則可用cut proprity證明每次都加入權重最小的邊即為最小生成數。</p>
+<p><img src="https://i.imgur.com/ZFELWZq.png" alt=""></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,a,b) for(int i=a;i&lt;=b;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdd pair<span class="meta-string">&lt;double,double&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 200005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> eps 1e-9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> to,w;</span><br><span class="line">&#125;;</span><br><span class="line">vector&lt;node&gt; edge[N];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(node a,node b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.w &gt; b.w;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">0</span>,m<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,w;cin&gt;&gt;a&gt;&gt;b&gt;&gt;w;</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(&#123;b,w&#125;);</span><br><span class="line">        edge[b].<span class="built_in">push_back</span>(&#123;a,w&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    priority_queue&lt;node,vector&lt;node&gt;,cmp&gt; pq;</span><br><span class="line">    visit[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> i : edge[<span class="number">1</span>])pq.<span class="built_in">push</span>(i);</span><br><span class="line">    <span class="keyword">int</span> num_edge = <span class="number">0</span>,ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(num_edge &lt; n<span class="number">-1</span>)&#123;</span><br><span class="line">        node x = pq.<span class="built_in">top</span>();pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(visit[x.to])<span class="keyword">continue</span>;</span><br><span class="line">        visit[x.to] = <span class="number">1</span>;</span><br><span class="line">        num_edge += <span class="number">1</span>;</span><br><span class="line">        ans += x.w;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : edge[x.to])&#123;</span><br><span class="line">            pq.<span class="built_in">push</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="高棕櫚的意外收穫"><a href="#高棕櫚的意外收穫" class="headerlink" title="高棕櫚的意外收穫"></a>高棕櫚的意外收穫</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/169/">題目連結</a><br><a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~sprout/algo2021/ppt_pdf/week11/euler_hamilton.pdf">講義連結</a></p>
+<p>這一題就是按照字典序print出尤拉路徑，特別用<strong>鄰接矩陣</strong>來存圖是因為要按照字典序輸出，如果用鏈結串列來存還要花時間排序，因此用大一點的空間來節省時間</p>
+<p>尤拉路徑也是一筆畫問題，每一個節點一定會有進有出，因此原先的無向圖上每一點一定度數為偶數，若有奇點則選擇其中一個奇點作為起點，當奇點數量超過兩個則代表無解。我們將DFS的過程中離開當前節點的順序紀錄起來，逆序輸出就是一組合法歐拉迴路的解了！<br><div class="note info">
+            <p><strong>實作程序</strong></p><p><strong>1. 判斷奇點個數</strong>，若奇點個數k：</p><ul><li>k &gt; 2，那麼無解</li><li>k = 2，則選擇其中一個奇點作為起點</li><li>k = 0，則選擇任意一個點作為起點</li></ul><p><strong>2. DFS 執行下列步驟</strong></p><blockquote><p>若當前節點還有尚未走過的邊，那麼拜訪該邊，並在拜訪完後輸出該邊<br>否則離開當前結點</p></blockquote><p><strong>3. 若還有節點尚未拜訪，則無解</strong><br><strong>4. 否則輸出順序即為一組解</strong></p>
+          </div></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 501</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,Edge[N][N],ans[<span class="number">1025</span>],ind = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">500</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Edge[cur][i])&#123;</span><br><span class="line">            Edge[cur][i]--;Edge[i][cur]--;</span><br><span class="line">            <span class="built_in">DFS</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ans[ind++] = cur;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">memset</span>(Edge, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(Edge));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        Edge[a][b]++;</span><br><span class="line">        Edge[b][a]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> start = <span class="number">1</span>;                <span class="comment">//開始的節點編號</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">500</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=<span class="number">500</span>;j++)&#123;</span><br><span class="line">            sum+=Edge[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum%<span class="number">2</span>!=<span class="number">0</span>)&#123;             <span class="comment">//找到第一個度數為奇數的節點</span></span><br><span class="line">            start = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">DFS</span>(start);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=ind<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)cout&lt;&lt;ans[i]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="陣線推進"><a href="#陣線推進" class="headerlink" title="陣線推進"></a>陣線推進</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/165/">題目連結</a><br>拓墣排序題，兩種實作方式，第一是BFS變形實作（queue實作），被pop出來的順序就是topological sort<br>第二種就是DFS搭配時間戳記，最晚離開的放在最前面</p>
+<p>這一題是把入度為0的節點先push進priority_queue（按照字典序），當一個點處理過之後，入度變成0的所有它指向的點在push進queue裡面<br>拓墣排序可以用在DAG的判定以及解決具有依賴關係的問題</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 100001</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t,n,m,deg[N];<span class="comment">//入度</span></span><br><span class="line"><span class="keyword">int</span> ans[N],ind = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(deg,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(deg));</span><br><span class="line">        <span class="built_in">memset</span>(ans, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(ans));</span><br><span class="line">        ind = <span class="number">0</span>;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line">        cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">            edge[a].<span class="built_in">push_back</span>(b);</span><br><span class="line">            deg[b]++;</span><br><span class="line">        &#125;</span><br><span class="line">        priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; qq;<span class="comment">//priority_queue取代queue</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)<span class="keyword">if</span>(deg[i]==<span class="number">0</span>)qq.<span class="built_in">push</span>(i);</span><br><span class="line">        <span class="keyword">while</span>(!qq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="keyword">int</span> cur = qq.<span class="built_in">top</span>();</span><br><span class="line">            qq.<span class="built_in">pop</span>();</span><br><span class="line">            ans[ind++] = cur;</span><br><span class="line">            <span class="keyword">int</span> len = edge[cur].<span class="built_in">size</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">                deg[edge[cur][i]]--;</span><br><span class="line">                <span class="keyword">if</span>(deg[edge[cur][i]]==<span class="number">0</span>)</span><br><span class="line">                    qq.<span class="built_in">push</span>(edge[cur][i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ind==n)&#123;</span><br><span class="line">            cout&lt;&lt;ans[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)cout&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ans[i];</span><br><span class="line">            cout&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> cout&lt;&lt;<span class="string">&quot;QAQ&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="手寫作業"><a href="#手寫作業" class="headerlink" title="手寫作業"></a>手寫作業</h2><p>這一次的手寫也蠻困難的，討論BIT(fenwick tree)的實作以及複雜度！</p>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B3%87%E8%8A%BD%E7%AD%86%E8%A8%98/" rel="tag"># 資芽筆記</a>
+              <a href="/tags/%E5%9C%96%E8%AB%96/" rel="tag"># 圖論</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/sprout9/" rel="prev" title="資芽第九週：動態規劃（三）">
+      <i class="fa fa-chevron-left"></i> 資芽第九週：動態規劃（三）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/sprout11/" rel="next" title="資芽第十一週：進階圖論（二）">
+      資芽第十一週：進階圖論（二） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+<!-- 多媒體廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9921797637924269"
+     data-ad-slot="2654177759"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E8%AA%B2%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">上課內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A6%E6%9F%A5%E9%9B%86-Disjoint-Set"><span class="nav-number">1.1.</span> <span class="nav-text">並查集 Disjoint Set</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%A9%9F%E4%BD%9C%E6%A5%AD"><span class="nav-number">2.</span> <span class="nav-text">上機作業</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A8%B9"><span class="nav-number">2.1.</span> <span class="nav-text">最小生成樹</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA%E4%B8%80%EF%BC%9A%E6%A8%B9"><span class="nav-number">2.1.1.</span> <span class="nav-text">性質一：樹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA%E4%BA%8C%EF%BC%9ACycle-Property"><span class="nav-number">2.1.2.</span> <span class="nav-text">性質二：Cycle Property</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%B3%AA%E4%B8%89%EF%BC%9ACut-Property"><span class="nav-number">2.1.3.</span> <span class="nav-text">性質三：Cut Property</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KRUSKAL%E2%80%99S-ALGORITHM"><span class="nav-number">2.1.4.</span> <span class="nav-text">KRUSKAL’S ALGORITHM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prim%E2%80%99s-Algorithm"><span class="nav-number">2.2.</span> <span class="nav-text">Prim’s Algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%A3%95%E6%AB%9A%E7%9A%84%E6%84%8F%E5%A4%96%E6%94%B6%E7%A9%AB"><span class="nav-number">2.3.</span> <span class="nav-text">高棕櫚的意外收穫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%A3%E7%B7%9A%E6%8E%A8%E9%80%B2"><span class="nav-number">2.4.</span> <span class="nav-text">陣線推進</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%AF%AB%E4%BD%9C%E6%A5%AD"><span class="nav-number">3.</span> <span class="nav-text">手寫作業</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">298k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:31</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

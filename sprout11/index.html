@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+     
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上課內容雙連通元件樹壓平、點雙連通、邊雙連通 SCC強連通元件LCA（最低共同祖先）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資芽第十一週：進階圖論（二）">
+<meta property="og:url" content="https://peienwu.com/sprout11/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="上課內容雙連通元件樹壓平、點雙連通、邊雙連通 SCC強連通元件LCA（最低共同祖先）">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-05-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-14T11:04:03.485Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="資芽筆記">
+<meta property="article:tag" content="圖論">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://peienwu.com/sprout11/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>資芽第十一週：進階圖論（二） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/sprout11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          資芽第十一週：進階圖論（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-05-22 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-22T00:00:00+08:00">2021-05-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">資訊之芽筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/sprout11/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/sprout11/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>7.5k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>7 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="上課內容"><a href="#上課內容" class="headerlink" title="上課內容"></a>上課內容</h2><h3 id="雙連通元件"><a href="#雙連通元件" class="headerlink" title="雙連通元件"></a>雙連通元件</h3><p>樹壓平、點雙連通、邊雙連通</p>
+<h3 id="SCC強連通元件"><a href="#SCC強連通元件" class="headerlink" title="SCC強連通元件"></a>SCC強連通元件</h3><p>LCA（最低共同祖先）<br><span id="more"></span></p>
+<h2 id="上機作業"><a href="#上機作業" class="headerlink" title="上機作業"></a>上機作業</h2><h3 id="高棕櫚傳遞鏈"><a href="#高棕櫚傳遞鏈" class="headerlink" title="高棕櫚傳遞鏈"></a>高棕櫚傳遞鏈</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/183/">題目連結</a><br>在一張圖中找割點（定義：拔掉它整張圖就不連通了）<br>作法：如果用暴力，可以每一個點拔掉，做一次DFS判斷是否聯通（效率太差）</p>
+<p>效率更高的就是<strong>Trajan 演算法</strong>找AP(articulation point)</p>
+<div class="note info">
+            <p><strong>Tarjan’s algorithm 找 AP</strong><br>邊的種類可以分成：Tree edge,Back edge,Forward edge,Cross edge，其中無向圖中只會有樹邊跟回邊（按照無向邊DFS的結果，Foward edge 都會變成子孫的back edge, cross edge 會變成樹邊）</p><p>維護一個low函數，代表不經過父節點能到的最小時間戳記（進入）的節點，lv函數為當前節點的時間戳記。一個點是不是割點，只要他的任意子節點的low函數大於等於自己的時間戳記編號，那把這個點拔掉，他小孩就走不到祖先了（如果走得到祖先，對於這一棵子樹，拔掉當前節點就可利用此邊繼續連通），所以他就是割點。<br>更新：$low[now] = min(low[now],low[next])$分別為利用子孫或靠自己</p>
+          </div>
+<p>必須要注意的是，割點判斷時要把root的特例獨立判斷。其實root反而比較簡單，如果root有超過一個子樹，代表拔掉root以後會分裂成以每個子樹為單位的連通塊</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000001</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,low[N],lv[N],es=<span class="number">1</span>,root,son_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> visit[N],ans[N];</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line"><span class="comment">//low函數為不經過父節點能到的最小時間戳記,lv為當前進入時間戳記</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> now,<span class="keyword">int</span> father)</span></span>&#123;</span><br><span class="line">    visit[now] = <span class="number">1</span>;             <span class="comment">//將此點設為已拜訪</span></span><br><span class="line">    low[now] = lv[now] = es++;  <span class="comment">//進入的時間戳記</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> len = edge[now].<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;     <span class="comment">//拜訪每一個子孫</span></span><br><span class="line">        <span class="keyword">int</span> next = edge[now][i];</span><br><span class="line">        <span class="keyword">if</span>(now==root &amp;&amp; !visit[next])son_cnt++;<span class="comment">//計算root小孩（處理特例）</span></span><br><span class="line">        <span class="keyword">if</span>(!visit[next])&#123;       <span class="comment">//排除走到祖先的情況</span></span><br><span class="line">            <span class="built_in">DFS</span>(next, now);</span><br><span class="line">            <span class="keyword">if</span>(low[next]&gt;=lv[now] &amp;&amp; now!=root)ans[now]=<span class="number">1</span>;</span><br><span class="line">            <span class="comment">//無法透過小孩到達比自己淺的節點，將now設為AP</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(next!=father)low[now] = <span class="built_in">min</span>(low[now],low[next]);</span><br><span class="line">        <span class="comment">//排除指向父親的情況，如果經過父親，拔掉就不能往更上面去</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">memset</span>(lv, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(lv));</span><br><span class="line">    <span class="built_in">memset</span>(low, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(low));</span><br><span class="line">    <span class="built_in">memset</span>(visit, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="built_in">memset</span>(ans,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(ans));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">        edge[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">        edge[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!visit[i])&#123;</span><br><span class="line">            root = i;</span><br><span class="line">            son_cnt = <span class="number">0</span>;</span><br><span class="line">            <span class="built_in">DFS</span>(i, i);</span><br><span class="line">            <span class="keyword">if</span>(son_cnt&gt;<span class="number">1</span>)ans[root] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)<span class="keyword">if</span>(ans[i])cout&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="謠言問題"><a href="#謠言問題" class="headerlink" title="謠言問題"></a>謠言問題</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/179">題目連結</a><br>跟上一題（高棕櫚傳遞鏈）蠻類似的，一樣找到割點，不同的是要在DFS過程中同時紀錄子樹節點的數量。如果碰到割點，維護拔掉它之後分裂出去那些子樹的節點個數，到時候透過節點總數-拔掉後分裂個數即可推算有幾個人會知道謠言，取min即可</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 30001</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,root,lv[N],low[N],tree_cnt[N],es = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">bool</span> visit[N],ans[N];</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> now,<span class="keyword">int</span> father)</span></span>&#123;      <span class="comment">//回傳當前子節點個數</span></span><br><span class="line">    visit[now] = <span class="number">1</span>;</span><br><span class="line">    lv[now] = es;</span><br><span class="line">    low[now] = es++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> len = edge[now].<span class="built_in">size</span>(),sum=<span class="number">1</span>;<span class="comment">//計算節點數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> next = edge[now][i];     <span class="comment">//下一個節點</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(!visit[next])&#123;</span><br><span class="line">            <span class="keyword">int</span> temp = <span class="built_in">DFS</span>(next,now);</span><br><span class="line">            sum += temp;</span><br><span class="line">            <span class="keyword">if</span>(low[next] &gt;= lv[now] &amp;&amp; now!=root)&#123; <span class="comment">//不能拔掉root</span></span><br><span class="line">                ans[now] = <span class="number">1</span>;           <span class="comment">//設為AP</span></span><br><span class="line">                tree_cnt[now] += temp;  <span class="comment">//被拔掉後可被分割成幾個連通塊節點數</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(next!=father)low[now] = <span class="built_in">min</span>(low[now],low[next]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">        edge[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">        edge[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    cin&gt;&gt;root;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">memset</span>(ans, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(ans));</span><br><span class="line">    <span class="built_in">memset</span>(visit, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="built_in">memset</span>(tree_cnt, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(tree_cnt));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> sum = <span class="built_in">DFS</span>(root,root),min_cnt = INT_MAX,min_pos = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = sum-tree_cnt[i]; <span class="comment">//拔掉後剩下連通塊大小（跟root連的）</span></span><br><span class="line">        <span class="keyword">if</span>(ans[i] &amp;&amp; temp &lt; min_cnt)&#123;</span><br><span class="line">            min_pos = i;        <span class="comment">//拔掉第幾個</span></span><br><span class="line">            min_cnt = temp;     <span class="comment">//更新拔掉後剩下連通塊大小</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(min_cnt == INT_MAX)cout&lt;&lt;<span class="number">0</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span> cout&lt;&lt;min_pos&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;min_cnt&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="高棕櫚傳遞鏈-1"><a href="#高棕櫚傳遞鏈-1" class="headerlink" title="高棕櫚傳遞鏈"></a>高棕櫚傳遞鏈</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/183/">題目連結</a><br>前兩題找割點，這一題是找橋，跟找割點的方法幾乎一樣，而且對於邊還不需要討論root的情況（root變成不是特例），然後判斷割點的 &gt;= 變成 &gt;，原因可以透過畫圖理解（把點拔掉跟把邊拔掉的差別），就可以實作了！<br>題目有一個特別的要求，按照給邊的順序進行輸出，那可以搭配set來快速查看某一元素是否在集合內$O(logN)$，接著就按照給定的條件來輸出</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1000001</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,lv[N],low[N],timestamp = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line">vector&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">set&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;s;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> now,<span class="keyword">int</span> father)</span></span>&#123;</span><br><span class="line">    lv[now] = low[now] = timestamp++;</span><br><span class="line">    visit[now] = <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> len = edge[now].<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> next = edge[now][i];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(!visit[next])&#123;</span><br><span class="line">            <span class="built_in">DFS</span>(next, now);</span><br><span class="line">            <span class="keyword">if</span>(low[next] &gt; lv[now])&#123;</span><br><span class="line">                <span class="keyword">if</span>(next&lt;now)s.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(next,now));</span><br><span class="line">                <span class="keyword">else</span> s.<span class="built_in">insert</span>(<span class="built_in">make_pair</span>(now, next));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(next!=father)low[now] = <span class="built_in">min</span>(low[now],low[next]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x,y;cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">        edge[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">        edge[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">        ans.<span class="built_in">push_back</span>(<span class="built_in">make_pair</span>(x, y));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memset</span>(visit, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!visit[i])&#123;</span><br><span class="line">            <span class="built_in">DFS</span>(i, i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; temp = ans[i];</span><br><span class="line">        <span class="keyword">if</span>(s.<span class="built_in">find</span>(temp)!=s.<span class="built_in">end</span>())&#123;</span><br><span class="line">            cout&lt;&lt;temp.first&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;temp.second&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="芽芽逛大街"><a href="#芽芽逛大街" class="headerlink" title="芽芽逛大街"></a>芽芽逛大街</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/739/">題目連結</a><br>有向無環圖的 case → DAG 最長路徑!<br>將每個強連通元件縮成點後，因為內部的點可以一直亂走全部走到，所以只要將新點的點權更新成內部所有點的點權總和，得到一張新的有向無環圖，就可以直接做 DAG 最長路徑得到答案。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 500002</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,dfn[N],low[N],es = <span class="number">1</span>,stk_in[N],vertex_val[N],deg[N];</span><br><span class="line"><span class="comment">//dfn為時間戳記,low為back, cross edge（經過最多一次）到達最小點dfn,stk_in是否在stack內</span></span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line"><span class="keyword">int</span> scc[N],scc_ind = <span class="number">0</span>,scc_val[N];<span class="comment">//紀錄屬於哪個scc,scc編號,scc編號的價值（權重和）</span></span><br><span class="line"><span class="keyword">int</span> topological_order[N],ind = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edg</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> to;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">vector&lt;edg&gt; edge[N],new_edge[N];</span><br><span class="line">stack&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> now)</span></span>&#123;</span><br><span class="line">    dfn[now] = low[now] = es++;</span><br><span class="line">    s.<span class="built_in">push</span>(now);</span><br><span class="line">    stk_in[now] = <span class="number">1</span>;</span><br><span class="line">    visit[now] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> len = edge[now].<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> next = edge[now][i].to;</span><br><span class="line">        <span class="keyword">if</span>(!visit[next])&#123;       <span class="comment">//尚未拜訪則拜訪</span></span><br><span class="line">            <span class="built_in">DFS</span>(next);</span><br><span class="line">            low[now] = <span class="built_in">min</span>(low[now],low[next]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(stk_in[next])&#123;  <span class="comment">//在stk內且已拜訪-&gt;同屬一個SCC</span></span><br><span class="line">            low[now] = <span class="built_in">min</span>(low[now],dfn[next]);</span><br><span class="line">            <span class="comment">//這條邊指向還沒出stack的點，可為cross or back edge 更新low[now]</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果是scc就pop stack裡面的東西</span></span><br><span class="line">    <span class="keyword">if</span>(low[now] == dfn[now])&#123;</span><br><span class="line">        stk_in[now] = <span class="number">0</span>;        <span class="comment">//pop出stack裡面</span></span><br><span class="line">        scc[now] = ++scc_ind;   <span class="comment">//進行SCC編號</span></span><br><span class="line">        scc_val[scc_ind] = vertex_val[now]; <span class="comment">//更新點權</span></span><br><span class="line">        <span class="keyword">while</span>(s.<span class="built_in">top</span>()!=now)&#123;                <span class="comment">//pop直到now被找到</span></span><br><span class="line">            scc[s.<span class="built_in">top</span>()] = scc_ind;</span><br><span class="line">            stk_in[s.<span class="built_in">top</span>()] = <span class="number">0</span>;            <span class="comment">//pop出來</span></span><br><span class="line">            scc_val[scc_ind] += vertex_val[s.<span class="built_in">top</span>()];</span><br><span class="line">            s.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        s.<span class="built_in">pop</span>();<span class="comment">//將stack 中now也pop</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">memset</span>(visit, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="built_in">memset</span>(stk_in, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(stk_in));</span><br><span class="line">    <span class="built_in">memset</span>(deg, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(deg));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x;cin&gt;&gt;x;</span><br><span class="line">        vertex_val[i] = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x,y,val;cin&gt;&gt;x&gt;&gt;y&gt;&gt;val;<span class="comment">//x指向y</span></span><br><span class="line">        edge[x].<span class="built_in">push_back</span>( edg&#123;y,val&#125; );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        <span class="keyword">if</span>(!visit[i])<span class="built_in">DFS</span>(i);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//枚舉每一條邊更新邊權</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> len = edge[i].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;len;j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> to = edge[i][j].to;</span><br><span class="line">            <span class="keyword">if</span>(scc[to]==scc[i])&#123;</span><br><span class="line">                <span class="keyword">int</span> ind = scc[to];</span><br><span class="line">                scc_val[ind]+=edge[i][j].val;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;   <span class="comment">//不同SCC指向不同的邊</span></span><br><span class="line">                new_edge[scc[i]].<span class="built_in">push_back</span>( edg&#123;scc[to],edge[i][j].val&#125;);</span><br><span class="line">                deg[scc[to]]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Topological sort</span></span><br><span class="line">    queue&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=scc_ind;i++)</span><br><span class="line">        <span class="keyword">if</span>(deg[i]==<span class="number">0</span>)q.<span class="built_in">push</span>(i);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> now = q.<span class="built_in">front</span>(),len = new_edge[now].<span class="built_in">size</span>();</span><br><span class="line">        topological_order[ind++] = now;</span><br><span class="line">        q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> next = new_edge[now][i].to;</span><br><span class="line">            <span class="keyword">if</span>(--deg[next]==<span class="number">0</span>)q.<span class="built_in">push</span>(next);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//拓墣排序完進行DP找最長路徑</span></span><br><span class="line">    <span class="keyword">int</span> dp[ind],ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=scc_ind;i++)&#123;</span><br><span class="line">        dp[i] = scc_val[i];</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, scc_val[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;ind;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> now = topological_order[i],len = new_edge[now].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;len;j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> next = new_edge[now][j].to;</span><br><span class="line">            dp[next] = <span class="built_in">max</span>(dp[next],scc_val[next]+dp[now]+new_edge[now][j].val);</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, dp[next]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="手寫作業"><a href="#手寫作業" class="headerlink" title="手寫作業"></a>手寫作業</h2><p>介紹雜湊，重點在於rolling hash，這也是下一週隨機課程當中會用到的重要概念。</p>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B3%87%E8%8A%BD%E7%AD%86%E8%A8%98/" rel="tag"># 資芽筆記</a>
+              <a href="/tags/%E5%9C%96%E8%AB%96/" rel="tag"># 圖論</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/sprout10/" rel="prev" title="資芽第十週：進階圖論（一）">
+      <i class="fa fa-chevron-left"></i> 資芽第十週：進階圖論（一）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/sprout12/" rel="next" title="資芽第十二週：隨機算法">
+      資芽第十二週：隨機算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+<!-- 多媒體廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9921797637924269"
+     data-ad-slot="2654177759"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E8%AA%B2%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">上課內容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%99%E9%80%A3%E9%80%9A%E5%85%83%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">雙連通元件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCC%E5%BC%B7%E9%80%A3%E9%80%9A%E5%85%83%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">SCC強連通元件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%A9%9F%E4%BD%9C%E6%A5%AD"><span class="nav-number">2.</span> <span class="nav-text">上機作業</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%A3%95%E6%AB%9A%E5%82%B3%E9%81%9E%E9%8F%88"><span class="nav-number">2.1.</span> <span class="nav-text">高棕櫚傳遞鏈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AC%A0%E8%A8%80%E5%95%8F%E9%A1%8C"><span class="nav-number">2.2.</span> <span class="nav-text">謠言問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%A3%95%E6%AB%9A%E5%82%B3%E9%81%9E%E9%8F%88-1"><span class="nav-number">2.3.</span> <span class="nav-text">高棕櫚傳遞鏈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%BD%E8%8A%BD%E9%80%9B%E5%A4%A7%E8%A1%97"><span class="nav-number">2.4.</span> <span class="nav-text">芽芽逛大街</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%AF%AB%E4%BD%9C%E6%A5%AD"><span class="nav-number">3.</span> <span class="nav-text">手寫作業</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">298k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">4:31</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
