@@ -218,15 +218,6 @@
   </url>
   
   <url>
-    <loc>https://peienwu.com/path3/</loc>
-    
-    <lastmod>2022-04-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://peienwu.com/convex-hull/</loc>
     
     <lastmod>2022-04-27</lastmod>
@@ -335,15 +326,6 @@
   </url>
   
   <url>
-    <loc>https://peienwu.com/bertrand/</loc>
-    
-    <lastmod>2022-04-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://peienwu.com/apcs2101/</loc>
     
     <lastmod>2022-04-25</lastmod>
@@ -381,15 +363,6 @@
   
   <url>
     <loc>https://peienwu.com/doppler/</loc>
-    
-    <lastmod>2022-04-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/manim/</loc>
     
     <lastmod>2022-04-23</lastmod>
     
@@ -464,14 +437,14 @@
   </url>
   
   <url>
-    <loc>https://peienwu.com/tags/%E6%A9%9F%E7%8E%87/</loc>
+    <loc>https://peienwu.com/tags/2021%E6%9A%91%E6%9C%9F%E7%AD%86%E8%A8%98/</loc>
     <lastmod>2022-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://peienwu.com/tags/2021%E6%9A%91%E6%9C%9F%E7%AD%86%E8%A8%98/</loc>
+    <loc>https://peienwu.com/tags/%E6%A9%9F%E7%8E%87/</loc>
     <lastmod>2022-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -569,13 +542,6 @@
   </url>
   
   <url>
-    <loc>https://peienwu.com/tags/Manim/</loc>
-    <lastmod>2022-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://peienwu.com/tags/%E5%8C%B9%E9%85%8D/</loc>
     <lastmod>2022-05-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -598,20 +564,6 @@
   
   <url>
     <loc>https://peienwu.com/tags/2020%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD/</loc>
-    <lastmod>2022-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/tags/%E9%9B%A2%E6%95%A3%E6%95%B8%E5%AD%B8/</loc>
-    <lastmod>2022-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/tags/%E5%A4%9A%E5%85%83%E9%81%B8%E4%BF%AE/</loc>
     <lastmod>2022-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

@@ -636,7 +636,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW,en,default">
-    <link itemprop="mainEntityOfPage" href="https://peienwu.com/manim/">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/convex-hull/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/worm.jpg">
@@ -650,7 +650,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/manim/" class="post-title-link" itemprop="url">Manim學習筆記</a>
+            <a href="/convex-hull/" class="post-title-link" itemprop="url">牛牛牧場問題</a>
         </h2>
 
         <div class="post-meta">
@@ -660,7 +660,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2022-02-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-21T00:00:00+08:00">2022-02-21</time>
+              <time title="創建時間：2022-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-30T00:00:00+08:00">2022-01-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -668,7 +668,11 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E6%A8%A1%E6%93%AC/" itemprop="url" rel="index"><span itemprop="name">程式模擬</span></a>
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">C++進階主題</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E9%80%B2%E9%9A%8E%E4%B8%BB%E9%A1%8C/%E8%A8%88%E7%AE%97%E5%B9%BE%E4%BD%95/" itemprop="url" rel="index"><span itemprop="name">計算幾何</span></a>
                 </span>
             </span>
 
@@ -681,8 +685,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/manim/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/manim/" itemprop="commentCount"></span>
+    <a title="valine" href="/convex-hull/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/convex-hull/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -692,7 +696,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>3.1k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
@@ -711,15 +715,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Manim安裝"><a href="#Manim安裝" class="headerlink" title="Manim安裝"></a>Manim安裝</h2><blockquote>
-<p>Manim is an animation engine for explanatory math videos.</p>
-</blockquote>
-<p>利用Manim可以生成許多數學類的動畫影片、以及製作一些動畫模擬！</p>
-<p>我是利用Mac安裝Manim，只要按照<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/installation/macos.html">這一篇</a>的說明一步步完成即可，不要上網找教學影片，因為很多都是過時的，在安裝上會出現一些問題。</p>
-<p>至於使用教學的部分，可以參考這一篇<a target="_blank" rel="noopener" href="https://docs.manim.community/en/stable/index.html">官方使用手冊</a>。Manim總共有三種版本，建議使用Manim Community比較方便，資源比較多！</p>
+          <h2 id="題序"><a href="#題序" class="headerlink" title="題序"></a>題序</h2><p>從前從前有一個人名叫thanksone，他與他的兩個哥哥thankstwo以及thanksthree以及他的弟弟thankszero一起開了一家「牛牛牧場」，用來養牛以及一些奇怪的東西。</p>
+<p>有一天，他發現他的牛牛少了很多隻，不知道是跑去了哪裡，他很難過，因此他想要建造一個圍籬，讓所有牛牛都跑不出去。於是他拜託他的兩個哥哥thankstwo以及thanksthree去市集買了$n$個用來架設圍籬的木樁，並要求他們把這些木樁架設在他指定的位置。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/manim/#more" rel="contents">
+              <a class="btn" href="/convex-hull/#more" rel="contents">
                 閱讀全文 &raquo;
               </a>
             </div>
@@ -822,7 +822,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -835,7 +835,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -886,13 +886,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">298k</span>
+    <span title="總字數">289k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">4:31</span>
+    <span title="所需總閱讀時間">4:22</span>
 </div>
 
         
