@@ -52,7 +52,7 @@
 <meta property="og:image" content="https://i.imgur.com/XwCxplm.png">
 <meta property="og:image" content="https://i.imgur.com/sXw6L99.png">
 <meta property="article:published_time" content="2022-05-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-20T14:46:40.880Z">
+<meta property="article:modified_time" content="2022-05-21T05:59:32.039Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="機率">
@@ -342,12 +342,12 @@
 <p>轉換一下問題的面向，我們把確診者的數量當作其中一個變因，試著討論確診人數與全班隔離的機率關係。對於一個有$n$人的班級，總共的排列數為$2^n$，我們將全班都會被隔離的情況挑出來，統計其數量。</p>
 <h3 id="3x3排列情況"><a href="#3x3排列情況" class="headerlink" title="3x3排列情況"></a>3x3排列情況</h3><p>下圖橫坐標為確診人數，縱座標為對應的組數，灰色則是該確診人數的組合數。可以發現到，當人數增加，其全班隔離的組數呈現先增後減的趨勢，而對應到的全班被隔離的機率（紅與灰長度比）隨確診人數漸增。折線圖的部分則代表在相同確診人數下全班被隔離組數佔組合數的比例。</p>
 <p><img src="https://i.imgur.com/1F2FJDF.png" alt=""><br><img src="https://i.imgur.com/srZd1P9.png" alt=""></p>
-<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：4.88249人</p>
+<p><strong>期望值</strong>：在全班被匡列的情況下，此情況的確診人數的期望值為：4.88249人</p>
 <h3 id="4x4排列情況"><a href="#4x4排列情況" class="headerlink" title="4x4排列情況"></a>4x4排列情況</h3><p><img src="https://i.imgur.com/VoQKnsY.png" alt=""></p>
 <p><img src="https://i.imgur.com/AuOmOoD.png" alt=""></p>
-<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：8.5333人</p>
+<p><strong>期望值</strong>：在全班被匡列的情況下，此情況的確診人數的期望值為：8.5333人</p>
 <h3 id="5x5排列情況"><a href="#5x5排列情況" class="headerlink" title="5x5排列情況"></a>5x5排列情況</h3><p><img src="https://i.imgur.com/b8L415s.jpg" alt=""><br><img src="https://i.imgur.com/j3RUS8Y.png" alt=""></p>
-<p><strong>期望值</strong>：在全班確診的情況下，此情況的確診人數的期望值為：13.1412人</p>
+<p><strong>期望值</strong>：在全班被匡列的情況下，此情況的確診人數的期望值為：13.1412人</p>
 <p>程式具體的實作細節是將每一種情況進行狀態壓縮，存在一個int裡面，然後對每一個bit進行枚舉。在人數為$n$人的情況下，複雜度為$2^n$。這樣的複雜度在枚舉36人的情況會需要10幾個小時才能跑完。嘗試使用dfs進行剪枝，減少實際判斷的次數，不過效果不盡理想，可能還是要針對複雜度的部分進行優化才行。</p>
 <h2 id="三、讓全班停課所需最少人數期望值"><a href="#三、讓全班停課所需最少人數期望值" class="headerlink" title="三、讓全班停課所需最少人數期望值"></a>三、讓全班停課所需最少人數期望值</h2><p><a target="_blank" rel="noopener" href="https://gist.github.com/peienwu/5ead95bfcb358434efd029bd338507e7">程式碼連結</a></p>
 <p>第二部分是將所有可能造成全班被匡列的情況都找出來，但這並不是「讓全班停課所需最少人數的期望值」，因為它的前提被限制在所有人都全班都被匡列的前提之下，且會有很多情況是要被扣除掉的。要找出最少人數的期望值，我們將每一個位置的確診狀況進行遞迴，直到一種組合能以最少人數的情況下讓全班隔離。到了那種情況之後，接下來不管怎麼安排接下來的位置，也一定能讓全班被匡列。</p>
