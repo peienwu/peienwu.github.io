@@ -42,7 +42,6 @@
 <meta property="og:image" content="https://i.imgur.com/NcIRKE7.png">
 <meta property="og:image" content="https://i.imgur.com/DHu0F0g.png">
 <meta property="og:image" content="https://i.imgur.com/UdjoCdI.png">
-<meta property="og:image" content="https://i.imgur.com/Nwpe6aH.jpg">
 <meta property="og:image" content="https://i.imgur.com/NEJMnOa.png">
 <meta property="og:image" content="https://i.imgur.com/m6Wiwdh.png">
 <meta property="og:image" content="https://i.imgur.com/mnyAbWk.png">
@@ -50,10 +49,9 @@
 <meta property="og:image" content="https://i.imgur.com/fKVI4QB.png">
 <meta property="og:image" content="https://i.imgur.com/z5Z0cvr.png">
 <meta property="og:image" content="https://i.imgur.com/Xh0yowN.png">
-<meta property="og:image" content="https://i.imgur.com/FxwNYkb.png&gt; =400x">
 <meta property="og:image" content="https://i.imgur.com/eKXfAI7.jpg&gt; =400x">
 <meta property="article:published_time" content="2021-07-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-27T05:46:27.955Z">
+<meta property="article:modified_time" content="2022-05-31T10:05:49.678Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="2021暑期筆記">
@@ -330,7 +328,7 @@
 <h3 id="其他人與你的生日相同的機率"><a href="#其他人與你的生日相同的機率" class="headerlink" title="其他人與你的生日相同的機率"></a>其他人與你的生日相同的機率</h3><p>如果在看更仔細一點，對於「其他人與你的生日相同的機率」作圖會呈現下方的圖形<br><img src="https://i.imgur.com/DHu0F0g.png" alt=""></p>
 <p>因為生日是隨機的，因此在很大量數據測試下，我們可以期望共有365人的時候會出現第一個與自己生日相同日期的人！實際以亂數模擬，所得到的期望值次數與理論是相符的！<br><img src="https://i.imgur.com/UdjoCdI.png" alt=""></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">bool</span> birthday[<span class="number">400</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="keyword">unsigned</span>)<span class="built_in">time</span>(<span class="literal">NULL</span>));</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>,t = <span class="number">5000000</span>,times = t;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(times--)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(birthday,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(birthday));</span><br><span class="line">        <span class="keyword">int</span> target = <span class="built_in">rand</span>()%<span class="number">365</span>,ind=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;;i++)&#123;</span><br><span class="line">            ind = <span class="built_in">rand</span>()%<span class="number">365</span>;</span><br><span class="line">            <span class="keyword">if</span>(target==ind)&#123;</span><br><span class="line">                sum+=i+<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> birthday[ind] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;fixed&lt;&lt;<span class="built_in">setprecision</span>(<span class="number">4</span>);</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;平均於第：&quot;</span>&lt;&lt;(<span class="keyword">double</span>)sum/t&lt;&lt;<span class="string">&quot;次&quot;</span>&lt;&lt;endl&lt;&lt;<span class="string">&quot;會出現第一個與自己生日相同的人&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="至少k個人生日相同機率"><a href="#至少k個人生日相同機率" class="headerlink" title="至少k個人生日相同機率"></a>至少k個人生日相同機率</h2><p>對於至少k人生日相同的機率要大於50%，需要的人數如下表：<br><img src="https://i.imgur.com/Nwpe6aH.jpg" alt=""><br>用程式驗證看看：</p>
+<h2 id="至少k個人生日相同機率"><a href="#至少k個人生日相同機率" class="headerlink" title="至少k個人生日相同機率"></a>至少k個人生日相同機率</h2><p>對於至少k人生日相同的機率要大於50%，需要的人數如下表：</p>
 <div class="table-container">
 <table>
 <thead>
@@ -418,7 +416,6 @@
 <p>艾伯特：我不知道雪莉兒的生日是哪一天，但我知道柏納也不知道<br>柏納：一開始我不知道雪莉兒的生日，但現在我知道了<br>艾伯特：那我也知道雪莉兒的生日了<br>請問雪莉兒的生日是那一天？</p>
 <p>[註：艾伯特的第一句話他確定柏納100%不知道生日是哪一天]</p>
 </blockquote>
-<p>解答點此：<br><img src="https://i.imgur.com/FxwNYkb.png&gt; =400x" alt=""></p>
 <ol>
 <li><p>第一句話中，柏納若要知道明確的生日日期，唯一的可能是生日日期的日在十個可能日期中只出現過一次，也就是18日和19日。但艾伯特說<font color="#f00">他知道柏納也不知道生日是哪一天</font>，因此可以可以排除5月和6月的所有日期（如果是5月或6月有一定的機會艾伯特無法確定柏納不知道是哪一天）</p>
 </li>
@@ -613,13 +610,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">210k</span>
+    <span title="總字數">209k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">3:11</span>
+    <span title="所需總閱讀時間">3:10</span>
 </div>
 
         

@@ -55,7 +55,7 @@
 <meta property="og:image" content="https://i.imgur.com/oN26CR4.png">
 <meta property="og:image" content="https://i.imgur.com/SUwVRWv.png">
 <meta property="article:published_time" content="2021-08-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-28T08:07:36.141Z">
+<meta property="article:modified_time" content="2022-05-31T10:38:39.688Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="計算幾何">
 <meta property="article:tag" content="暑期筆記">
@@ -545,7 +545,7 @@
 <blockquote>
 <p>題目敘述<br>給你平面上N個點（N≤3000），請求出最遠點對的索引值（小的在前、大的在後）</p>
 </blockquote>
-<p>我做了一份<a href="/hVplrqxCRdGiMkn2lwXGAA">最近點對：不同複雜度之解決方式</a>的筆記，共有四種方法可以解決那個問題，這一題要求的是最遠點對，作法與最近點對其實差蠻遠的。由上幾題知道凸包的求法，因為凸包是可以圍住所有點的多邊形，因此最遠點對也應該在凸包上，而且所在的位置會為在凸包的兩側上（如果不落在凸包上，一定可以把點向兩側延伸到凸包上，且移動過後的點對距離一定比原始的點對距離大）。</p>
+<p>我做了一份<a href="https://peienwu.com/pair">最近點對：不同複雜度之解決方式</a>的筆記，共有四種方法可以解決那個問題，這一題要求的是最遠點對，作法與最近點對其實差蠻遠的。由上幾題知道凸包的求法，因為凸包是可以圍住所有點的多邊形，因此最遠點對也應該在凸包上，而且所在的位置會為在凸包的兩側上（如果不落在凸包上，一定可以把點向兩側延伸到凸包上，且移動過後的點對距離一定比原始的點對距離大）。</p>
 <p>找完凸包之後，可以用旋轉卡尺的方式尋找最遠點對。想像兩條平行線中間夾著凸包，逆時鐘旋轉繞行凸包一圈，過程不斷更新最遠點對的距離。在實作上兩條平行線可以被想像成由 $P<em>i$ 指向 $P</em>{i+1}$ 的向量，透過外積三角形面積公式決定卡尺該如何移動。</p>
 <script type="math/tex; mode=display">AREA = |\overrightarrow{AB}\times \overrightarrow{AC}|</script><p>以下圖為例，我們要找 $\overline{HM}$ 為底可以形成的最大三角形面積的頂點，因為在同底的情況下面積就代表點與邊的垂直距離，最大的垂直距離意味著這條底邊可以垂直延伸的最遠距離。因為凸包必定是凸多邊形，因此三角形的面積會呈現單峰函數，因此只需要從下一個三角形面積的大小，決定雙指針中比較快的指標的移動情況。</p>
 <p><img src="https://i.imgur.com/SXv0gfN.png" alt=""></p>
@@ -784,13 +784,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">210k</span>
+    <span title="總字數">209k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">3:11</span>
+    <span title="所需總閱讀時間">3:10</span>
 </div>
 
         

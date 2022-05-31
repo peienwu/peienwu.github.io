@@ -32,30 +32,23 @@
     var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+  <meta name="description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」 F &#x3D; \frac{GMm}{r^2}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="萬有引力與四星運動之探討">
 <meta property="og:url" content="https://peienwu.com/gravity1/index.html">
 <meta property="og:site_name" content="Peienwu 演算法筆記">
-<meta property="og:description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」  F &#x3D; \frac{GMm}{r^2}">
+<meta property="og:description" content="此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。 模擬連結：點這裡 理論與數學萬有引力定律牛頓於1687年提出：「任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。」 F &#x3D; \frac{GMm}{r^2}">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/NsxdP20.png">
-<meta property="og:image" content="https://i.imgur.com/mDnymhI.png">
-<meta property="og:image" content="https://i.imgur.com/EHX9hdW.png">
-<meta property="og:image" content="https://i.imgur.com/c8iBRbi.png">
 <meta property="og:image" content="https://i.imgur.com/3LG2sic.png">
 <meta property="og:image" content="https://i.imgur.com/8M7jZIW.png">
 <meta property="og:image" content="https://i.imgur.com/vyLsudD.png">
 <meta property="og:image" content="https://i.imgur.com/dIZdlCU.png">
 <meta property="og:image" content="https://i.imgur.com/6RO0Svz.png">
-<meta property="og:image" content="https://i.imgur.com/qpkSshS.png">
 <meta property="og:image" content="https://i.imgur.com/48i6Oel.png">
 <meta property="og:image" content="https://i.imgur.com/qcVlBQD.png">
 <meta property="og:image" content="https://i.imgur.com/6G4Djws.png">
 <meta property="og:image" content="https://i.imgur.com/fltbWQf.png">
 <meta property="og:image" content="https://i.imgur.com/bOGPPVW.png">
-<meta property="og:image" content="https://i.imgur.com/33rrTPs.gif">
-<meta property="og:image" content="https://i.imgur.com/kQhIG3Q.png">
 <meta property="og:image" content="https://i.imgur.com/xpaRkjF.png">
 <meta property="og:image" content="https://i.imgur.com/NpWDJas.png">
 <meta property="og:image" content="https://i.imgur.com/oSjvetd.png">
@@ -64,12 +57,12 @@
 <meta property="og:image" content="https://i.imgur.com/hHWFWIf.png">
 <meta property="og:image" content="https://i.imgur.com/dVP3ywW.png">
 <meta property="article:published_time" content="2022-04-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-07T03:46:41.489Z">
+<meta property="article:modified_time" content="2022-05-31T10:19:20.187Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="數學">
 <meta property="article:tag" content="物理筆記">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/NsxdP20.png">
+<meta name="twitter:image" content="https://i.imgur.com/3LG2sic.png">
 
 <link rel="canonical" href="https://peienwu.com/gravity1/">
 
@@ -328,14 +321,11 @@
         <p>此文將從萬有引力定律開始，在只考慮萬有引力的狀況下，探討衛星運動、雙星運動、三星運動、四星系統甚至是N體問題的軌跡與運動模式並進行模擬，並進行理論的驗證。</p>
 <p>模擬連結：<a target="_blank" rel="noopener" href="https://glowscript.org/#/user/ck1090758/folder/N-BodyProblem/">點這裡</a></p>
 <h2 id="理論與數學"><a href="#理論與數學" class="headerlink" title="理論與數學"></a>理論與數學</h2><h3 id="萬有引力定律"><a href="#萬有引力定律" class="headerlink" title="萬有引力定律"></a>萬有引力定律</h3><p>牛頓於1687年提出：「<strong>任何兩個質點之間必有一吸引力F，其量值和兩質量的乘積成正比，和它們之間的距離平方成反比，其方向在連心線上。</strong>」</p>
-<p><img src="https://i.imgur.com/NsxdP20.png" alt=""></p>
 <script type="math/tex; mode=display">F = \frac{GMm}{r^2}</script><span id="more"></span>
 <h3 id="圓周運動公式"><a href="#圓周運動公式" class="headerlink" title="圓周運動公式"></a>圓周運動公式</h3><p>高中選修物理提到，一個質量為$m$的物體以半徑$R$繞著圓心旋轉，角速度為$\omega$，其速度$v$、加速度$a$與週期$T$有以下公式，在分析衛星運動及多體運動中會常常用到。在行星運動當中，就是以彼此間的萬有引力當作向心力，進行圓周運動。</p>
-<p><img src="https://i.imgur.com/mDnymhI.png" alt=""></p>
 <script type="math/tex; mode=display">\begin{align}\omega &= \frac{\Delta\theta}{\Delta t} = \frac{2\pi}{T}
 \\v &= R\omega = \frac{2\pi R}{T}
 \\a &= R\omega^2 =\frac{v^2}{R} =\frac{4\pi^2 R}{T^2}\end{align}</script><h3 id="橢圓性質"><a href="#橢圓性質" class="headerlink" title="橢圓性質"></a>橢圓性質</h3><p>一個橢圓具有兩個焦點分別是下圖的$F_1,F_2$，其定義就是橢圓上任一點$P$到兩焦點的距離和固定，也就是$\overline{PF_1}+\overline{PF_1} = K$，$K$為定值。下圖中，$a$為半長軸，$b$為半短軸，滿足 $a^2 = b^2+c^2$，面積為 $\pi ab$。我們定義了一個決定橢圓扁平程度偏心率 $e = \frac{c}{a}&lt;1$，偏心率愈大，橢圓愈扁平。</p>
-<p><img src="https://i.imgur.com/EHX9hdW.png" alt=""></p>
 <p>也可以說，圓就是一個橢圓的特例，當$F_1,F_2$重合在一點的時候就變成了一個正圓。同時，橢圓軌跡能用以下方程式說明（可用距離公式證明）：</p>
 <script type="math/tex; mode=display">\frac{x^2}{a^2}+\frac{y^2}{b^2} = 1</script><p>平方相加容易聯想到三角函數的平方關係，因此我們可以假設 $x = a\cos\theta,y = b\sin\theta$，如此一來平方相加可得證。<br>由此可知，對於一個中心點為$(h,k)$的橢圓而言，其參數式為：</p>
 <script type="math/tex; mode=display">\left\{\begin{aligned} x &= h+a\cos\theta
@@ -346,7 +336,6 @@
 <li><strong>週期定律</strong>：各行星繞行同一恆星，其公轉週期的平方與行星到太陽平均距離的三次方成正比。</li>
 </ol>
 <p>下面主要會用到的是第一和第二定律，以及公式 $r_Av_A = r_Bv_B$進行證明。</p>
-<p><img src="https://i.imgur.com/c8iBRbi.png" alt=""></p>
 <h3 id="力學能守恆定律"><a href="#力學能守恆定律" class="headerlink" title="力學能守恆定律"></a>力學能守恆定律</h3><p>一個質量為$m$的物體以速度$v$前進，與地心相距$r$，則該物體的動能與該處的重力位能為：</p>
 <script type="math/tex; mode=display">\begin{align}E_k &= \frac{1}{2}mv^2\\U &= -\frac{GMm}{r}\end{align}</script><p>在系統只有保守力做功下，其力學能保持不變。在分析以半徑$r$的等速率圓周運動的過程中，其力學能可以表示為：</p>
 <script type="math/tex; mode=display">E = U+E_k = \frac{-GMm}{r}+\frac{1}{2}m\frac{GM}{r} = \frac{-GMm}{2r}</script><p>由此我們可以得到：</p>
@@ -399,7 +388,6 @@ a &= -2.5000
           </div>
 <p>很巧的是，我們可以從橢圓半短軸長的無解推出脫離速度，也能從力學能的方向角度切入，得到一樣的結果，可謂殊途同歸！</p>
 <h2 id="雙星運動"><a href="#雙星運動" class="headerlink" title="雙星運動"></a>雙星運動</h2><p>觀察兩個質量分別為$m1,m2$的物體，繞著彼此的質心進行週期運動。</p>
-<p><img src="https://i.imgur.com/qpkSshS.png" alt=""></p>
 <h3 id="理論與數學-2"><a href="#理論與數學-2" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>令兩物體彼此間距離為$d$，則有以下的數學關係式：</p>
 <div class="table-container">
 <table>
@@ -461,9 +449,7 @@ T &= 2\pi\sqrt{\frac{L^3}{G(3m)}}
 <p>此為不穩定的模擬，也就是說在一段時間過後，整個系統會失序，呈現混亂的狀態。</p>
 <p><img src="https://i.imgur.com/bOGPPVW.png" alt=""></p>
 <h3 id="其他軌跡的三星運動"><a href="#其他軌跡的三星運動" class="headerlink" title="其他軌跡的三星運動"></a>其他軌跡的三星運動</h3><p>其他三體互繞的軌跡如八字型，就被證明出來是一個穩定的運動模式。</p>
-<p><img src="https://i.imgur.com/33rrTPs.gif" alt=""></p>
 <p>以及衛星的五個拉格朗日點，可以在下圖五個位置放入第三個不考慮其質量的物體，使其與其他星體的相對位置不變。</p>
-<p><img src="https://i.imgur.com/kQhIG3Q.png" alt=""></p>
 <h2 id="四星運動"><a href="#四星運動" class="headerlink" title="四星運動"></a>四星運動</h2><p>在一堂物理課，老師教到三星系統時，順便提及了四星運動應該以什麼樣的性狀、什麼方式運動。若要保持四個物體等距，唯一的方式就是把他們放在正四面體上的四個頂點上，以正四面體之外心為旋轉中心進行旋轉</p>
 <h3 id="理論與數學-4"><a href="#理論與數學-4" class="headerlink" title="理論與數學"></a>理論與數學</h3><p>假設四個質量均為$m$的物體，分別落在正四面體的四個頂點上，若以正六面體思考正四面體，正四個頂點分別是$(0,0,0),(1,1,0),(1,0,1),(0,1,1)$</p>
 <p><img src="https://i.imgur.com/xpaRkjF.png" alt=""></p>
@@ -684,13 +670,13 @@ T &= 2\pi\sqrt{\frac{L^3}{G\cdot(4m)}}
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">210k</span>
+    <span title="總字數">209k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">3:11</span>
+    <span title="所需總閱讀時間">3:10</span>
 </div>
 
         
