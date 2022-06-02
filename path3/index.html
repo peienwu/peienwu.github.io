@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+     
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這篇文章的主題有以下：  歐拉路徑、迴路（七橋問題） 漢米頓路徑、迴路 最短路徑演算法（Dijkstra,Bellman-Ford,Floyd-Warshall） 旅行業務員問題（TSP）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="七橋問題、最短路徑問題及其延伸">
+<meta property="og:url" content="https://peienwu.com/path3/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="這篇文章的主題有以下：  歐拉路徑、迴路（七橋問題） 漢米頓路徑、迴路 最短路徑演算法（Dijkstra,Bellman-Ford,Floyd-Warshall） 旅行業務員問題（TSP）">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/buHMNgV.png">
+<meta property="og:image" content="https://i.imgur.com/Zb3ihAn.png">
+<meta property="og:image" content="https://i.imgur.com/W5izpYM.png">
+<meta property="article:published_time" content="2022-01-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-27T03:35:25.589Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="離散數學">
+<meta property="article:tag" content="多元選修">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/buHMNgV.png">
+
+<link rel="canonical" href="https://peienwu.com/path3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>七橋問題、最短路徑問題及其延伸 | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/path3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          七橋問題、最短路徑問題及其延伸
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-01-11 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-11T00:00:00+08:00">2022-01-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/path3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/path3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>5 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這篇文章的主題有以下：</p>
+<ol>
+<li>歐拉路徑、迴路（七橋問題）</li>
+<li>漢米頓路徑、迴路</li>
+<li>最短路徑演算法（Dijkstra,Bellman-Ford,Floyd-Warshall）</li>
+<li>旅行業務員問題（TSP）</li>
+</ol>
+<span id="more"></span>
+<h2 id="歐拉路徑、迴路（七橋問題）"><a href="#歐拉路徑、迴路（七橋問題）" class="headerlink" title="歐拉路徑、迴路（七橋問題）"></a>歐拉路徑、迴路（七橋問題）</h2><h3 id="問題簡介"><a href="#問題簡介" class="headerlink" title="問題簡介"></a>問題簡介</h3><p><img src="https://i.imgur.com/buHMNgV.png" alt=""></p>
+<p>七橋問題的描述是：該如何在所有橋都只能走一遍的前提下，把這個地方所有的橋都走遍（每條邊洽經過一次）？</p>
+<p>由數學歸納法得證，我們只要統計每個點的度數並記錄奇點的個數，只要大於二則不存在歐拉路徑。</p>
+<h3 id="實作程序"><a href="#實作程序" class="headerlink" title="實作程序"></a>實作程序</h3><p><strong>1. 判斷奇點個數</strong>，若奇點個數k：</p>
+<ul>
+<li>k &gt; 2，那麼無解</li>
+<li>k = 2，則選擇其中一個奇點作為起點</li>
+<li>k = 0，則選擇任意一個點作為起點</li>
+</ul>
+<p><strong>2. DFS 執行下列步驟</strong><br>若當前節點還有尚未走過的邊，那麼拜訪該邊，並在拜訪完後輸出該邊，否則離開當前結點</p>
+<p><strong>3. 若還有節點尚未拜訪，則無解</strong><br><strong>4. 否則輸出順序即為一組解</strong></p>
+<h3 id="程式碼實作"><a href="#程式碼實作" class="headerlink" title="程式碼實作"></a>程式碼實作</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 501</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,Edge[N][N],ans[<span class="number">1025</span>],ind = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">500</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(Edge[cur][i])&#123;</span><br><span class="line">            Edge[cur][i]--;Edge[i][cur]--;</span><br><span class="line">            <span class="built_in">DFS</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ans[ind++] = cur;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">memset</span>(Edge, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(Edge));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        Edge[a][b]++;</span><br><span class="line">        Edge[b][a]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> start = <span class="number">1</span>;                <span class="comment">//開始的節點編號</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">500</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=<span class="number">500</span>;j++)&#123;</span><br><span class="line">            sum+=Edge[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum%<span class="number">2</span>!=<span class="number">0</span>)&#123;             <span class="comment">//找到第一個度數為奇數的節點</span></span><br><span class="line">            start = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">DFS</span>(start);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=ind<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)cout&lt;&lt;ans[i]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="旅行業務員問題（TSP）與漢米頓路徑"><a href="#旅行業務員問題（TSP）與漢米頓路徑" class="headerlink" title="旅行業務員問題（TSP）與漢米頓路徑"></a>旅行業務員問題（TSP）與漢米頓路徑</h2><h3 id="問題描述"><a href="#問題描述" class="headerlink" title="問題描述"></a>問題描述</h3><p><img src="https://i.imgur.com/Zb3ihAn.png" alt=""></p>
+<p>漢米頓路徑是類似於歐拉路徑，但每一條邊恰好經過一次的限制變成點恰好經過一次，但此問題的難度比歐拉迴路高上好幾倍，為一個NP-Complete的問題。</p>
+<p><img src="https://i.imgur.com/W5izpYM.png" alt=""></p>
+<p>旅行商務員問題則是描述平面上n個城市，是否存在一條路徑將每一個點恰好走過一次後回到出發點。此問題為一個漢米頓迴路問題的經典問題。</p>
+<p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/187/">題目連結</a><br>第一次寫<strong>TSP</strong>(Traveling Salesman Problem)，題目敘述如下：</p>
+<blockquote>
+<p>給定一系列城市和每對城市之間的距離，求解存取每一座城市一次並回到起始城市的最短迴路。</p>
+</blockquote>
+<h3 id="實作程序-1"><a href="#實作程序-1" class="headerlink" title="實作程序"></a>實作程序</h3><p>我們透過位元的動態規劃，可以將原本$o(n!)$的時間複雜度變成以$O(n^2\cdot 2^n)$的複雜度解決這個問題。</p>
+<p>這是一個已經被證明$NP-Hard$ 的問題，暴力作法是要檢查所有路徑的情況，因為共有n個點，每一個點又連接n-1個點，繼續下去總共會有N!種情況，因此複雜度為$O(n!)$。<br>總共的點數共有n個，根據多邊形的邊數公式可以知道一共有$\frac{n^2-n}{2}$條邊，每一條邊都有各自的距離。<br>如果改用DP做，時間複雜度可以壓到時間複雜度$O(n^2\cdot2^n)$，比$O(n!)$還優秀！這一題用到的是DP優化中的<font color="#f00">狀態壓縮</font>，具體的實作細節如下：</p>
+<div class="note success">
+            <p><strong>位元運算</strong><br>在這一題需要用到位元運算，用16個bit表示每一個點有沒有被走訪過。用這樣的表示方法可以讓code更為節儉，也就是狀態壓縮的概念。</p><p><strong>左移運算子(&lt;&lt;)</strong><br>這一題會一直反覆被用到，1&lt;&lt;t代表把1往左移動t單位，用10進位表示就是$2^t$。每往左移動一格，數字就會變成原來的兩倍！</p><p><strong>狀態壓縮</strong><br>將十進位整數s以二進位表示，會得到一串01字串，假設s=10，則 $s = 1010_{(2)}$。以這題來說，這樣的字串我們可以用來表示第4和第2個點已經被拜訪，而第3跟第1個點還沒有被拜訪。</p>
+          </div>
+<h4 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h4><p>定義 $dp[n][s]$ 表示目前在第n點上，s為走過的點（狀態壓縮）的最短距離</p>
+<h4 id="轉移式"><a href="#轉移式" class="headerlink" title="轉移式"></a>轉移式</h4><p>$dp[n][s] = min(dp[i][s-(1&lt;&lt;n)]+dis[i][n])$, for all i such that s&amp;(1&lt;&lt;i)!=0</p>
+<p>這個轉移式很有意思，因為s代表了每一個點是否有被走過，當我要更新dp[n][s]時，我要確保此時的狀態s中的點n必須為1。同時，因為1&lt;&lt;i用二進位表示只有第i位會是1其他都是0，做and運算就看s的第i位決定結果。</p>
+<p>對於每一個i必須確保第i點在狀態s中有被造訪，因此有了後面的條件。另外轉移式中的s-(1&lt;&lt;N)是把第n個點從未造訪的狀態轉移。</p>
+<h4 id="邊界"><a href="#邊界" class="headerlink" title="邊界"></a>邊界</h4><p>$dp[0][1] = 0,\quad dp[i][j]= \infty$</p>
+<p>距離的預設狀態為無限大，第一個點的初始狀態是最短距離0</p>
+<h4 id="實作小細節"><a href="#實作小細節" class="headerlink" title="實作小細節"></a>實作小細節</h4><p><strong>迴圈順序</strong><br>在轉移的過程中，迴圈的第一層必須是狀態，第二層才是城市。如果顛倒過來的話，會導致前面的城市在狀態還沒有被更新的時候就已經失去了之後被更新的機會，因此城市的迴圈必須放在第二層！</p>
+<p><strong>求答案</strong><br>因為我們要求的是回到原點的最短距離，因此在全部轉移完成之後，利用一個迴圈把回去原點的路的距離加上去，求得最小值。</p>
+<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 16</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mod 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,dis[<span class="number">20</span>][<span class="number">20</span>];cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;n;j++)&#123;</span><br><span class="line">            cin&gt;&gt;dis[i][j];</span><br><span class="line">            dis[j][i] = dis[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> dp[N][<span class="number">66000</span>],m = <span class="number">1</span>&lt;&lt;n;</span><br><span class="line">    <span class="built_in">memset</span>(dp,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;   <span class="comment">//將0點到自己的距離設為1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//O(n^2 2^n)</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;            <span class="comment">//i表示2^n每一種狀態</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;        <span class="comment">//j表示城市</span></span><br><span class="line">            <span class="keyword">if</span>(!(i&amp;(<span class="number">1</span>&lt;&lt;j)))<span class="keyword">continue</span>; <span class="comment">//j城市要是被造訪過的狀態</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;n;k++)&#123;    <span class="comment">//可以到的所有點中的狀態</span></span><br><span class="line">                <span class="keyword">if</span>(i &amp; <span class="number">1</span>&lt;&lt;k)&#123;        <span class="comment">//確保轉移過去的有被造訪過</span></span><br><span class="line">                    dp[j][i] = <span class="built_in">min</span>(dp[j][i],dp[k][i-(<span class="number">1</span>&lt;&lt;j)]+dis[j][k]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = INT_MAX;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)ans = <span class="built_in">min</span>(ans,dp[i][m<span class="number">-1</span>]+dis[i][<span class="number">0</span>]);</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="最短路徑演算法"><a href="#最短路徑演算法" class="headerlink" title="最短路徑演算法"></a>最短路徑演算法</h2><h3 id="Floyd-Warshall：全點對最短路徑-All-Pairs"><a href="#Floyd-Warshall：全點對最短路徑-All-Pairs" class="headerlink" title="Floyd-Warshall：全點對最短路徑(All Pairs)"></a>Floyd-Warshall：全點對最短路徑(All Pairs)</h3><ul>
+<li><p>不支援負環</p>
+</li>
+<li><p>想法：DP轉移（三個迴圈中點、起點、終點依序鬆弛）</p>
+</li>
+<li>$d[i][j] = mid(d[i][j],d[i][k]+d[I][k]+d[k][j])$</li>
+<li>如果改寫成定義 $dp[k][i][j]$ 為點 $i$ 走到點 $j$ ，只能經過前k個點的最短路</li>
+<li>則轉移：$d[k+1][i][j] = min(d[k][i][j], d[k][i][k+1]+d[k][k+1][j])$</li>
+<li>因此中間點k必須在最外層（不過<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1904.01210.pdf">有論文指出</a>順序顛倒一樣可以得到正確解）</li>
+<li>優點：實作容易，缺點：時間 $O(v^3)$ 、無法處理負環（可處理負邊）</li>
+</ul>
+<h3 id="Dijkstra’s：單點源最短路徑"><a href="#Dijkstra’s：單點源最短路徑" class="headerlink" title="Dijkstra’s：單點源最短路徑"></a>Dijkstra’s：單點源最短路徑</h3><ul>
+<li><p>優點：時間 $O(E+V^2)$、無法處理負邊</p>
+</li>
+<li><p>想法：Greedy（和DP）</p>
+</li>
+<li>維護：1. 未拜訪的節點集合$U$ 2. $d[i]$ 目前起點到 $i$ 最短路 3. 目前考慮節點 $p$</li>
+<li>重複以下動作直到u為空：<ul>
+<li>對於所有與 $p$ 連接的節點 $q$，$d[q] = min(d[q],d[p]+weight[p][q])$</li>
+<li>當 $p$ 相鄰節點都走過：在 $u$ 中移除 $p$</li>
+<li>將 $p$ 更新成U中離起點距離最短的點 $min(d[j])$</li>
+</ul>
+</li>
+<li>可以變成 $O((E+V)logV)$-&gt;邊較為稀疏的圖時有利（使用priority_queue）</li>
+<li>不能處理負邊，因為 $d[i]$ 較小的處理完之後就不會再更動了，加入負邊可能更小</li>
+<li>拿距離最小的點 $k$ 去更新其他點，不能保證更新後其他點一定是最短路</li>
+<li>上一步走完 $k$ 連接所有邊後，從集合 $U$ 中移除，因為沒有負邊， $k$ 必定是最短路</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DIJKSTRA(G, w, s)</span><br><span class="line">    INITIALIZE-SINGLE-SOURCE(G, s)</span><br><span class="line">      S &lt;- Ø</span><br><span class="line">      Q &lt;- V[G]</span><br><span class="line">      while Q ≠ Ø</span><br><span class="line">          do u &lt;- EXTRACT-MIN(Q)</span><br><span class="line">              S &lt;- S ∪ &#123;u&#125;</span><br><span class="line">              for each vertex v ∈ Adj[u]</span><br><span class="line">                  do RELAX(u,v,w)</span><br></pre></td></tr></table></figure>
+<h3 id="Bellman-Ford：單點源最短路徑"><a href="#Bellman-Ford：單點源最短路徑" class="headerlink" title="Bellman-Ford：單點源最短路徑"></a>Bellman-Ford：單點源最短路徑</h3><ul>
+<li><p>可以處理負環</p>
+</li>
+<li><p>時間：$O(VE)$</p>
+</li>
+<li>想法：Relax鬆弛</li>
+<li>一條邊 $\delta(u,v)$ 滿足 $dis[v] = min(dis[v],dis[u]+weight[u][v])$</li>
+<li>對每一條邊進行鬆弛，因為鬆弛沒有按照最短路順序，因此要做V-1次</li>
+<li>此為暴力作法</li>
+<li>執行V-1次的worst case：<ul>
+<li>剛好跟最短路徑的順序相反</li>
+<li>每次 Relax 後只能優化單一子路徑</li>
+<li>共有V個頂點，需要有V-1 條子路徑，每一次一條</li>
+<li>檢查負環：做完之後卻有滿足$d[v] &gt; d[u]+w(u,v)$ ，表示有負環</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">BELLMAN-FORD(G,w,s)</span><br><span class="line">      INITIALIZE-SINGLE-SOURCE(G,s)</span><br><span class="line">      for i &lt;- 1 to |V[G]|-1</span><br><span class="line">          do for each edge (u,v)∈ E[G]</span><br><span class="line">              do RELAX(u,v,w)</span><br><span class="line">      for each edge (u,v)∈ E[G]</span><br><span class="line">          do if d[v] &gt; d[u]+w(u,v)</span><br><span class="line">              then return FALSE</span><br><span class="line">      return TRUE</span><br></pre></td></tr></table></figure>
+<h3 id="優化：SPFA-Shortest-Path-Faster-Algorithm"><a href="#優化：SPFA-Shortest-Path-Faster-Algorithm" class="headerlink" title="優化：SPFA(Shortest Path Faster Algorithm)"></a>優化：SPFA(Shortest Path Faster Algorithm)</h3><ul>
+<li><p>每次只relax更新過的點</p>
+</li>
+<li><p>使用queue優化，有點像BFS過程</p>
+<ul>
+<li>1.把起點 Push 到 Queue</li>
+<li>2.從 Queue 裡 Pop 出一筆資料</li>
+<li>3.該筆資料的所有邊進行 Relax</li>
+<li>4.有更新到的頂點再 Push 到 Queue</li>
+<li>5.重複步驟 2 ~ 4，直到 Queue 為空</li>
+</ul>
+</li>
+<li>時間：$O(VE)$ -&gt;worst case，期望 $O(KE)$ ，K大概是2吧（反正挺快的）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Shortest-Path-Faster-Algorithm(G, s)</span><br><span class="line">      for each vertex v ≠ s in V(G)</span><br><span class="line">          d(v) := ∞</span><br><span class="line">      d(s) := 0</span><br><span class="line">      offer s into Q</span><br><span class="line">      while Q is not empty</span><br><span class="line">          u := poll Q</span><br><span class="line">          for each edge (u, v) in E(G)</span><br><span class="line">              if d(u) + w(u, v) &lt; d(v) then</span><br><span class="line">                  d(v) := d(u) + w(u, v)</span><br><span class="line">                 if v is not in Q then</span><br><span class="line">                     offer v into Q</span><br></pre></td></tr></table></figure>
+<h3 id="DAG-Shortest-Path"><a href="#DAG-Shortest-Path" class="headerlink" title="DAG Shortest Path"></a>DAG Shortest Path</h3><p>首先對所有點進行拓墣排序，花上時間 $O(V+E)$，接著對每一條邊進行鬆弛，時間$O(E)$，因此總時間複雜度是 $O(V+E)$。這個時間複雜度是很快的，但相對的限制也非常多，除了不能有負邊與負環之外，更不能有正環在其中，否則不能進行拓墣排序（在之前筆記進階圖論（一）有提到，也就是這一中圖必須是DAG(Directed Acyclic Graph)！</p>
+<p>一個有趣的應用：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%A8%88%E7%95%AB%E8%A9%95%E6%A0%B8%E8%A1%93">PERT</a></p>
+<h2 id="延伸筆記"><a href="#延伸筆記" class="headerlink" title="延伸筆記"></a>延伸筆記</h2><ul>
+<li>最短路徑問題</li>
+<li>進階圖論（一）</li>
+<li>最短路徑例題</li>
+</ul>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/%E9%9B%A2%E6%95%A3%E6%95%B8%E5%AD%B8/" rel="tag"># 離散數學</a>
+              <a href="/tags/%E5%A4%9A%E5%85%83%E9%81%B8%E4%BF%AE/" rel="tag"># 多元選修</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/marriage/" rel="prev" title="婚姻匹配問題（Stable Marriage Problem）">
+      <i class="fa fa-chevron-left"></i> 婚姻匹配問題（Stable Marriage Problem）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/convex-hull/" rel="next" title="牛牛牧場問題">
+      牛牛牧場問題 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+<!-- 多媒體廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9921797637924269"
+     data-ad-slot="2654177759"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%90%E6%8B%89%E8%B7%AF%E5%BE%91%E3%80%81%E8%BF%B4%E8%B7%AF%EF%BC%88%E4%B8%83%E6%A9%8B%E5%95%8F%E9%A1%8C%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">歐拉路徑、迴路（七橋問題）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">問題簡介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">實作程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC%E5%AF%A6%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">程式碼實作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%85%E8%A1%8C%E6%A5%AD%E5%8B%99%E5%93%A1%E5%95%8F%E9%A1%8C%EF%BC%88TSP%EF%BC%89%E8%88%87%E6%BC%A2%E7%B1%B3%E9%A0%93%E8%B7%AF%E5%BE%91"><span class="nav-number">2.</span> <span class="nav-text">旅行業務員問題（TSP）與漢米頓路徑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%8F%E9%A1%8C%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">問題描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E7%A8%8B%E5%BA%8F-1"><span class="nav-number">2.2.</span> <span class="nav-text">實作程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9"><span class="nav-number">2.2.1.</span> <span class="nav-text">定義</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%89%E7%A7%BB%E5%BC%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">轉移式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%8A%E7%95%8C"><span class="nav-number">2.2.3.</span> <span class="nav-text">邊界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C%E5%B0%8F%E7%B4%B0%E7%AF%80"><span class="nav-number">2.2.4.</span> <span class="nav-text">實作小細節</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">2.3.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91%E6%BC%94%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">最短路徑演算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Floyd-Warshall%EF%BC%9A%E5%85%A8%E9%BB%9E%E5%B0%8D%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91-All-Pairs"><span class="nav-number">3.1.</span> <span class="nav-text">Floyd-Warshall：全點對最短路徑(All Pairs)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dijkstra%E2%80%99s%EF%BC%9A%E5%96%AE%E9%BB%9E%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91"><span class="nav-number">3.2.</span> <span class="nav-text">Dijkstra’s：單點源最短路徑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bellman-Ford%EF%BC%9A%E5%96%AE%E9%BB%9E%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91"><span class="nav-number">3.3.</span> <span class="nav-text">Bellman-Ford：單點源最短路徑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E5%8C%96%EF%BC%9ASPFA-Shortest-Path-Faster-Algorithm"><span class="nav-number">3.4.</span> <span class="nav-text">優化：SPFA(Shortest Path Faster Algorithm)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DAG-Shortest-Path"><span class="nav-number">3.5.</span> <span class="nav-text">DAG Shortest Path</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E4%BC%B8%E7%AD%86%E8%A8%98"><span class="nav-number">4.</span> <span class="nav-text">延伸筆記</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">395k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:59</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

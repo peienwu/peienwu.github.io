@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://i.imgur.com/hePctby.png">
 <meta property="og:image" content="https://i.imgur.com/gLpSD6p.gif">
 <meta property="article:published_time" content="2021-11-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-31T09:59:09.983Z">
+<meta property="article:modified_time" content="2022-04-25T04:10:24.087Z">
 <meta property="article:author" content="peienwu">
 <meta property="article:tag" content="APCS">
 <meta property="article:tag" content="競賽筆記">
@@ -331,7 +331,7 @@
 </blockquote>
 <h3 id="線段樹作法"><a href="#線段樹作法" class="headerlink" title="線段樹作法"></a>線段樹作法</h3><p><img src="https://i.imgur.com/hePctby.png" alt=""></p>
 <p>很奇怪，最近兩次的APCS第三題都有人想要砸資結，特別是線段樹，可能有些人特別偏愛線段樹吧！</p>
-<h4 id="題解-3"><a href="#題解-3" class="headerlink" title="題解"></a>題解</h4><p>線段樹最原本的應該是區間詢問、單點修改，如果要區間修改的話就會用到<strong>懶標</strong>（可以參考之前的一篇文），所以實作上相對上比較複雜一點。這一題用線段樹的目的是區間加值，加值完過後的排序以及Greedy跟差分的作法是一樣的，用線段樹真的是多此兩舉（實作較複雜、較耗時）！</p>
+<h4 id="題解-3"><a href="#題解-3" class="headerlink" title="題解"></a>題解</h4><p>線段樹最原本的應該是區間詢問、單點修改，如果要區間修改的話就會用到<a href="https://peienwu.com/2021/08/05/Segment%20Tree/">懶標</a>，所以實作上相對上比較複雜一點。這一題用線段樹的目的是區間加值，加值完過後的排序以及Greedy跟差分的作法是一樣的，用線段樹真的是多此兩舉（實作較複雜、較耗時）！</p>
 <p>當然，這一題比較特別只有最後一起做單點查詢，因此不用懶標，最侯直接計算一路去經過的答案也行！下面的程式碼就是把完全包含區間的節點加值，不用使用到懶標，最後一次查詢。</p>
 <h4 id="時間複雜度-3"><a href="#時間複雜度-3" class="headerlink" title="時間複雜度"></a>時間複雜度</h4><p>區間加值 $O(m\log n)$，n個點的詢問 $O(n\log n)$，排序 $O(n\log n)$</p>
 <p>總時間複雜度：$O((n+m)\log n)$</p>
@@ -395,8 +395,8 @@
       <i class="fa fa-chevron-left"></i> 歐拉函數 (Euler's φ Function)
     </a></div>
       <div class="post-nav-item">
-    <a href="/marriage/" rel="next" title="婚姻匹配問題（Stable Marriage Problem）">
-      婚姻匹配問題（Stable Marriage Problem） <i class="fa fa-chevron-right"></i>
+    <a href="/geo3/" rel="next" title="Geometry in Leetcode & CSES">
+      Geometry in Leetcode & CSES <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -484,20 +484,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -548,13 +548,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">總字數：</span>
-    <span title="總字數">208k</span>
+    <span title="總字數">395k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
-    <span title="所需總閱讀時間">3:09</span>
+    <span title="所需總閱讀時間">5:59</span>
 </div>
 
         

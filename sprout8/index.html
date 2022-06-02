@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+     
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這兩週真是風風雨雨，首先第一週是段考週，所以有很多時間拿去惡補段考。第二週則是疫情關係要在家裡線上上課，結果進度就辣了一大截…趕快追QQ！ 上課內容一堆的背包問題（真的很多種耶） 01背包問題無限背包問題  先固定背包數量看價值跟先固定價值看背包數量可以互換">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資芽第八週：動態規劃（二）">
+<meta property="og:url" content="https://peienwu.com/sprout8/index.html">
+<meta property="og:site_name" content="Peienwu 演算法筆記">
+<meta property="og:description" content="這兩週真是風風雨雨，首先第一週是段考週，所以有很多時間拿去惡補段考。第二週則是疫情關係要在家裡線上上課，結果進度就辣了一大截…趕快追QQ！ 上課內容一堆的背包問題（真的很多種耶） 01背包問題無限背包問題  先固定背包數量看價值跟先固定價值看背包數量可以互換">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/EmxSHqM.png">
+<meta property="og:image" content="https://i.imgur.com/amWVYo0.jpg">
+<meta property="og:image" content="https://i.imgur.com/GMtrB99.png">
+<meta property="og:image" content="https://i.imgur.com/NyN0Kwy.png">
+<meta property="article:published_time" content="2021-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-14T11:03:55.530Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="DP">
+<meta property="article:tag" content="動態規劃">
+<meta property="article:tag" content="資芽筆記">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/EmxSHqM.png">
+
+<link rel="canonical" href="https://peienwu.com/sprout8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>資芽第八週：動態規劃（二） | Peienwu 演算法筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu 演算法筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/sprout8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu 演算法筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          資芽第八週：動態規劃（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-04-24 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-24T00:00:00+08:00">2021-04-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E4%B9%8B%E8%8A%BD%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">資訊之芽筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/sprout8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/sprout8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>6.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>6 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這兩週真是風風雨雨，首先第一週是段考週，所以有很多時間拿去惡補段考。第二週則是疫情關係要在家裡線上上課，結果進度就辣了一大截…趕快追QQ！</p>
+<h2 id="上課內容"><a href="#上課內容" class="headerlink" title="上課內容"></a>上課內容</h2><p>一堆的背包問題（真的很多種耶）</p>
+<p><strong>01背包問題</strong><br><strong>無限背包問題</strong></p>
+<ul>
+<li><p>先固定背包數量看價值跟先固定價值看背包數量可以互換</p>
+<span id="more"></span>
+<p><strong>有限背包問題</strong></p>
+</li>
+<li><p>多枚舉每個物品要放入的數量</p>
+</li>
+<li>拆分：把同重量的物品看成不同的物品（複雜度不變）</li>
+<li>把$t_i$ 個物品拆成$\lfloor \log_2 t_i+1\rfloor$個物品</li>
+<li>分成的堆數最少：$\lceil \log{t_i}+1\rceil$(因為分成 $k$ 堆最多只可能有 $2^k$ 個值)</li>
+<li>複雜度：$O(n\log{max(t_i)}W)$</li>
+</ul>
+<p><strong>混合背包問題</strong></p>
+<ul>
+<li>遇到什麼樣的物品就怎麼做（對有限個背包拆分）</li>
+<li>分成01背包跟無限背包做</li>
+</ul>
+<p><strong>二維背包問題</strong></p>
+<ul>
+<li>多一維度狀態轉移（可以壓掉一個維度）</li>
+</ul>
+<p><strong>分組背包問題</strong></p>
+<ul>
+<li>再多一維儲存第幾組</li>
+</ul>
+<p><strong>背包合併</strong></p>
+<ul>
+<li>直接把物品混起來做</li>
+</ul>
+<p><strong>背包問題變化</strong></p>
+<ul>
+<li>(1)求最大價值的方法總數<ul>
+<li>用g[i] 儲存重量i 的方法數</li>
+</ul>
+</li>
+<li>(2)求最大價值的一組方案<ul>
+<li>g[i] 看有沒有被更新過，有就g[I] = 1，回溯找</li>
+</ul>
+</li>
+<li>(3)求最大價值的字典序最小的一組方案<ul>
+<li>把物品倒過來（由大到小）因為越小的(1)要最後考慮，否則1先考慮後面的大的數字會把1覆蓋掉，字典序就變大</li>
+</ul>
+</li>
+<li>(4)求次大價值的解/第K大價值的解<ul>
+<li>看投影片</li>
+</ul>
+</li>
+</ul>
+<p><strong>分數背包</strong></p>
+<ul>
+<li>Greedy</li>
+</ul>
+<p><strong>不同做法複雜度</strong></p>
+<ul>
+<li>用價值做狀態</li>
+<li>用重量做狀態</li>
+<li><font color="#f00">V, W都很大但n很小？<ul>
+<li>枚舉$2^n$ <font color="#000"></li>
+</ul>
+</li>
+<li>如果V, W都很大n也蠻大？<ul>
+<li>折半枚舉（meet in the middle）根號算法</li>
+</ul>
+</li>
+</ul>
+<h2 id="上機作業"><a href="#上機作業" class="headerlink" title="上機作業"></a>上機作業</h2><p>背包問題主要有三個變量：價值、重量、物品數量，因此可以有三個作法：</p>
+<ol>
+<li>以物品數量n 作為狀態，爆搜，複雜度：$O(2^n)$</li>
+<li>以價值v 作為狀態(v為物品價值總和），dp作，複雜度：$O(NV)$</li>
+<li>以重量w 作為狀態(w為物品重量上限），dp作，複雜度：$O(NW)$</li>
+</ol>
+<h3 id="高棕櫚農場"><a href="#高棕櫚農場" class="headerlink" title="高棕櫚農場"></a>高棕櫚農場</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/157/">題目連結</a><br>這一題不能用重量做，因為重量的範圍可以到$10^5$，因此只能用價值來做<br>有一個要點，無限大可以memset定義為<strong>0x3f3f3f3f</strong>，以十進位表示1061109567，在int的範圍但不會超過</p>
+<h4 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h4><p>定義$f(n,m)$為取n樣物品,價值恰為m,重量總和最小值</p>
+<h4 id="轉移方式"><a href="#轉移方式" class="headerlink" title="轉移方式"></a>轉移方式</h4><p>$f(n,m) = min(f(n-1,m), f(n-1,m-v_n)+w_n), m ≧ v_n$<br>$f(n,m) = f(n-1,m), m &lt; v_n$</p>
+<h4 id="邊界條件"><a href="#邊界條件" class="headerlink" title="邊界條件"></a>邊界條件</h4><p>f(0,0) = 0, f(0,k) = INF (k&gt;0)$<br>因為取零樣物品價值要k不可能達到，因此重量設為無限大</p>
+<p>我們可以藉由滾動dp來節省空間，壓成一維（跟用重量作為狀態一樣）<br>最後，在從dp裡面取出max(k), for all f(N,k) ≦ W</p>
+<h4 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="keyword">int</span> n,m,val[<span class="number">105</span>],weight[<span class="number">100005</span>];cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;weight[i]&gt;&gt;val[i];</span><br><span class="line">        <span class="keyword">int</span> dp[<span class="number">100005</span>];</span><br><span class="line">        <span class="comment">//定義f(n,m)取n樣物品,價值為m,重量總和最小</span></span><br><span class="line">        <span class="comment">//dp[i]：價值為i時,重量最小為dp[i]</span></span><br><span class="line">        <span class="built_in">memset</span>(dp,INF,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">10000</span>;j&gt;=val[i];j--)&#123;</span><br><span class="line">                dp[j] = <span class="built_in">min</span>(dp[j],dp[j-val[i]]+weight[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=<span class="number">10000</span>;i++)</span><br><span class="line">            <span class="keyword">if</span>(dp[i] &lt;= m &amp;&amp; i &gt; ans)ans = i;</span><br><span class="line">        cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="高棕櫚農場2"><a href="#高棕櫚農場2" class="headerlink" title="高棕櫚農場2"></a>高棕櫚農場2</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/158/">題目連結</a><br>有些細節是必須要注意的，也就是初始化的細節。<br><div class="note success">
+            <p><strong>背包問題是否恰好裝滿</strong></p><p>對於原本初始化dp[0] = 0，代表對於重量限制為0的背包價值最高為0<br>接下來有兩種情況需要討論，第一種是重量限制為w的背包最多的價值</p><p><strong>1. 恰好裝滿</strong><br>此時必須初始化dp[i] = -INF，是因為要恰好裝滿的關係，初始化的dp 數組事實上就是<strong>在沒有任何物品可以放入背包時的合法狀態</strong>，其他除了0之外容量的背包均沒有合法的解，屬於未定義的狀態，所以都應該被賦值為 −∞ 。當前的合法解，一定是從之前的合法狀態推得的(−∞跟−∞取max還是−∞)</p><p><strong>2. 不需恰好裝滿</strong><br>如果背包並非必須被裝滿，那麼任何容量的背包都有一個合法解“什麼也不裝”，這個解的價值為0,所以初始化時狀態的值也就全部為0了。</p><p>如果來看轉移式，$dp[j] = max(dp[j],dp[j-weight[i]]+val[i])$，如果兩者的狀態都屬於未定義，對於需恰好裝滿的狀況，兩者都是−∞，表示沒有合法的狀態可以構成此重量。同時，如果不需恰好裝滿的情況，即使$dp[j]$和$dp[j-weight[i]]$都未定義(等於0)，還是可以被更新（在沒有裝滿的情況下，dp[j] = val[i]）</p>
+          </div><br>這一題除了以上發現，還有一個很重要的東西，就是迴圈到底要放哪一層的問題。主要是卡在 for(int p=1;p&lt;=k;p++)到底要放在哪一層的問題，結果是要放在第三層。<br><div class="note info">
+            <p>問題一：dp[j][p]取決於dp[j][p] 和dp[j-weight[i]][p-1]，而且對於一個物品最多只能放一次，如果放在第二層，dp[j-weight[i]][p-1] 就已經被更新過了，有可能已經取了第 i 樣物品會有重複取的問題，如果放在第三層，代表對每一種不同的重量先更新放入幾樣物品的1到k，再更新重量，這樣就可以保證dp[j][p]不會取到已經更新的格子（dp[j][p] 沒被更新、dp[j-weight[i]][p-1] 其中第一維的j-weight[i] 也還沒被更新）</p><p>問題二：p要從1到k還是k到1，這其實都可以，因為要取的格子不管從前往後或後往前取都只會取到上一輪(i-1) 的更新東西，因此不影響。還有，因為是定義<strong>最多取p樣物品</strong>，所以無論i為多少，每一次p皆要更新的k（如果k=5，取一樣物品也符合情況）</p>
+          </div></p>
+<h4 id="定義-1"><a href="#定義-1" class="headerlink" title="定義"></a>定義</h4><p>定義$f(j,p)$看完 <em>i</em> 樣物品後，重量限制為j，<strong>最多</strong>取p樣物品的最大價值</p>
+<h4 id="轉移方式-1"><a href="#轉移方式-1" class="headerlink" title="轉移方式"></a>轉移方式</h4><p>$dp[j][p] = max(dp[j][p],dp[j-weight[i]][p-1]+val[i])$</p>
+<h4 id="邊界條件-1"><a href="#邊界條件-1" class="headerlink" title="邊界條件"></a>邊界條件</h4><p>$dp[i][j] = 0$ (for all elements in dp)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="keyword">int</span> n,m,k,val[<span class="number">105</span>],weight[<span class="number">10005</span>];cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)cin&gt;&gt;weight[i]&gt;&gt;val[i];</span><br><span class="line">        <span class="keyword">int</span> dp[<span class="number">1005</span>][<span class="number">105</span>];</span><br><span class="line">        <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=m;j&gt;=weight[i];j--)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> p=<span class="number">1</span>;p&lt;=k;p++)&#123;</span><br><span class="line">                    dp[j][p] = <span class="built_in">max</span>(dp[j][p],dp[j-weight[i]][p<span class="number">-1</span>]+val[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;dp[m][k]&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 0 4 5 6 6 6</span></span><br><span class="line"><span class="comment"> 0 4 5 6 9 10</span></span><br><span class="line"><span class="comment"> 0 4 5 6 9 10</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="玩電梯"><a href="#玩電梯" class="headerlink" title="玩電梯"></a>玩電梯</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/416/">題目連結</a><br><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/479/E">題目連結2</a></p>
+<p>這一題要用到3個重要的技巧：前綴和、差分、滾動dp<br>差分在某一次手寫作業有寫到，不過那時候沒有很注意這個部分就是了<br><div class="note info">
+            <p><strong>差分</strong></p><p>差分是前綴和的逆運算，也就是說，把兩項的差算出來就是差分。定義如下：</p><script type="math/tex; mode=display">b_i = \begin{cases}a_i-a_{i-1}, &\text{if }i\gt 1 \\a_1, & \text{if } i = 1\end{cases}</script><p>差分的使用時機是區間加值，一個區間內的數字都加上一個定值，這時候就可以使用到差分的技巧。使用方式如下，當我要在區間 $[l,r]$ 的每一個數字都加上一個值$v$，以下步驟：</p><ol><li>定義一個新的陣列 $b_i$ 表示每一項差分</li><li>設 $b<em>l = b_l+v$，$b</em>{r+1} = b_{r+1}-v$</li><li>將差分的每一項加上前一項，即為原數列 $b<em>i = b</em>{i-1}+b_i$</li></ol><p>第二步驟可以重複好幾次做，這樣複雜度從原本的$O(n)$就變成了O(1)了！</p>
+          </div></p>
+<p>這一題使用到差分的技巧，讓原本的$O(kn^2)$減少成$O(kn)$，然後就可以過了！</p>
+<h4 id="定義-2"><a href="#定義-2" class="headerlink" title="定義"></a>定義</h4><p>定義 $dp[i][j]$ 為第 i 次走到樓層j的方法數</p>
+<h4 id="轉移式"><a href="#轉移式" class="headerlink" title="轉移式"></a>轉移式</h4><p>這題如果用拉的比較不好想，所以改用推的試試看<br>$dp[i+1][j] = dp[i+1][j]+dp[i][p],$ for $j\in[p-r],[p+1,p+r],r = |p-b|-1$</p>
+<h4 id="邊界條件-2"><a href="#邊界條件-2" class="headerlink" title="邊界條件"></a>邊界條件</h4><p>$dp[0][a] = 1$</p>
+<p>轉移式比較複雜一點，不過可以用差分優化搭配前綴和把原本$O(n)$的時間降到$O(1)$<br>從這一題可以發現到，用拉的和用推的有不同的使用時機，可以以思考方式比較清楚的想法去想轉移式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mod 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,a,b,k,dp[<span class="number">2</span>][<span class="number">2005</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">modify</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (x%mod+mod)%mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sec</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> v,<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">    l = <span class="built_in">max</span>(l,(<span class="keyword">long</span> <span class="keyword">long</span>)<span class="number">1</span>);</span><br><span class="line">    r = <span class="built_in">min</span>(r,n);</span><br><span class="line">    dp[(id+<span class="number">1</span>)%<span class="number">2</span>][l] = <span class="built_in">modify</span>(dp[(id+<span class="number">1</span>)%<span class="number">2</span>][l]+v);</span><br><span class="line">    dp[(id+<span class="number">1</span>)%<span class="number">2</span>][r+<span class="number">1</span>] = <span class="built_in">modify</span>(dp[(id+<span class="number">1</span>)%<span class="number">2</span>][r+<span class="number">1</span>]-v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;a&gt;&gt;b&gt;&gt;k;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line"></span><br><span class="line">    dp[<span class="number">0</span>][a] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> s=<span class="number">0</span>;s&lt;k;s++)&#123;  <span class="comment">//每一次電梯移動</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123; <span class="comment">//每一樓層轉移</span></span><br><span class="line">            <span class="keyword">int</span> d = <span class="built_in">abs</span>(b-i)<span class="number">-1</span>;</span><br><span class="line">            <span class="built_in">sec</span>(i-d,i<span class="number">-1</span>,dp[s%<span class="number">2</span>][i],s);</span><br><span class="line">            <span class="built_in">sec</span>(i+<span class="number">1</span>,i+d,dp[s%<span class="number">2</span>][i],s);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            dp[(s+<span class="number">1</span>)%<span class="number">2</span>][i] += dp[(s+<span class="number">1</span>)%<span class="number">2</span>][i<span class="number">-1</span>];</span><br><span class="line">            dp[(s+<span class="number">1</span>)%<span class="number">2</span>][i] = <span class="built_in">modify</span>(dp[(s+<span class="number">1</span>)%<span class="number">2</span>][i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)dp[(s)%<span class="number">2</span>][i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        ans+=dp[k%<span class="number">2</span>][i];</span><br><span class="line">        ans = <span class="built_in">modify</span>(ans);</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//8樓、2樓開始、5樓不能去、2次電梯</span></span><br></pre></td></tr></table></figure>
+<h3 id="取名字好困難QQ"><a href="#取名字好困難QQ" class="headerlink" title="取名字好困難QQ"></a>取名字好困難QQ</h3><p><a target="_blank" rel="noopener" href="https://neoj.sprout.tw/problem/421/">題目連結</a><br>跟題目一樣，我覺得要通靈才能想到這一題的作法！<br>結果是問了別人才大概感受到這一種作法！！！<br><img src="https://i.imgur.com/EmxSHqM.png" alt=""></p>
+<p>我們既然不知道到底一個數字要不要乘2，我們可以透過做LIS的過程來做決定。當我們把乘與2之後的數字跟原本數字一起push進去，就可以發現到LIS不可能同時取到2個數字。利用這個方法就可以用LIS的過程決定一個數字到底應該要變2倍還是不用。<br>要找到最長的非嚴格遞增序列，最大的差別就是要把原本的lower_bound改成upper_bound。一整天想一題的感覺超級糟糕QQ</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mod 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ios ios::sync_with_stdio(0)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m;cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt;vec;</span><br><span class="line">    <span class="built_in">FOR</span>(i,n)&#123;</span><br><span class="line">        <span class="keyword">int</span> temp;cin&gt;&gt;temp;</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">2</span>*temp&lt;m)<span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(temp&lt;m)&#123;</span><br><span class="line">            temp*=<span class="number">2</span>;</span><br><span class="line">            vec.<span class="built_in">push_back</span>(temp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            vec.<span class="built_in">push_back</span>(<span class="number">2</span>*temp);</span><br><span class="line">            vec.<span class="built_in">push_back</span>(temp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(vec.<span class="built_in">size</span>()&lt;<span class="number">1</span>)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="number">0</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//正常做LIS</span></span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; lis;<span class="keyword">int</span> len = vec.<span class="built_in">size</span>();</span><br><span class="line">    lis.<span class="built_in">push_back</span>(vec[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;len;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(lis.<span class="built_in">back</span>()&lt;=vec[i])lis.<span class="built_in">push_back</span>(vec[i]);</span><br><span class="line">        <span class="keyword">else</span> *<span class="built_in">upper_bound</span>(lis.<span class="built_in">begin</span>(),lis.<span class="built_in">end</span>(),vec[i]) = vec[i];</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;lis.<span class="built_in">size</span>()&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="手寫作業"><a href="#手寫作業" class="headerlink" title="手寫作業"></a>手寫作業</h2><p>這一週是講歸約法，作業如下：<br><img src="https://i.imgur.com/amWVYo0.jpg" alt=""><br>這一週手寫作業的狀況還不錯，71/75，不過第一題是緊急向別人求救才把答案改掉<br><img src="https://i.imgur.com/GMtrB99.png" alt=""><br>原本是寫B，後來改A，原因有以下兩點：</p>
+<ol>
+<li>因為函數在 return 時不會把 stack memory 上的資料清空，所以所有的區域變數都會被留在 stack memory 上，其他函數可能會共用到同一塊記憶體空間。</li>
+<li>有可能會對非法的陣列位址取值(RE的情況)，而存取到別的函數的區域變數。</li>
+</ol>
+<p>所以A是錯誤的！<br>下面是解答的畫法，其實跟我蠻像的XDD<br><img src="https://i.imgur.com/NyN0Kwy.png" alt=""></p>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DP/" rel="tag"># DP</a>
+              <a href="/tags/%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/" rel="tag"># 動態規劃</a>
+              <a href="/tags/%E8%B3%87%E8%8A%BD%E7%AD%86%E8%A8%98/" rel="tag"># 資芽筆記</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/sprout7/" rel="prev" title="資芽第七週：動態規劃（一）">
+      <i class="fa fa-chevron-left"></i> 資芽第七週：動態規劃（一）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/sprout9/" rel="next" title="資芽第九週：動態規劃（三）">
+      資芽第九週：動態規劃（三） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+<!-- 多媒體廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9921797637924269"
+     data-ad-slot="2654177759"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E8%AA%B2%E5%85%A7%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">上課內容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%A9%9F%E4%BD%9C%E6%A5%AD"><span class="nav-number">2.</span> <span class="nav-text">上機作業</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%A3%95%E6%AB%9A%E8%BE%B2%E5%A0%B4"><span class="nav-number">2.1.</span> <span class="nav-text">高棕櫚農場</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9"><span class="nav-number">2.1.1.</span> <span class="nav-text">定義</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%89%E7%A7%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.2.</span> <span class="nav-text">轉移方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%8A%E7%95%8C%E6%A2%9D%E4%BB%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">邊界條件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">2.1.4.</span> <span class="nav-text">程式碼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%A3%95%E6%AB%9A%E8%BE%B2%E5%A0%B42"><span class="nav-number">2.2.</span> <span class="nav-text">高棕櫚農場2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">定義</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%89%E7%A7%BB%E6%96%B9%E5%BC%8F-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">轉移方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%8A%E7%95%8C%E6%A2%9D%E4%BB%B6-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">邊界條件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%A9%E9%9B%BB%E6%A2%AF"><span class="nav-number">2.3.</span> <span class="nav-text">玩電梯</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">定義</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%89%E7%A7%BB%E5%BC%8F"><span class="nav-number">2.3.2.</span> <span class="nav-text">轉移式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%8A%E7%95%8C%E6%A2%9D%E4%BB%B6-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">邊界條件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%90%8D%E5%AD%97%E5%A5%BD%E5%9B%B0%E9%9B%A3QQ"><span class="nav-number">2.4.</span> <span class="nav-text">取名字好困難QQ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%AF%AB%E4%BD%9C%E6%A5%AD"><span class="nav-number">3.</span> <span class="nav-text">手寫作業</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">395k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">5:59</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
