@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="作者：徐上雲、peienwu  一、簡介在許多考試中由於在出題時難度無法掌握，故常出現集體分數過低或過高的現象。當分數過低時常會以整體調整分數的方式使集體分數回歸到正常值，或使及格比例合乎預期。如今常見的調分方式有許多種，而每一種調分方式各有優缺點，對整體分數的影響力也各異。我想嘗試將常見的幾種調整分數方式進行比對，探討每一種方式的意義、使分數的分佈狀況、優缺點。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非線性調分公式的相關性質">
+<meta property="og:url" content="https://peienwu.com/score/index.html">
+<meta property="og:site_name" content="Peienwu&#39;s Blog">
+<meta property="og:description" content="作者：徐上雲、peienwu  一、簡介在許多考試中由於在出題時難度無法掌握，故常出現集體分數過低或過高的現象。當分數過低時常會以整體調整分數的方式使集體分數回歸到正常值，或使及格比例合乎預期。如今常見的調分方式有許多種，而每一種調分方式各有優缺點，對整體分數的影響力也各異。我想嘗試將常見的幾種調整分數方式進行比對，探討每一種方式的意義、使分數的分佈狀況、優缺點。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/7fT2fRj.png">
+<meta property="og:image" content="https://i.imgur.com/eX0WYYH.png">
+<meta property="og:image" content="https://i.imgur.com/bELnl3g.png">
+<meta property="og:image" content="https://i.imgur.com/DQKe7ST.png">
+<meta property="og:image" content="https://i.imgur.com/qOQAnM4.png">
+<meta property="og:image" content="https://i.imgur.com/9g6FF1s.png">
+<meta property="og:image" content="https://i.imgur.com/LgXWkBE.png">
+<meta property="og:image" content="https://i.imgur.com/ZYinNiN.png">
+<meta property="og:image" content="https://i.imgur.com/hFaQJZN.png">
+<meta property="og:image" content="https://i.imgur.com/UcwE5Rc.png">
+<meta property="og:image" content="https://i.imgur.com/yYyf408.jpg">
+<meta property="og:image" content="https://i.imgur.com/1F80aH2.png">
+<meta property="og:image" content="https://i.imgur.com/Bh4YEI0.jpg">
+<meta property="og:image" content="https://i.imgur.com/vss9nbj.png">
+<meta property="og:image" content="https://i.imgur.com/0BpZ02R.png">
+<meta property="og:image" content="https://i.imgur.com/uoBPvcZ.png">
+<meta property="og:image" content="https://i.imgur.com/NzxPN0W.png">
+<meta property="og:image" content="https://i.imgur.com/IG4qJZq.png">
+<meta property="og:image" content="https://i.imgur.com/G017hnu.png">
+<meta property="og:image" content="https://i.imgur.com/6IqM1VL.png">
+<meta property="og:image" content="https://i.imgur.com/YFQjNq7.jpg">
+<meta property="og:image" content="https://i.imgur.com/mGMsGA1.png">
+<meta property="og:image" content="https://i.imgur.com/qta3u0a.jpg">
+<meta property="article:published_time" content="2022-06-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-06T14:32:17.241Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="數學">
+<meta property="article:tag" content="調分公式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/7fT2fRj.png">
+
+<link rel="canonical" href="https://peienwu.com/score/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>非線性調分公式的相關性質 | Peienwu's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/score/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          非線性調分公式的相關性質
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-06-06 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-06T00:00:00+08:00">2022-06-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B8%E5%AD%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">數學筆記</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/score/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/score/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>4 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>作者：徐上雲、peienwu</p>
+</blockquote>
+<h2 id="一、簡介"><a href="#一、簡介" class="headerlink" title="一、簡介"></a>一、簡介</h2><p>在許多考試中由於在出題時難度無法掌握，故常出現集體分數過低或過高的現象。當分數過低時常會以整體調整分數的方式使集體分數回歸到正常值，或使及格比例合乎預期。如今常見的調分方式有許多種，而每一種調分方式各有優缺點，對整體分數的影響力也各異。我想嘗試將常見的幾種調整分數方式進行比對，探討每一種方式的意義、使分數的分佈狀況、優缺點。</p>
+<span id="more"></span>
+<h2 id="二、問題說明"><a href="#二、問題說明" class="headerlink" title="二、問題說明"></a>二、問題說明</h2><p>今有一張試卷假設滿分為100，最低分為0分。且落在0到100中的每個分數皆有機會得到。</p>
+<p>探討以下三種常見的調整分數的方式：</p>
+<h3 id="（一）線性調整y-ax-b"><a href="#（一）線性調整y-ax-b" class="headerlink" title="（一）線性調整y=ax+b"></a>（一）線性調整y=ax+b</h3><p>欲使滿分仍維持$100$，將$0$分調整為$b$分。將分數以線性關係$y=ax+b$分佈。<br>如若希望不論原始分數為何，調整後皆可及格，最低分$0$調整為$60$分，滿分維持$100$分。則公式為：$y=0.4x+60$。</p>
+<ol>
+<li>求當今天設定不同最低分數值(b)時，分數調整後之狀況。</li>
+</ol>
+<h3 id="（二）將原始分數開根號後乘以10"><a href="#（二）將原始分數開根號後乘以10" class="headerlink" title="（二）將原始分數開根號後乘以10"></a>（二）將原始分數開根號後乘以10</h3><p>另一種常見的調整分數分數為將原始分數開根號後乘以$10$。</p>
+<ol>
+<li>探討為何最常見的調整分數方式為開根號乘以$10$？</li>
+<li>若開立方根後乘以某數$k_3$，使滿分仍為$100$，探討調整後分數分佈狀況。</li>
+<li>若開$n$次方根乘以某數$k_n$，使滿分仍為$100$，探討調整後分數分佈狀況。</li>
+<li>求當開$n$次方根乘以某數$k_n$，使滿分仍為$100$時，原始分數應為何才能加到最多分？</li>
+</ol>
+<h3 id="（三）將原始分數取log後乘以一常數使滿分仍為100"><a href="#（三）將原始分數取log後乘以一常數使滿分仍為100" class="headerlink" title="（三）將原始分數取log後乘以一常數使滿分仍為100"></a>（三）將原始分數取log後乘以一常數使滿分仍為100</h3><ol>
+<li>今以底數為$n$，將原始分數取$\log_a$後乘以某數$p$，使滿分仍為$100$分。探討調整後分數分佈狀況。</li>
+</ol>
+<h2 id="三、探討方式"><a href="#三、探討方式" class="headerlink" title="三、探討方式"></a>三、探討方式</h2><p>做以下三張圖，進行比較：</p>
+<ol>
+<li>調整後分數：畫出原始分數及調整分數後之分數變動關係。(代號：$A$)</li>
+<li>調分比率：調整後分數相較於原始分數提高了幾倍，公式＝調整後分數/原始分數。(代號：$B$)，因分母不可為$0$故不計算$0$分之調分比率。</li>
+<li>多得分數：調整後分數較原始分數加了幾分，公式＝調整後分數-原始分數。(代號：$C$)</li>
+</ol>
+<h2 id="四、問題解決"><a href="#四、問題解決" class="headerlink" title="四、問題解決"></a>四、問題解決</h2><h3 id="（一）線性調整y-ax-b-1"><a href="#（一）線性調整y-ax-b-1" class="headerlink" title="（一）線性調整y=ax+b"></a>（一）線性調整y=ax+b</h3><h4 id="1-公式：-f-x-y-ax-b-f-0-b-f-100-100"><a href="#1-公式：-f-x-y-ax-b-f-0-b-f-100-100" class="headerlink" title="1. 公式：$f(x)=y=ax+b, f(0)=b,f(100)=100$"></a>1. 公式：$f(x)=y=ax+b, f(0)=b,f(100)=100$</h4><h4 id="2-設定不同狀況調整後最低可得到分-b"><a href="#2-設定不同狀況調整後最低可得到分-b" class="headerlink" title="2. 設定不同狀況調整後最低可得到分$(b)$"></a>2. 設定不同狀況調整後最低可得到分$(b)$</h4><p>當最低分為$b=60$分，$a=0.4$，公式：$y=0.4x+60$，依此類推。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">b</th>
+<th style="text-align:center">公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">60</td>
+<td style="text-align:center">y=0.4x+60</td>
+</tr>
+<tr>
+<td style="text-align:center">50</td>
+<td style="text-align:center">y=0.5x+50</td>
+</tr>
+<tr>
+<td style="text-align:center">40</td>
+<td style="text-align:center">y=0.6x+40</td>
+</tr>
+<tr>
+<td style="text-align:center">30</td>
+<td style="text-align:center">y=0.7x+30</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td style="text-align:center">y=0.8x+20</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">y=0.9x+10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="3-以原始分數1-100分，畫出圖表"><a href="#3-以原始分數1-100分，畫出圖表" class="headerlink" title="3. 以原始分數1-100分，畫出圖表"></a>3. 以原始分數1-100分，畫出圖表</h4><p><img src="https://i.imgur.com/7fT2fRj.png" alt=""></p>
+<p><img src="https://i.imgur.com/eX0WYYH.png" alt=""></p>
+<p><img src="https://i.imgur.com/bELnl3g.png" alt=""></p>
+<h3 id="（二）將原始分數開根號後乘以10-1"><a href="#（二）將原始分數開根號後乘以10-1" class="headerlink" title="（二）將原始分數開根號後乘以10"></a>（二）將原始分數開根號後乘以10</h3><h4 id="1-公式：-y-f-x-10-sqrt-x"><a href="#1-公式：-y-f-x-10-sqrt-x" class="headerlink" title="1. 公式：$y=f(x)=10\sqrt{x}$"></a>1. 公式：$y=f(x)=10\sqrt{x}$</h4><h4 id="2-以原始分數為-1-100-分，畫出圖表"><a href="#2-以原始分數為-1-100-分，畫出圖表" class="headerlink" title="2. 以原始分數為$1-100$分，畫出圖表"></a>2. 以原始分數為$1-100$分，畫出圖表</h4><p><img src="https://i.imgur.com/DQKe7ST.png" alt=""></p>
+<p><img src="https://i.imgur.com/qOQAnM4.png" alt=""></p>
+<p><img src="https://i.imgur.com/9g6FF1s.png" alt=""></p>
+<p>多得到分數呈現一有最大值的曲線，代表在$1-100$中有某一得分之人獲益最大，能加到最多分，比對得到之數據可發現當原始分數為$25$分時，最划算，可多得到最多分數。</p>
+<h4 id="3-此情況可探討當次方根數提高後乘以某數，使滿分仍為-100"><a href="#3-此情況可探討當次方根數提高後乘以某數，使滿分仍為-100" class="headerlink" title="3. 此情況可探討當次方根數提高後乘以某數，使滿分仍為$100$"></a>3. 此情況可探討當次方根數提高後乘以某數，使滿分仍為$100$</h4><p>當次方根為三次方根，需乘以某數$k_3$，使滿分仍為為$100$。<br>計算$k_3=\frac{100}{100^{1/3}}=100^{2/3}\approx 21.5443469$。<br>公式：$y=f(x)=x^{1/3}$<br>以原始分數為$1-100$，畫出圖表。</p>
+<p><img src="https://i.imgur.com/LgXWkBE.png" alt=""></p>
+<p><img src="https://i.imgur.com/ZYinNiN.png" alt=""></p>
+<p><img src="https://i.imgur.com/hFaQJZN.png" alt=""></p>
+<p>多得到分數呈現一有最大值的曲線，代表在$1-100$中有某一得分之人獲益最大，能加到最多分，比對得到之數據可發現當原始分數為$19$分時，最划算，可多得到最多分數。</p>
+<h4 id="4-將此情形推廣到更高次方根，求出今為n次方根後，kn為何？"><a href="#4-將此情形推廣到更高次方根，求出今為n次方根後，kn為何？" class="headerlink" title="4. 將此情形推廣到更高次方根，求出今為n次方根後，kn為何？"></a>4. 將此情形推廣到更高次方根，求出今為n次方根後，kn為何？</h4><p>通式：$k_n\cdot(100^{1/n})=100,k_n=\frac{100}{(100^{1/n})}$</p>
+<p><img src="https://i.imgur.com/UcwE5Rc.png" alt=""></p>
+<p>由上圖可知k值為將無窮接近$100$。</p>
+<h4 id="5-用-2-8-次方根，畫出以原始分數為-1-100-分的圖表。圖中-s-為次方根數"><a href="#5-用-2-8-次方根，畫出以原始分數為-1-100-分的圖表。圖中-s-為次方根數" class="headerlink" title="5. 用$2-8$次方根，畫出以原始分數為$1-100$分的圖表。圖中$s$為次方根數"></a>5. 用$2-8$次方根，畫出以原始分數為$1-100$分的圖表。圖中$s$為次方根數</h4><p><img src="https://i.imgur.com/yYyf408.jpg" alt=""></p>
+<p><img src="https://i.imgur.com/1F80aH2.png" alt=""></p>
+<p><img src="https://i.imgur.com/Bh4YEI0.jpg" alt=""></p>
+<h4 id="6-求出不同次方根中，能得到最多分數的原始分數為何？"><a href="#6-求出不同次方根中，能得到最多分數的原始分數為何？" class="headerlink" title="6. 求出不同次方根中，能得到最多分數的原始分數為何？"></a>6. 求出不同次方根中，能得到最多分數的原始分數為何？</h4><p>在二次方根中，原始分數為25，可以加到最多分。<br>在三次方根中，原始分數為19，可以加到最多分。<br>設當n次方根時，原始分數為x，可以加到最多分。<br>計算n與x之關係：</p>
+<script type="math/tex; mode=display">\begin{split}f'(x) &= \frac{d}{dx}(k_n\cdot x^{1/n}-x) = 0
+\\&\Rightarrow \frac{d}{dx}(100^{\frac{n-1}{n}}\cdot x^{1/n}-x) = 0
+\\&\Rightarrow \frac{1}{n}\cdot 100^{\frac{n-1}{n}} = x^{\frac{n-1}{n}}
+\\&\Rightarrow x = 100\cdot n^{\frac{-n}{n-1}}
+\end{split}</script><p><img src="https://i.imgur.com/vss9nbj.png" alt=""></p>
+<p>圖中可見，橫軸為次分根數，縱軸為最大獲益的原始分數。<br>三次方根時準確的值並非$19$，而是$19.245$。<br>以$x$的一般式計算三次方根時最大獲益的原始分數。</p>
+<script type="math/tex; mode=display">\begin{split}x &= 100\cdot n^{\frac{-3}{3-1}}
+\\&\approx 19.245
+\end{split}</script><h4 id="7-不同的次方根與加最多分數的關係"><a href="#7-不同的次方根與加最多分數的關係" class="headerlink" title="7. 不同的次方根與加最多分數的關係"></a>7. 不同的次方根與加最多分數的關係</h4><p>由上述可知，當帶入$x = 100\cdot n^{\frac{-n}{n-1}}$ 會有加分的最大值。於是，我們可以將其帶入上方公式計算出不同的$n$與加最多分數的關係。</p>
+<script type="math/tex; mode=display">\begin{split}f(x) &=100^{\frac{n-1}{n}}\cdot x^{\frac{1}{n}}-x,\ x = 100\cdot n^{\frac{-n}{n-1}}
+\\&\Rightarrow 100(n^{\frac{-1}{n-1}}-n^{\frac{-n}{n-1}})
+\end{split}</script><p>可得一個新的公式$h(x)$，代表不同的次方根對應的加分的最大值。此函數是一個單調遞增函數，函數值隨著$n$增加有遞增的情形。</p>
+<script type="math/tex; mode=display">h(x) = 100(n^{\frac{-1}{n-1}}-n^{\frac{-n}{n-1}})</script><p><img src="https://i.imgur.com/0BpZ02R.png" alt=""></p>
+<h3 id="（三）將原始分數取log後乘以一常數使滿分仍為100-1"><a href="#（三）將原始分數取log後乘以一常數使滿分仍為100-1" class="headerlink" title="（三）將原始分數取log後乘以一常數使滿分仍為100"></a>（三）將原始分數取log後乘以一常數使滿分仍為100</h3><p>通式：設原始分數為$x$, $y=f(x)=p\log_ax,  f(100)=100, a&gt;0$</p>
+<h4 id="1-以原始分數為1-100，畫出圖表"><a href="#1-以原始分數為1-100，畫出圖表" class="headerlink" title="1. 以原始分數為1-100，畫出圖表"></a>1. 以原始分數為1-100，畫出圖表</h4><p><img src="https://i.imgur.com/uoBPvcZ.png" alt=""></p>
+<p><img src="https://i.imgur.com/NzxPN0W.png" alt=""></p>
+<p><img src="https://i.imgur.com/IG4qJZq.png" alt=""></p>
+<p>發現不論底數a值為何，得出結果均相同。</p>
+<h4 id="2-以一般式描述多得到之分數，探討為何不論a值為何，得出結果均相同"><a href="#2-以一般式描述多得到之分數，探討為何不論a值為何，得出結果均相同" class="headerlink" title="2. 以一般式描述多得到之分數，探討為何不論a值為何，得出結果均相同"></a>2. 以一般式描述多得到之分數，探討為何不論a值為何，得出結果均相同</h4><script type="math/tex; mode=display">\begin{split}f(x) &= p\log_ax-x
+\\&= (\frac{100}{\log_a100})\log_ax-x
+\\&=100\frac{\log_ax}{\log_a100}-x
+\\&=50\log_{10}x-x
+\end{split}</script><p>發現在過程中底數a會被換底後取代，最終結果無a的影響，故不論底數a值為何，得出之曲線均相同。</p>
+<h4 id="3-算出原始分數為何可以多得到分數最多"><a href="#3-算出原始分數為何可以多得到分數最多" class="headerlink" title="3. 算出原始分數為何可以多得到分數最多"></a>3. 算出原始分數為何可以多得到分數最多</h4><script type="math/tex; mode=display">\begin{split}f'(x) &= \frac{d}{dx}(50\log_{10}x-x) = 0
+\\&\Rightarrow \frac{50}{\ln(10)x}=1
+\\&\Rightarrow x = \frac{50}{\ln(10)}\approx 21.7147
+\end{split}</script><p>發現當原始分數約為21.7147時，可加到最多分數。</p>
+<h3 id="（四）最低及格分數之非線性調分"><a href="#（四）最低及格分數之非線性調分" class="headerlink" title="（四）最低及格分數之非線性調分"></a>（四）最低及格分數之非線性調分</h3><h4 id="1-次方調整計算公式"><a href="#1-次方調整計算公式" class="headerlink" title="1. 次方調整計算公式"></a>1. 次方調整計算公式</h4><p>以開二次方根來計算，則考36分的人可以恰好及格。假設考$b$分的人經過調整後為$a$分（及格的話$a = 60$），所開的次方數為$n$次，則有以下關係：</p>
+<script type="math/tex; mode=display">n = g(a,b)= \frac{2-\log b}{2-\log a}</script><p>則對於分數為$x$的人，調整後的分數$f(x)$滿足：</p>
+<script type="math/tex; mode=display">f(x) = k_n\cdot x^{\frac{1}{n}}, \ k_n = 100^{\frac{n-1}{n}}</script><h4 id="2-以原始分數1-100畫出調整後分數圖形"><a href="#2-以原始分數1-100畫出調整後分數圖形" class="headerlink" title="2. 以原始分數1-100畫出調整後分數圖形"></a>2. 以原始分數1-100畫出調整後分數圖形</h4><p>下圖為$a = 60,b = 45$，$n \approx 1.563$ 調整前後分數的圖形。<br><img src="https://i.imgur.com/G017hnu.png" alt=""></p>
+<h4 id="3-最低及格分數b與次方數n的關係"><a href="#3-最低及格分數b與次方數n的關係" class="headerlink" title="3. 最低及格分數b與次方數n的關係"></a>3. 最低及格分數b與次方數n的關係</h4><p>由第一點的公式，我們可以觀察到，要將越低的分數調整到及格，所開的次方數$n$就必須越大，圖形如下圖：</p>
+<p><img src="https://i.imgur.com/6IqM1VL.png" alt=""></p>
+<h2 id="五、結果討論"><a href="#五、結果討論" class="headerlink" title="五、結果討論"></a>五、結果討論</h2><p>（一） 線性調分聽起來很公平，每個人都可以依照一定比例加分，但在實際做出加分比率圖後發現實際上$0-20$分之加分比率遠超過其他分數族群。對於中偏前段之高分族群極為不利。不過，若想要提升及格比率，非線性調分不失為一個十分有效的方式。</p>
+<p>（二） 開特定次方根根後乘以一常數之結果可看出，若開$n$次方根，$n$越大能加到最多分到分數$x$隨之下降，符合公式 $x = 100\cdot n^{\frac{-n}{n-1}}$。</p>
+<p>（三） 加最多分隨著開的次方數n增加而遞增，其最大的加分數符合公式$h(x) = 100(n^{\frac{-1}{n-1}}-n^{\frac{-n}{n-1}})$</p>
+<p>（四） 若想要將一個分數為$b\ (b&lt;60)$的人調整分數到及格，若分數$b$越小，所需要的次方數就必須越大，符合公式$n=\frac{2-\log b}{2-\log a}$。</p>
+<p>（五） 經過log後乘以一常數之結果，發現不論底數為何，均不影響最終結果，因為底數可經由換底公式消除。</p>
+<p>（六） log組中發現原分數為1者，調分後會變成0分，理應修正。使原始分數為1分之人至少不要呈現扣分的情況。</p>
+<p>看了次方根和log兩組的曲線後趨勢變化有點相近，可以將兩張圖疊合再一起做比較。可見log組的曲線相較次方根組之變化趨勢，如下圖：</p>
+<p><img src="https://i.imgur.com/YFQjNq7.jpg" alt=""><br><img src="https://i.imgur.com/mGMsGA1.png" alt=""><br><img src="https://i.imgur.com/qta3u0a.jpg" alt=""></p>
+<h2 id="六、未來展望"><a href="#六、未來展望" class="headerlink" title="六、未來展望"></a>六、未來展望</h2><p>之後可以做出以假設全班原始分數為常態分佈，假設在不同的平均分數下，模擬出全班調分後之結果，計算及格比率。可以作為未來進行調分的依據。調整分數者可先行設定這次考試可能之平均及希望及格比率為何後，選定一種方式進行調分。</p>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B8%E5%AD%B8/" rel="tag"># 數學</a>
+              <a href="/tags/%E8%AA%BF%E5%88%86%E5%85%AC%E5%BC%8F/" rel="tag"># 調分公式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/quarantine/" rel="prev" title="九宮格匡列機率討論">
+      <i class="fa fa-chevron-left"></i> 九宮格匡列機率討論
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、簡介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%95%8F%E9%A1%8C%E8%AA%AA%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">二、問題說明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%B7%9A%E6%80%A7%E8%AA%BF%E6%95%B4y-ax-b"><span class="nav-number">2.1.</span> <span class="nav-text">（一）線性調整y&#x3D;ax+b</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B0%87%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E9%96%8B%E6%A0%B9%E8%99%9F%E5%BE%8C%E4%B9%98%E4%BB%A510"><span class="nav-number">2.2.</span> <span class="nav-text">（二）將原始分數開根號後乘以10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E5%B0%87%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E5%8F%96log%E5%BE%8C%E4%B9%98%E4%BB%A5%E4%B8%80%E5%B8%B8%E6%95%B8%E4%BD%BF%E6%BB%BF%E5%88%86%E4%BB%8D%E7%82%BA100"><span class="nav-number">2.3.</span> <span class="nav-text">（三）將原始分數取log後乘以一常數使滿分仍為100</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8E%A2%E8%A8%8E%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">三、探討方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA"><span class="nav-number">4.</span> <span class="nav-text">四、問題解決</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%B7%9A%E6%80%A7%E8%AA%BF%E6%95%B4y-ax-b-1"><span class="nav-number">4.1.</span> <span class="nav-text">（一）線性調整y&#x3D;ax+b</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%AC%E5%BC%8F%EF%BC%9A-f-x-y-ax-b-f-0-b-f-100-100"><span class="nav-number">4.1.1.</span> <span class="nav-text">1. 公式：$f(x)&#x3D;y&#x3D;ax+b, f(0)&#x3D;b,f(100)&#x3D;100$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%A8%AD%E5%AE%9A%E4%B8%8D%E5%90%8C%E7%8B%80%E6%B3%81%E8%AA%BF%E6%95%B4%E5%BE%8C%E6%9C%80%E4%BD%8E%E5%8F%AF%E5%BE%97%E5%88%B0%E5%88%86-b"><span class="nav-number">4.1.2.</span> <span class="nav-text">2. 設定不同狀況調整後最低可得到分$(b)$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BB%A5%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B81-100%E5%88%86%EF%BC%8C%E7%95%AB%E5%87%BA%E5%9C%96%E8%A1%A8"><span class="nav-number">4.1.3.</span> <span class="nav-text">3. 以原始分數1-100分，畫出圖表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E5%B0%87%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E9%96%8B%E6%A0%B9%E8%99%9F%E5%BE%8C%E4%B9%98%E4%BB%A510-1"><span class="nav-number">4.2.</span> <span class="nav-text">（二）將原始分數開根號後乘以10</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%AC%E5%BC%8F%EF%BC%9A-y-f-x-10-sqrt-x"><span class="nav-number">4.2.1.</span> <span class="nav-text">1. 公式：$y&#x3D;f(x)&#x3D;10\sqrt{x}$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BB%A5%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E7%82%BA-1-100-%E5%88%86%EF%BC%8C%E7%95%AB%E5%87%BA%E5%9C%96%E8%A1%A8"><span class="nav-number">4.2.2.</span> <span class="nav-text">2. 以原始分數為$1-100$分，畫出圖表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%AD%A4%E6%83%85%E6%B3%81%E5%8F%AF%E6%8E%A2%E8%A8%8E%E7%95%B6%E6%AC%A1%E6%96%B9%E6%A0%B9%E6%95%B8%E6%8F%90%E9%AB%98%E5%BE%8C%E4%B9%98%E4%BB%A5%E6%9F%90%E6%95%B8%EF%BC%8C%E4%BD%BF%E6%BB%BF%E5%88%86%E4%BB%8D%E7%82%BA-100"><span class="nav-number">4.2.3.</span> <span class="nav-text">3. 此情況可探討當次方根數提高後乘以某數，使滿分仍為$100$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B0%87%E6%AD%A4%E6%83%85%E5%BD%A2%E6%8E%A8%E5%BB%A3%E5%88%B0%E6%9B%B4%E9%AB%98%E6%AC%A1%E6%96%B9%E6%A0%B9%EF%BC%8C%E6%B1%82%E5%87%BA%E4%BB%8A%E7%82%BAn%E6%AC%A1%E6%96%B9%E6%A0%B9%E5%BE%8C%EF%BC%8Ckn%E7%82%BA%E4%BD%95%EF%BC%9F"><span class="nav-number">4.2.4.</span> <span class="nav-text">4. 將此情形推廣到更高次方根，求出今為n次方根後，kn為何？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%94%A8-2-8-%E6%AC%A1%E6%96%B9%E6%A0%B9%EF%BC%8C%E7%95%AB%E5%87%BA%E4%BB%A5%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E7%82%BA-1-100-%E5%88%86%E7%9A%84%E5%9C%96%E8%A1%A8%E3%80%82%E5%9C%96%E4%B8%AD-s-%E7%82%BA%E6%AC%A1%E6%96%B9%E6%A0%B9%E6%95%B8"><span class="nav-number">4.2.5.</span> <span class="nav-text">5. 用$2-8$次方根，畫出以原始分數為$1-100$分的圖表。圖中$s$為次方根數</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%B1%82%E5%87%BA%E4%B8%8D%E5%90%8C%E6%AC%A1%E6%96%B9%E6%A0%B9%E4%B8%AD%EF%BC%8C%E8%83%BD%E5%BE%97%E5%88%B0%E6%9C%80%E5%A4%9A%E5%88%86%E6%95%B8%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E7%82%BA%E4%BD%95%EF%BC%9F"><span class="nav-number">4.2.6.</span> <span class="nav-text">6. 求出不同次方根中，能得到最多分數的原始分數為何？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E4%B8%8D%E5%90%8C%E7%9A%84%E6%AC%A1%E6%96%B9%E6%A0%B9%E8%88%87%E5%8A%A0%E6%9C%80%E5%A4%9A%E5%88%86%E6%95%B8%E7%9A%84%E9%97%9C%E4%BF%82"><span class="nav-number">4.2.7.</span> <span class="nav-text">7. 不同的次方根與加最多分數的關係</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E5%B0%87%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E5%8F%96log%E5%BE%8C%E4%B9%98%E4%BB%A5%E4%B8%80%E5%B8%B8%E6%95%B8%E4%BD%BF%E6%BB%BF%E5%88%86%E4%BB%8D%E7%82%BA100-1"><span class="nav-number">4.3.</span> <span class="nav-text">（三）將原始分數取log後乘以一常數使滿分仍為100</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%A5%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E7%82%BA1-100%EF%BC%8C%E7%95%AB%E5%87%BA%E5%9C%96%E8%A1%A8"><span class="nav-number">4.3.1.</span> <span class="nav-text">1. 以原始分數為1-100，畫出圖表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BB%A5%E4%B8%80%E8%88%AC%E5%BC%8F%E6%8F%8F%E8%BF%B0%E5%A4%9A%E5%BE%97%E5%88%B0%E4%B9%8B%E5%88%86%E6%95%B8%EF%BC%8C%E6%8E%A2%E8%A8%8E%E7%82%BA%E4%BD%95%E4%B8%8D%E8%AB%96a%E5%80%BC%E7%82%BA%E4%BD%95%EF%BC%8C%E5%BE%97%E5%87%BA%E7%B5%90%E6%9E%9C%E5%9D%87%E7%9B%B8%E5%90%8C"><span class="nav-number">4.3.2.</span> <span class="nav-text">2. 以一般式描述多得到之分數，探討為何不論a值為何，得出結果均相同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%AE%97%E5%87%BA%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B8%E7%82%BA%E4%BD%95%E5%8F%AF%E4%BB%A5%E5%A4%9A%E5%BE%97%E5%88%B0%E5%88%86%E6%95%B8%E6%9C%80%E5%A4%9A"><span class="nav-number">4.3.3.</span> <span class="nav-text">3. 算出原始分數為何可以多得到分數最多</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%80%E4%BD%8E%E5%8F%8A%E6%A0%BC%E5%88%86%E6%95%B8%E4%B9%8B%E9%9D%9E%E7%B7%9A%E6%80%A7%E8%AA%BF%E5%88%86"><span class="nav-number">4.4.</span> <span class="nav-text">（四）最低及格分數之非線性調分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%AC%A1%E6%96%B9%E8%AA%BF%E6%95%B4%E8%A8%88%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-number">4.4.1.</span> <span class="nav-text">1. 次方調整計算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BB%A5%E5%8E%9F%E5%A7%8B%E5%88%86%E6%95%B81-100%E7%95%AB%E5%87%BA%E8%AA%BF%E6%95%B4%E5%BE%8C%E5%88%86%E6%95%B8%E5%9C%96%E5%BD%A2"><span class="nav-number">4.4.2.</span> <span class="nav-text">2. 以原始分數1-100畫出調整後分數圖形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%9C%80%E4%BD%8E%E5%8F%8A%E6%A0%BC%E5%88%86%E6%95%B8b%E8%88%87%E6%AC%A1%E6%96%B9%E6%95%B8n%E7%9A%84%E9%97%9C%E4%BF%82"><span class="nav-number">4.4.3.</span> <span class="nav-text">3. 最低及格分數b與次方數n的關係</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%B5%90%E6%9E%9C%E8%A8%8E%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">五、結果討論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%9C%AA%E4%BE%86%E5%B1%95%E6%9C%9B"><span class="nav-number">6.</span> <span class="nav-text">六、未來展望</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">399k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">6:02</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
