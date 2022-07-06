@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-TW,en,default">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+     
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-205940898-1');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon-32-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon-16-16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"peienwu.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Codeforces 543B: Destroying Roads">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[題解]Codeforces 543B: Destroying Roads">
+<meta property="og:url" content="https://peienwu.com/path2-7/index.html">
+<meta property="og:site_name" content="Peienwu&#39;s Blog">
+<meta property="og:description" content="Codeforces 543B: Destroying Roads">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/QfbfF82.png">
+<meta property="og:image" content="https://i.imgur.com/tjq8oe7.png">
+<meta property="article:published_time" content="2021-01-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-06T15:18:48.909Z">
+<meta property="article:author" content="peienwu">
+<meta property="article:tag" content="題解">
+<meta property="article:tag" content="最短路徑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/QfbfF82.png">
+
+<link rel="canonical" href="https://peienwu.com/path2-7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>[題解]Codeforces 543B: Destroying Roads | Peienwu's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-205940898-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-205940898-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Peienwu's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Hello world</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://peienwu.com/path2-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/worm.jpg">
+      <meta itemprop="name" content="peienwu">
+      <meta itemprop="description" content="Hello world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Peienwu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [題解]Codeforces 543B: Destroying Roads
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-07T00:00:00+08:00">2021-01-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91%E9%A1%8C%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">最短路徑題解</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/path2-7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/path2-7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>6 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Codeforces-543B-Destroying-Roads"><a href="#Codeforces-543B-Destroying-Roads" class="headerlink" title="Codeforces 543B: Destroying Roads"></a>Codeforces 543B: Destroying Roads</h3><span id="more"></span>
+<p><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/543/B">題目連結</a><br><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/submission/543/125743532">Submission</a></p>
+<blockquote>
+<p>題目大意<br>給定N個點M條無向邊，每一邊權重都是1，以及兩筆資料，由三個數$(x,y,w)$ 構成，代表起點為x、終點為x、要在w距離內從起點走到終點。試問最多可以拔掉幾條邊同時滿足以上兩個資料所描述的特性？</p>
+</blockquote>
+<p>這一題蠻有趣的，首先他的邊權重都是1，因此我們可以直接用BFS尋找最短路徑，並且點第一次拜訪到時的就是該點的最短距離（BFS一層一層擴展）。</p>
+<div class="note primary">
+            <p><strong>第一個想法：錯誤想法</strong><br>我先將兩個起點與終點的最短路徑都找出來，把將過的邊都標上不能移除，將其他的邊全部拔掉。</p><p><strong>問題點：</strong><br>固然找到的是最短路徑，但不代表可以最大化拔除邊的數量。因為題目要求兩點只要符合最短距離 $w$ 即可，因此每一個配對其實不用符合是最短路徑的情況（如下圖）！目標是在題目要求的限度內最大化重複的邊，使能夠被拔除的邊最大化！</p><p><img src="https://i.imgur.com/QfbfF82.png" alt=""></p><p>上圖紅色線段是$\delta(1,7)$的最短路徑、褐色是線段$\delta(3,6)$的最短路徑、黑色線段是皆以最短路徑之下可以被拔除的邊。但是如果將路徑$\delta(3,6)$換成是$(3,2)\to(2,4)\to(4,5)\to(5,6)$，被拔除的邊可以增過為三條。</p>
+          </div>
+<p>這一題最重要的關鍵就是以$O(V^2)$枚舉所有點對（距離長度可以直接換算成邊的數量），可以先用$O(V(V+E)$的時間對每一個點用進行BFS，如此一來總複雜度即為$O(V^2+VE)$，所幸題目給定總共的邊數不會超過3000條，因此是可以在時間限制內完成枚舉。</p>
+<div class="note primary">
+            <p>枚舉路徑 $\delta(i,j)$ 為共同邊的時候，必須考慮起點與終點的方向，同時考慮從 $i\to j$ 以及從 $j\to i$ 兩個方向。以下圖為例，當枚舉都使用相同的起點以及終點，會讓下圖的 $(3,4)$ 被重複計算！</p><p><img src="https://i.imgur.com/tjq8oe7.png" alt=""></p>
+          </div>
+<p>以下是AC程式碼：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 3005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FOR(i,n) for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pid pair<span class="meta-string">&lt;int,double&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pdi pair<span class="meta-string">&lt;double,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,m,s1,e1,w1,s2,e2,w2,dis[N][N];</span><br><span class="line"><span class="keyword">bool</span> visit[N];</span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; edge[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b;cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        edge[a].<span class="built_in">push_back</span>(b);</span><br><span class="line">        edge[b].<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    cin&gt;&gt;s1&gt;&gt;e1&gt;&gt;w1&gt;&gt;s2&gt;&gt;e2&gt;&gt;w2;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">        queue&lt;<span class="keyword">int</span>&gt;que;</span><br><span class="line">        que.<span class="built_in">push</span>(i);</span><br><span class="line">        visit[i] = <span class="number">1</span>;</span><br><span class="line">        dis[i][i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="keyword">int</span> cur = que.<span class="built_in">front</span>();</span><br><span class="line">            que.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> j:edge[cur])&#123;</span><br><span class="line">                <span class="keyword">if</span>(visit[j])<span class="keyword">continue</span>;</span><br><span class="line">                dis[i][j] = dis[i][cur]+<span class="number">1</span>;</span><br><span class="line">                visit[j] = <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(dis[s1][e1]&gt;w1||dis[s2][e2]&gt;w2)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = dis[s1][e1]+dis[s2][e2];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//O(n^2)枚舉所有共同邊</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(dis[s1][i]+dis[i][j]+dis[j][e1]&lt;=w1&amp;&amp;dis[s2][i]+dis[i][j]+dis[j][e2]&lt;=w2)</span><br><span class="line">                ans = <span class="built_in">min</span>(ans,dis[s1][i]+dis[i][j]+dis[j][e1]+dis[s2][i]+dis[j][e2]);</span><br><span class="line">            <span class="keyword">if</span>(dis[s1][i]+dis[i][j]+dis[j][e1]&lt;=w1&amp;&amp;dis[e2][i]+dis[i][j]+dis[j][s2]&lt;=w2)</span><br><span class="line">                ans=<span class="built_in">min</span>(ans,dis[s1][i]+dis[i][j]+dis[j][e1]+dis[e2][i]+dis[j][s2]);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;m-ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TIOJ-2180-勇者冒險-Adventure"><a href="#TIOJ-2180-勇者冒險-Adventure" class="headerlink" title="TIOJ 2180 勇者冒險 (Adventure)"></a>TIOJ 2180 勇者冒險 (Adventure)</h3><p><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/problems/2180">題目連結</a><br><a target="_blank" rel="noopener" href="https://tioj.ck.tp.edu.tw/submissions/262669">Submission</a></p>
+<blockquote>
+<p>題目敘述<br>給定一個地圖共 $R\times C$ 行，接著會有 $M$ 行每一行都有一個座標和等級，代表經過這個座標需要多少等級才能通過。問從特定起點到終點所需要的最低的等級為多少。</p>
+</blockquote>
+<p>這題蠻特別的，他用到了Dijkstra中每一次都找最小的去更新，同時因為要求的是路徑上最大的等級為何，因此也用到了類似BFS的手法去擴展每一個座標。</p>
+<p>因為題目保證至少會有一條路徑通往起點與終點，同時我們每一次從queue拿出來的都是目前等級最低的點，因此如果碰到終點就可以確定這一條路線一定是需要等級最小的一條路徑！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 1005</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rrep(i,l,r) for(int i=l;i&lt;r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,row,col,mp[N][N],dis[N][N];</span><br><span class="line"><span class="keyword">int</span> s1,s2,e1,e2;</span><br><span class="line"><span class="keyword">int</span> dx[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;,dy[<span class="number">4</span>] = &#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">bool</span> visit[N][N];</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span> ,pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; pp;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//Dijkstra</span></span><br><span class="line">    priority_queue&lt;pp,vector&lt;pp&gt;,greater&lt;pp&gt;&gt; pq;</span><br><span class="line">    dis[s1][s2] = <span class="number">0</span>;</span><br><span class="line">    pq.<span class="built_in">push</span>(&#123;<span class="number">0</span>,&#123;s1,s2&#125;&#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="keyword">int</span> rr = pq.<span class="built_in">top</span>().y.x,cc = pq.<span class="built_in">top</span>().y.y;</span><br><span class="line"><span class="comment">//        cout&lt;&lt;rr&lt;&lt;&quot; &quot;&lt;&lt;cc&lt;&lt;&quot;  &quot;&lt;&lt;dis[rr][cc]&lt;&lt;endl;</span></span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> nx = rr+dx[i],ny = cc+dy[i];</span><br><span class="line">            <span class="keyword">if</span>(nx&lt;<span class="number">0</span>||ny&lt;<span class="number">0</span>||nx&gt;=row||ny&gt;=col)<span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span>(nx == e1 &amp;&amp; ny == e2)&#123;</span><br><span class="line">                cout&lt;&lt;dis[rr][cc]&lt;&lt;endl;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(mp[nx][ny] == <span class="number">-1</span>)<span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span>(visit[nx][ny])<span class="keyword">continue</span>;</span><br><span class="line">            dis[nx][ny] = <span class="built_in">max</span>(dis[rr][cc],mp[nx][ny]);</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;dis[nx][ny],&#123;nx,ny&#125;&#125;);</span><br><span class="line">            visit[nx][ny] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;row&gt;&gt;col;</span><br><span class="line">    <span class="built_in">memset</span>(dis,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">    <span class="built_in">memset</span>(visit,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(visit));</span><br><span class="line">    <span class="built_in">memset</span>(mp,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(mp));</span><br><span class="line">    cin&gt;&gt;s1&gt;&gt;s2&gt;&gt;e1&gt;&gt;e2;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">while</span>(n--)&#123;</span><br><span class="line">        <span class="keyword">int</span> a,b,c;cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        mp[a][b] = c;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Dijkstra</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最小花費的航空之旅"><a href="#最小花費的航空之旅" class="headerlink" title="最小花費的航空之旅"></a>最小花費的航空之旅</h3><blockquote>
+<p>題目敘述：<br>給定很多種連接城市間的聯票，要求從起始站搭乘，可以在中途任意站下車，但下車以後就不能再次上車。輸入的第一行為一個正整數 n (1 ≤ n ≤ 20)，即聯票的種類數。以下 n 行每航為一個聯票的資訊，其中第一個整數為聯票的價格，然後是聯票上城市的數目。</p>
+<p>接下來為一個行程單的資訊，其中第一個正整數為行程單上的城市數目k（包括起始城市，2 ≤ k ≤ 10），以及這些城市的編號（按順序列出）。</p>
+<p>輸出最小花費和對應的方案的其中一組解。</p>
+</blockquote>
+<p>這一題是APCS Class的其中一題，難度頗高，因為他要找最短的路徑，同時增加了可以在任意站下車的條件。首先我們要維護每一個聯票的資訊，它的價值、起點、編號以及經過的城市。接著，我們考慮所有從起點出發的聯票，將每一種聯票上的每一個經過的城市都加入queue中。</p>
+<p>跟上一題一樣，當我們每一次都從cost最小的點下手，在轉移的過程中如果將所有的點都走訪一遍，則他的路徑必定是最短的，因為每一次的更新都是從花費最小的路徑去轉移。</p>
+<div class="note primary">
+            <p><strong>使用自定義比較函數放入Priority_queue中</strong></p><p>Priority_queue中的比較函數需要使用到struct或class包覆的比較函數，若要回傳cost的最小值，則必須以大於來寫（有點像預設是pop出最大值，使用的卻是less<int>的比較函數）</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(node a,node b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.cost &gt; b.cost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          </div>
+<p>以下是AC Code：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> double long double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 105</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Orz ios::sync_with_stdio(0),cin.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 2e18</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,l,r) for(int i=l;i&lt;=r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rrep(i,l,r) for(int i=l;i&lt;r;i++)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pif pair<span class="meta-string">&lt;int,float&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> x first</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> y second</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">int</span> n,k,visit[<span class="number">20</span>];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Ticket</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> id,cost;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; next_city;</span><br><span class="line">    <span class="comment">//陣列ticket[i]存以i為起點</span></span><br><span class="line">&#125;;</span><br><span class="line">vector&lt;Ticket&gt; ticket[<span class="number">30</span>];          <span class="comment">//ticket[i] 起點為i的聯票</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> cost,cur_pos,visit_pos;</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; used_ticket;</span><br><span class="line">    <span class="comment">//cur_pos現在所在位置、visit_pos在行程單上位置</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(node a,node b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.cost &gt; b.cost;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//讓priority_queue可以pop出最小的cost的路徑</span></span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;node,vector&lt;node&gt;,cmp&gt; pq;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Orz;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">int</span> cost,num,s;cin&gt;&gt;cost&gt;&gt;num&gt;&gt;s;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; temp;</span><br><span class="line">        <span class="built_in">rep</span>(j,<span class="number">1</span>,num<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> k;cin&gt;&gt;k;</span><br><span class="line">            temp.<span class="built_in">push_back</span>(k);</span><br><span class="line">        &#125;</span><br><span class="line">        ticket[s].<span class="built_in">push_back</span>(&#123;i,cost,temp&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    cin&gt;&gt;k;</span><br><span class="line">    <span class="built_in">rep</span>(i,<span class="number">1</span>,k)cin&gt;&gt;visit[i];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> i : ticket[visit[<span class="number">1</span>]])&#123;         <span class="comment">//行程第一個起點的聯票起點</span></span><br><span class="line">        <span class="keyword">int</span> p = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> j : i.next_city)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p &lt; k &amp;&amp; j == visit[p+<span class="number">1</span>])p++;</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;i.cost,j,p,&#123;i.id&#125;&#125;);</span><br><span class="line"><span class="comment">//            cout&lt;&lt;&quot;一開始聯票：&quot;&lt;&lt;i.id&lt;&lt;&quot; &quot;&lt;&lt;j&lt;&lt;endl;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(!pq.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node cur = pq.<span class="built_in">top</span>();</span><br><span class="line">        pq.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(cur.visit_pos == k)&#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;Cost = &quot;</span>&lt;&lt;cur.cost&lt;&lt;<span class="string">&quot;, Tickets used: &quot;</span></span><br><span class="line">                &lt;&lt;cur.used_ticket[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;cur.used_ticket.<span class="built_in">size</span>();i++)</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;, &quot;</span>&lt;&lt;cur.used_ticket[i];</span><br><span class="line">            cout&lt;&lt;endl;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> i : ticket[cur.cur_pos])&#123;</span><br><span class="line">            <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">vec</span><span class="params">(cur.used_ticket)</span></span>;</span><br><span class="line">            vec.<span class="built_in">push_back</span>(i.id);                <span class="comment">//將現在使用的第i聯票推入</span></span><br><span class="line">            <span class="keyword">int</span> p = cur.visit_pos;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> j : i.next_city)&#123;</span><br><span class="line">                <span class="keyword">if</span>(p &lt; k &amp;&amp; j == visit[p+<span class="number">1</span>])p++;</span><br><span class="line">                pq.<span class="built_in">push</span>(&#123;cur.cost+i.cost,j,p,vec&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A1%8C%E8%A7%A3/" rel="tag"># 題解</a>
+              <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%91/" rel="tag"># 最短路徑</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/geo2-1/" rel="prev" title="[題解]NEOJ 398 向量加法">
+      <i class="fa fa-chevron-left"></i> [題解]NEOJ 398 向量加法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/path2-6/" rel="next" title="[題解]TIOJ 1028 旅遊規劃問題">
+      [題解]TIOJ 1028 旅遊規劃問題 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+<!-- Adsense廣告-->
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9921797637924269"
+     crossorigin="anonymous"></script>
+<!-- 多媒體廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9921797637924269"
+     data-ad-slot="2654177759"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Codeforces-543B-Destroying-Roads"><span class="nav-number">1.</span> <span class="nav-text">Codeforces 543B: Destroying Roads</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TIOJ-2180-%E5%8B%87%E8%80%85%E5%86%92%E9%9A%AA-Adventure"><span class="nav-number">2.</span> <span class="nav-text">TIOJ 2180 勇者冒險 (Adventure)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E8%8A%B1%E8%B2%BB%E7%9A%84%E8%88%AA%E7%A9%BA%E4%B9%8B%E6%97%85"><span class="nav-number">3.</span> <span class="nav-text">最小花費的航空之旅</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="peienwu"
+      src="/images/worm.jpg">
+  <p class="site-author-name" itemprop="name">peienwu</p>
+  <div class="site-description" itemprop="description">Hello world</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">215</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/peienwu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;peienwu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ck1090758@gl.ck.tp.edu.tw" title="E-Mail → mailto:ck1090758@gl.ck.tp.edu.tw" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/peien.wu.58/" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;peien.wu.58&#x2F;" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hackmd.io/@peienwu" title="HackMD → https:&#x2F;&#x2F;hackmd.io&#x2F;@peienwu" rel="noopener" target="_blank"><i class="fas fa-file-alt fa-fw"></i>HackMD</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user-secret"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">peienwu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">588k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">8:55</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="20" alpha="0.5" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : '30Nkg1FodDSgkXoUsCSP43WB-MdYXbMMI',
+      appKey     : '6htzJsnb35Aur50anLOH62bF',
+      placeholder: "按這裡留言一下！(可使用Markdown)",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'en' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
