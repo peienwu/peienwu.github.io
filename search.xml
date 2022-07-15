@@ -7245,7 +7245,7 @@ t_1 & t_2 & \cdots & t_{\phi(n)}
 <p><img src="https://i.imgur.com/3LG2sic.png" alt=""></p>
 <p>若近日點距為$r_1$、遠日點距為$r_2$，半軸長$a = \frac{r_1+r_2}{2}$，根據遠日點以及近日點的力學能守恆以及克卜勒第二定律，可以列出以下兩式：</p>
 <script type="math/tex; mode=display">\begin{aligned}\frac{1}{2}mv_1^2 - \frac{GMm}{r_1} &= \frac{1}{2}mv_2^2 - \frac{GMm}{r_2}\\\\
-\frac{\pi ab}{T} = r_1v_1 &= r_2v_2\end{aligned}</script><p>將二式帶入一式可得：</p>
+\frac{\pi ab}{T} = \frac{1}{2}r_1v_1 &= \frac{1}{2}r_2v_2\end{aligned}</script><p>將二式帶入一式可得：</p>
 <script type="math/tex; mode=display">(r_1v_1)^2 = \frac{GMr_1r_2}{\frac{1}{2}(r_1+r_2)} =
 \frac{GM(a+c)(a-c)}{a} = \frac{GMb^2}{a}</script><p>帶入我們的初始速度與近、遠日點距：</p>
 <script type="math/tex; mode=display">(H\cdot k\sqrt{\frac{GM}{H}})^2 = k^2GMH=\frac{GMb^2}{a}</script><p>上面是第一式，還有兩條比較顯而易見的兩條方程式，總共用三條方程式解三個未知數：</p>
