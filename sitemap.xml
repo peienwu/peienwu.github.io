@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://peienwu.com/about/index.html</loc>
+    
+    <lastmod>2022-09-23</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://peienwu.com/club2/</loc>
     
     <lastmod>2022-09-23</lastmod>
@@ -2570,15 +2579,6 @@
     <loc>https://peienwu.com/string1/</loc>
     
     <lastmod>2022-07-06</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://peienwu.com/about/index.html</loc>
-    
-    <lastmod>2022-05-28</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
